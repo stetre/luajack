@@ -1,0 +1,333 @@
+
+== MIDI utilities
+
+The *luajack.midi* module is a LuaJack submodule that provides convenient utilities
+for dealing with MIDI messages in Lua.
+
+Although it is part of the LuaJack package, *luajack.midi* is actually an independent module
+that can be used also in non-LuaJack applications. Since it is a plain Lua script, it can be
+easily customized or replaced
+(its source is in the _luajack/midi.lua_ file in the LuaJack package).
+
+The module is to be loaded in the usual Lua way, e.g.:
+
+[source,lua,indent=1]
+----
+midi = require("luajack.midi")
+----
+
+and returns a table containing the utilities described in the subsections that follow
+(it is assumed here that the table is named *'midi'* as in the above example, but a
+different name could be used as well).
+
+=== Encoding MIDI messages
+
+Each of the following routines returns a binary string containing an encoded
+MIDI message (starting from the MIDI status byte) with the passed parameters.
+
+'''
+[[midi.note_onoff]]
+* *midi.note_off* ( _channel_, _key_ [, _velocity_ ] ) +
+* *midi.note_on* ( _channel_, _key_ [, _velocity_ ] ) +
+-> _msg_ +
+ +
+Parameters: _channel_ = 1-16, _key_ = 0-127, _velocity_ = 0-127 (default=64).
+
+'''
+[[midi.aftertouch]]
+* *midi.aftertouch* ( _channel_, _key_, _pressure_ ) a.k.a. 'polyphonic key pressure' +
+-> _msg_ +
+ +
+Parameters: _channel_ = 1-16, _key_ = 0-127, _pressure_ = 0-127.
+
+'''
+[[midi.control_change]]
+* *midi.control_change* ( _channel_, _control_ [, _value_ ] ) +
+-> _msg_ +
+ +
+Parameters: _channel_ = 1-16, _control_ = 0-127 or controller name,
+_value_ = 0-127 or _'on'_|_'off'_ (default=0='off'). +
+See the table in the following section for <<midi.controllers, controller names>>. 
+
+'''
+[[midi.program_change]]
+* *midi.program_change* ( _channel_, _number_ ) +
+-> _msg_ +
+ +
+Parameters: _channel_ = 1-16, _number_ = 1-128.
+
+'''
+[[midi.channel_pressure]]
+* *midi.channel_pressure* ( _channel_, _pressure_ ) +
+-> _msg_ +
+ +
+Parameters: _channel_ = 1-16, _pressure_ = 0-127.
+
+'''
+[[midi.pitch_wheel]]
+* *midi.pitch_wheel* ( _channel_, _value_ ) a.k.a. 'pitch bend change' +
+-> _msg_ +
+ +
+Parameters: _channel_ = 1-16, _value_ = 0-16383 (0x3fff).
+
+////
+function midi.system_exclusive() --@@
+-- "system exclusive" 0xf0 ...
+end
+////
+
+
+'''
+[[midi.mtc_quarter_frame]]
+* *midi.mtc_quarter_frame* ( _nnn_, _dddd_ ) a.k.a. 'time code quarter frame' +
+-> _msg_ +
+ +
+Parameters: _nnn_ = 0-7 (MTC message type), _dddd_ = 0-15 (MTC message value).
+
+'''
+[[midi.song_position]]
+* *midi.song_position* ( _value_ ) +
+-> _msg_ +
+ +
+Parameters: _value_ = 0-16383 (0x3fff).
+
+'''
+[[midi.song_select]]
+* *midi.song_select* ( _number_ ) +
+-> _msg_ +
+ +
+Parameters: _number_ = 1-128.
+
+'''
+[[midi.encode]]
+* *midi.tune_request* ( ) +
+* *midi.end_of_exclusive* ( ) +
+* *midi.clock* ( ) +
+* *midi.start* ( ) +
+* *midi.continue* ( ) +
+* *midi.stop* ( ) +
+* *midi.active_sensing* ( ) +
+* *midi.reset* ( ) +
+-> _msg_ +
+ +
+Parameters: none.
+
+
+////
+function midi.status(name, chan)
+-- name = message name
+-- chan = 1..16 (opt)
+-- encodes name and (possibly) chan and returns the status byte
+	local t = name_to_type[name]
+	if t and t >= 0x80 and t < 0xf0 then
+		assertf(chan > 0 and chan <= 16, "invalid midi channel = %u", chan)
+		return t + chan - 1
+	end
+	return t
+end
+
+////
+
+
+=== Decoding MIDI messages
+
+'''
+[[midi.decode]]
+* *midi.decode* ( _msg_ [, _stringize_ ] ) +
+-> _name_, _channel_, _parameters_ +
+ +
+Decodes a MIDI message. The _msg_ argument is expected to be a binary string
+containing the MIDI message starting from the MIDI status byte.
+Returns the MIDI message _name_ (or _nil_ if not recognized), the _channel_
+(1-16,  or _nil_ if not applicable), and a table containing the decoded _parameters_
+(see the table below).
+If _stringize_ is _true_, the parameters are returned as a string instead of a table
+(this may be useful for dumps). +
+
+'''
+[[midi.tostring]]
+* *midi.tostring* ( _time_, _msg_ ) +
+-> _string_ +
+ +
+Returns a printable string containing the passed _time_ (an integer) and the decoded _msg_
+(for dumps).
+
+'''
+[[midi.tohex]]
+* *midi.tohex* ( _msg_ ) +
+-> _msg_ +
+ +
+Returns a string containing the _msg_ bytes in hexadecimal format (e.g. '84 0c 2f').
+
+.MIDI messages
+[cols="20,5,75", options="header"]
+|===
+|Message name | Channel | Parameters table contents
+|'note off'
+|1-16
+|key = 0-127, velocity = 0-127
+|'note on'
+|1-16
+|key = 0-127, velocity = 0-127
+|'aftertouch'
+|1-16
+|key = 0-127, pressure = 0-127
+|'control change'
+|1-16
+|number = 0-127, value = 0-127, controller = 'controller name' (see table below)
+|'program change'
+|1-16
+|number = 1-128
+|'channel pressure'
+|1-16
+|pressure = 0-127
+|'pitch wheel'
+|1-16
+|value = 0-16383 (0x3fff), lsb = 0-127, msb = 0-127
+|'system exclusive'
+|_nil_
+|_@@ TBD_
+|'mtc quarter frame'
+|_nil_
+|nnn = 0-7, dddd = 0-15, value = 0-127 (0nnndddd)
+|'song position'
+|_nil_
+|value = 0-16383 (0x3fff), lsb = 0-127, msb = 0-127
+|'song select'
+|_nil_
+|number = 1-128
+|'tune request'
+|_nil_
+|none
+|'end of exclusive'
+|_nil_
+|none
+|'clock'
+|_nil_
+|none
+|'start'
+|_nil_
+|none
+|'continue'
+|_nil_
+|none
+|'stop'
+|_nil_
+|none
+|'active sensing'
+|_nil_
+|none
+|'reset'
+|_nil_
+|none
+|===
+
+[[midi.controllers]]
+.MIDI controllers
+[cols="20,80", options="header"]
+|===
+|Controller number | Controller name
+| 0 (0x00) | 'bank select (coarse)'
+| 1 (0x01) | 'modulation wheel (coarse)'
+| 2 (0x02) | 'breath controller (coarse)'
+| 4 (0x04) | 'foot pedal (coarse)'
+| 5 (0x05) | 'portamento time (coarse)'
+| 6 (0x06) | 'data entry (coarse)'
+| 7 (0x07) | 'volume (coarse)'
+| 8 (0x08) | 'balance (coarse)'
+| 10 (0x0a) | 'pan position (coarse)'
+| 11 (0x0b) | 'expression (coarse)'
+| 12 (0x0c) | 'effect control 1 (coarse)'
+| 13 (0x0d) | 'effect control 2 (coarse)'
+| 16 (0x10) | 'general purpose slider 1'
+| 17 (0x11) | 'general purpose slider 2'
+| 18 (0x12) | 'general purpose slider 3'
+| 19 (0x13) | 'general purpose slider 4'
+| 32 (0x20) | 'bank select (fine)'
+| 33 (0x21) | 'modulation wheel (fine)'
+| 34 (0x22) | 'breath controller (fine)'
+| 36 (0x24) | 'foot pedal (fine)'
+| 37 (0x25) | 'portamento time (fine)'
+| 38 (0x26) | 'data entry (fine)'
+| 39 (0x27) | 'volume (fine)'
+| 40 (0x28) | 'balance (fine)'
+| 42 (0x2a) | 'pan position (fine)'
+| 43 (0x2b) | 'expression (fine)'
+| 44 (0x2c) | 'effect control 1 (fine)'
+| 45 (0x2d) | 'effect control 2 (fine)'
+| 64 (0x40) | 'hold pedal'
+| 65 (0x41) | 'portamento'
+| 66 (0x42) | 'sustenuto pedal'
+| 67 (0x43) | 'soft pedal'
+| 68 (0x44) | 'legato pedal'
+| 69 (0x45) | 'hold 2 pedal'
+| 70 (0x46) | 'sound variation'
+| 71 (0x47) | 'sound timbre'
+| 72 (0x48) | 'sound release time'
+| 73 (0x49) | 'sound attack time'
+| 74 (0x4a) | 'sound brightness'
+| 75 (0x4b) | 'sound control 6'
+| 76 (0x4c) | 'sound control 7'
+| 77 (0x4d) | 'sound control 8'
+| 78 (0x4e) | 'sound control 9'
+| 79 (0x4f) | 'sound control 10'
+| 80 (0x50) | 'general purpose button 1'
+| 81 (0x51) | 'general purpose button 2'
+| 82 (0x52) | 'general purpose button 3'
+| 83 (0x53) | 'general purpose button 4'
+| 91 (0x5b) | 'effects level'
+| 92 (0x5c) | 'tremulo level'
+| 93 (0x5d) | 'chorus level'
+| 94 (0x5e) | 'celeste level'
+| 95 (0x5f) | 'phaser level'
+| 96 (0x60) | 'data button increment'
+| 97 (0x61) | 'data button decrement'
+| 98 (0x62) | 'non-registered parameter (fine)'
+| 99 (0x63) | 'non-registered parameter (coarse)'
+| 100 (0x64) | 'registered parameter (fine)'
+| 101 (0x65) | 'registered parameter (coarse)'
+| 120 (0x78) | 'all sound off'
+| 121 (0x79) | 'all controllers off'
+| 122 (0x7a) | 'local keyboard'
+| 123 (0x7b) | 'all notes off'
+| 124 (0x7c) | 'omni mode off'
+| 125 (0x7d) | 'omni mode on'
+| 126 (0x7e) | 'mono operation'
+| 127 (0x7f) | 'poly operation'
+|===
+
+=== Other MIDI utilities
+
+'''
+[[midi.note_key]]
+* *midi.note_key* ( _frequency_ ) +
+-> _msg_ +
+ +
+Returns the nearest MIDI note key corresponding to _frequency_ (Hz).
+
+'''
+[[midi.note_frequency]]
+* *midi.note_frequency* ( _key_ ) +
+-> _msg_ +
+ +
+Returns the _frequency_ (Hz) corresponding to the MIDI note _key_.
+
+
+'''
+[[midi.tmsg]]
+* *midi.tmsg* ( _time_, _msg_ ) +
+-> _tmsg_ +
+ +
+Returns a binary string obtained by concatenating the passed _time_ (an integer)
+and the binary MIDI _msg_ (this format can be convenient if one wants to send MIDI events
+over <<_ringbuffers, ringbuffers>>).
+
+'''
+[[midi.time_msg]]
+* *midi.time_msg* ( _tmsg_ ) +
+-> _time_, _msg_ +
+ +
+Extracts the _time_ and _msg_ from a _tmsg_ binary string constructed with the
+<<midi.tmsg, midi.tmsg>>() function.
+
+<<<

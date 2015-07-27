@@ -1,0 +1,6 @@
+
+== Non-callback API
+
+Not supported by LuaJack.
+
+<<<

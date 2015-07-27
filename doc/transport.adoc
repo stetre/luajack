@@ -1,0 +1,73 @@
+
+== Transport and timebase
+
+//^ url with underscores...
+:jack_position_url: http://jackaudio.org/api/structjack__position__t.html
+
+Refer to  
+http://jackaudio.org/api/transport-design.html['JACK Transport Design'] in the
+JACK documentation for details on the transport mechanism.
+
+'''
+[[jack.current_transport_frame]]
+* *jack.current_transport_frame* ( _client_ ) +
+-> _frameno_ +
+ +
+Returns an estimate of the current transport frame.
+
+'''
+[[jack.transport_state]]
+* *jack.transport_state* ( _client_ ) +
+-> _state_ +
+ +
+Returns the current transport _state_ (a string that may have one of the following values: 
+_'starting'_, _'rolling'_, or _'stopping'_).
+
+'''
+[[jack.transport_query]]
+* *jack.transport_query* ( _client_ ) +
+-> _state_, _position_ +
+ +
+Returns the current transport _state_ (see <<jack.transport_state, jack.transport_state>>())
+and the current transport _position_. +
+ +
+The transport position is a Lua-table representation of the 
+{jack_position_url}[jack_position_t] struct.
+Its elements have the same name and meaning as the fields of the struct, except for the
+_valid_ field, which in the table representation is not used (optional elements which
+are not present are set to _nil_, i.e. not set at all).
+
+'''
+[[jack.transport_start]]
+* *jack.transport_start* ( _client_ ) +
+ +
+Starts the JACK transport rolling. 
+
+'''
+[[jack.transport_stop]]
+* *jack.transport_stop* ( _client_ ) +
+ +
+Stops the JACK transport rolling. 
+
+'''
+[[jack.transport_locate]]
+* *jack.transport_locate* ( _client_, _frameno_ ) +
+ +
+Repositions the JACK transport to the frame number _frameno_ 
+(realtime safe, may be used in the <<jack.timebase_callback, timebase callback>>).
+
+'''
+[[jack.transport_reposition]]
+* *jack.transport_reposition* ( _client_, _position_ ) +
+ +
+Request a new transport _position_ 
+(realtime safe, may be used in the <<jack.timebase_callback, timebase callback>>).
+
+'''
+[[jack.set_sync_timeout]]
+* *jack.set_sync_timeout* ( _client_, _timeout_ ) +
+ +
+Sets the _timeout_ value (in microseconds) for
+http://jackaudio.org/api/transport-design.html#slowsyncclients[slow-sync clients].
+
+<<<

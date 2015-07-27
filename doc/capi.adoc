@@ -1,0 +1,26 @@
+
+== LuaJack C API
+
+The LuaJack C API allows to implement the <<_real_time_callbacks, real-time callbacks>>
+entirely in C.
+
+@@ TODO
+
+////
+http://www.lua.org/manual/5.3/manual.html#lua_CFunction[lua_CFunction]
+
+[source,C,indent=1]
+----
+luajack_t* luajack_checkclient(lua_State *L, int arg);
+luajack_t* luajack_checkport(lua_State *L, int arg);
+luajack_t* luajack_checkthread(lua_State *L, int arg);
+luajack_t* luajack_checkringbuffer(lua_State *L, int arg);
+----
+
+These functions work similarly to the _luaL_check_ functions in the Lua Auxiliary Library.
+Each of them checks if the value at the index _arg_ of the Lua stack is a valid object
+reference and returns a _luajack_t_ pointer representing the object in C (or raises an 
+error if the reference is not valid).
+////
+
+<<<

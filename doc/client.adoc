@@ -1,0 +1,112 @@
+
+== Clients
+
+[[jack.client_open]]
+* *jack.client_open* ( _name_ [, _options_]) +
+-> _client_ +
+ +
+Creates a JACK client with the passed _name_ and returns an opaque reference for subsequent
+operations.
+If the _options_ parameter is passed, it must be a table containing zero or more of
+the following elements: +
+- _options.use_exact_name_ (boolean): if _true_, do not automatically assign a new name if _name_ is already in use; +
+- _options.no_start_server_ (boolean): if _true_, do not start the JACK server if not already running; +
+- _options.server_name_ (string): select the JACK server with this name; +
+- _options.session_id_ (string): pass this string as SessionID Token.
+
+'''
+[[jack.client_name_size]]
+* *jack.client_name_size* ( ) +
+-> _maxsize_ +
+ +
+Returns the maximum allowed size for JACK clients names.
+
+'''
+[[jack.client_close]]
+* *jack.client_close* ( _client_ ) +
+ +
+Closes a client previously opened with <<_jack.client, jack.client>>().
+
+NOTE: Clients are automatically closed by LuaJack when the application exits.
+
+'''
+[[jack.client_name]]
+* *jack.client_name* ( _client_ ) +
+-> _name_ +
+ +
+Returns the client's name.
+
+'''
+[[jack.client_uuid]]
+* *jack.client_uuid* ( _client_ ) +
+-> _uuid_ +
+ +
+Returns the client's UUID.
+
+'''
+[[jack.client_uuid_to_name]]
+* *jack.client_uuid_to_name* ( _client_, _uuid_ ) +
+-> _name_ +
+ +
+Returns the name of the client whose UUID is _uuid_,  or _nil_ if no such client exists. +
+
+'''
+[[jack.client_name_to_uuid]]
+* *jack.client_name_to_uuid* ( _client_, _name_ ) +
+-> _uuid_ +
+ +
+Returns the UUID of the client whose name is _name_,  or _nil_ if no such client exists. +
+
+'''
+[[jack.activate]]
+* *jack.activate* ( _client_ ) +
+ +
+Activates _client_. +
+
+'''
+[[jack.deactivate]]
+* *jack.deactivate* ( _client_ ) +
+ +
+Deactivates _client_. +
+
+'''
+[[jack.is_realtime]]
+* *jack.is_realtime* ( _client_ ) +
+-> _boolean_ +
+ +
+Returns _true_ if JACK is running realtime, _false_ otherwise. +
+
+'''
+[[jack.cpu_load]]
+* *jack.cpu_load* ( _client_ ) +
+-> _cpuload_ +
+ +
+Returns the current CPU load estimated by JACK.
+
+'''
+[[jack.sample_rate]]
+* *jack.sample_rate* ( _client_ ) +
+-> _sample_rate_ +
+ +
+Returns the sample rate of the JACK system, as set by the user when the server was started.
+
+'''
+[[jack.set_buffer_size]]
+* *jack.set_buffer_size* ( _client_, _nframes_ ) +
+ +
+Changes the buffer size passed to the <<jack.process_callback, process callback>> to _nframes_.
+
+'''
+[[jack.buffer_size]]
+* *jack.buffer_size* ( _client_ ) +
+-> _nframes_ +
+ +
+Returns the current maximum buffer size that will ever be passed to the <<jack.process_callback, process callback>> (to be used only before the client is activated).
+
+'''
+[[jack.freewheel]]
+* *jack.freewheel* ( _client_, _onoff_ ) +
+ +
+Starts/stops JACK's '_freewheel_' mode. The _onoff_ argument is a string and may be _'on'_ (to start) or _'off'_ (to stop).
+
+<<<

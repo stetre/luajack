@@ -1,0 +1,558 @@
+
+== Summary of LuaJack functions
+
+The tables below summarize the functions provided by LuaJack.
+
+The availability ('Avail.') column indicates whether a function is available in the
+main context (M), in the process context (T) and/or in the thread context (T).
+
+On error, unless otherwise pointed out in the manual sections, all
+functions call Lua's http://www.lua.org/manual/5.3/manual.html#pdf-error[error]() 
+with a string message handler.
+
+
+.Clients
+[cols="40,15,40,5", options="header"]
+|===
+|Function | Return values | Description | Avail.
+|<<jack.client_open, *jack.client_open*>> ( _name_ [, _options_]) 
+|_client_ 
+|Create a JACK client.
+|M
+|<<jack.client_name_size, *jack.client_name_size*>> ( )
+|_maxsize_
+|Get the maximum allowed size for client names.
+|M
+|<<jack.client_close, *jack.client_close*>> ( _client_ )
+|-
+|Close a client. 
+|M
+|<<jack.client_name, *jack.client_name*>> ( _client_ )
+|_name_
+|Get a client's name.
+|M
+|<<jack.client_uuid, *jack.client_uuid*>> ( _client_ )
+|_uuid_
+|Get a client's UUID.
+|M
+|<<jack.client_uuid_to_name, *jack.client_uuid_to_name*>> ( _client_, _uuid_ )
+|_name_
+|Translate a client's UUID into its name.
+|M
+|<<jack.client_name_to_uuid, *jack.client_name_to_uuid*>> ( _client_, _name_ ) 
+|_uuid_ 
+|Translate a client's name into its UUID.
+|M
+|<<jack.activate, *jack.activate*>> ( _client_ )
+|-
+|Activate a client.
+|M
+|<<jack.deactivate, *jack.deactivate*>> ( _client_ )
+|-
+|Deactivate a client.
+|M
+|<<jack.is_realtime, *jack.is_realtime*>> ( _client_ )
+|_boolean_
+|Check if JACK is running realtime.
+|M
+|<<jack.cpu_load, *jack.cpu_load*>> ( _client_ )
+|_cpuload_
+|Get the current CPU load estimate.
+|MPT
+|<<jack.sample_rate, *jack.sample_rate*>> ( _client_ )
+|_sample_rate_
+|Get the sample rate.
+|MPT
+|<<jack.set_buffer_size, *jack.set_buffer_size*>> ( _client_, _nframes_ )
+|-
+|Change the buffer size.
+|MP
+|<<jack.buffer_size, *jack.buffer_size*>> ( _client_ ) 
+|_nframes_
+|Get the current maximum buffer size.
+|MPT
+|<<jack.freewheel, *jack.freewheel*>> ( _client_, _onoff_ )
+|-
+|Start/stop JACK's '_freewheel_' mode.
+|MP
+|===
+
+<<<
+
+.Process context
+[cols="40,5,50,5", options="header"]
+|===
+|Function | Return values | Description | Avail.
+|<<jack.process_load, *jack.process_load*>> ( _client_, _chunk_, _..._ )
+|-
+|Create process context loading the chunk from string.
+|M
+|<<jack.process_loadfile, *jack.process_loadfile*>> ( _client_, _filename_, _..._ )
+|-
+|Create process context loading the chunk from file.
+|M
+|===
+
+.Real-time callbacks
+[cols="50,45,5", options="header"]
+|===
+|Function |Callback prototype | Avail.
+|<<jack.process_callback, *jack.process_callback*>> ( _client_, _func_ )
+|_func(nframes)_
+|P
+|<<jack.buffer_size_callback, *jack.buffer_size_callback*>> ( _func_ )
+|_func(nframes)_
+|P
+|<<jack.sync_callback, *jack.sync_callback*>> ( _client_, _func_ )
+|_func(state, position)_
+|P
+|<<jack.timebase_callback, *jack.timebase_callback*>> ( _client_, _func_ [, _conditional_] )
+|_func(state, nframes, position, new_position)_
+|P
+|<<jack.release_timebase, *jack.release_timebase*>> ( _client_ )
+|-
+|P
+|===
+
+<<<
+
+.Non real-time callbacks
+[cols="45,50,5", options="header"]
+|===
+|Function |Callback prototype | Avail.
+|<<jack.shutdown_callback, *jack.shutdown_callback*>> ( _client_, _func_ )
+|_func(client, code, reason)_
+|M
+|<<jack.freewheel_callback, *jack.freewheel_callback*>> ( _client_, _func_ )
+|_func(client, operation)_
+|M
+|<<jack.sample_rate_callback, *jack.sample_rate_callback*>> ( _client_, _func_ )
+|_func(client, nframes)_
+|M
+|<<jack.client_registration_callback, *jack.client_registration_callback*>> ( _client_, _func_ )
+|_func(client, name, 'registered'\|'unregistered')_
+|M
+|<<jack.port_registration_callback, *jack.port_registration_callback*>> ( _client_, _func_ )
+|_func(client, portname, 'registered'\|'unregistered')_
+|M
+|<<jack.port_rename_callback, *jack.port_rename_callback*>> ( _client_, _func_ )
+|_func(client, portname, newname)_
+|M
+|<<jack.port_connect_callback, *jack.port_connect_callback*>> ( _client_, _func_ )
+|_func(client, srcname, dstname, 'connected'\|'disconnected')_
+|M
+|<<jack.graph_order_callback, *jack.graph_order_callback*>> ( _client_, _func_ )
+|_func(client)_
+|M
+|<<jack.xrun_callback, *jack.xrun_callback*>> ( _client_, _func_ )
+|_func(client)_
+|M
+|<<jack.latency_callback, *jack.latency_callback*>> ( _client_, _func_ )
+|_func(client, 'capture'\|'playback')_
+|M
+|<<jack.session_callback, *jack.session_callback*>> ( _client_, _func_ )
+|_command, flag1, flag2 = func(client, type, path, uuid)_ 
+|M
+|===
+
+<<<
+
+.Client threads
+[cols="45,10,40,5", options="header"]
+|===
+|Function | Return values | Description | Avail.
+|<<jack.thread_load, *jack.thread_load*>> ( _client_, _chunk_, _..._ )
+|_thread_
+|Create a client thread loading the chunk from a string.
+|M
+|<<jack.thread_loadfile, *jack.thread_loadfile*>> ( _client_, _filename_, _..._ )
+|_thread_
+|Create a client thread loading the chunk from a file.
+|M
+|<<jack.self, *jack.self*>> ( )
+|_client_, _thread_
+|Get the client and thread references.
+|T
+|<<jack.signal, *jack.signal*>> ( _client_, _thread_ )
+|-
+|Signal a thread's condition variable.
+|MPT
+|<<jack.wait, *jack.wait*>> ( )
+|-
+|Waits on the calling thread's condition variable.
+|T
+|<<jack.real_time_priority, *jack.real_time_priority*>> ( _client_ )
+|_priority_
+|Get the priority that threads created by JACK will run at.
+|MPT
+|<<jack.max_real_time_priority, *jack.max_real_time_priority*>> ( _client_ )
+| _priority_
+|Get the maximum priority that a realtime client thread should use.
+|MPT
+|<<jack.acquire_real_time_scheduling, *jack.acquire_real_time_scheduling*>> ( _priority_ )
+|-
+|Acquire realtime scheduling.
+|MPT
+|<<jack.drop_real_time_scheduling, *jack.drop_real_time_scheduling*>> ( )
+|-
+|Drop realtime scheduling.
+|MPT
+|===
+
+.Ports
+[cols="50,10,35,5", options="header"]
+|===
+|Function | Return values | Description | Avail.
+|<<jack.input_audio_port, *jack.input_audio_port*>> ( _client_ , _name_ [, _options_ ] )
+|_port_
+|Create an input audio port.
+|M
+|<<jack.output_audio_port, *jack.output_audio_port*>> ( _client_ , _name_ [, _options_ ] )
+|_port_
+|Create an output audio port.
+|M
+|<<jack.input_midi_port, *jack.input_midi_port*>> ( _client_ , _name_ [, _options_ ] )
+|_port_
+|Create an input midi port.
+|M
+|<<jack.output_midi_port, *jack.output_midi_port*>> ( _client_ , _name_ [, _options_ ] )
+|_port_
+|Create an output midi port.
+|M
+|<<jack.input_custom_port, *jack.input_custom_port*>> ( _client_ , _name_ [, _options_ ] )
+|_port_
+|Create an input custom port.
+|M
+|<<jack.output_custom_port, *jack.output_custom_port*>> ( _client_ , _name_ [, _options_ ] )
+|_port_
+|Create an output custom port.
+|M
+|<<jack.port_name_size, *jack.port_name_size*>> ( )
+|_maxsize_
+|Get the maximum allowed size for port names.
+|M
+|<<jack.port_type_size, *jack.port_type_size*>> ( )
+|_maxsize_
+|Get the maximum allowed size for port types.
+|M
+|<<jack.port_unregister, *jack.port_unregister*>> ( _port_ )
+|-
+|Delete a port.
+|M
+|<<jack.connect, *jack.connect*>> ( _port_, _portname2_ ) +
+<<jack.connect, *jack.port_connect*>> ( _port_, _portname2_ ) +
+<<jack.connect, *jack.nport_connect*>> ( _client_, _portname1_, _portname2_ )
+|-
+|Connect two ports.
+|M
+|<<jack.disconnect, *jack.disconnect*>> ( _port_ [, _portname2_] ) +
+<<jack.disconnect, *jack.port_disconnect*>> ( _port_ [, _portname2_] ) +
+<<jack.disconnect, *jack.nport_disconnect*>> ( _client_, _portname1_ [, _portname2_] )
+|-
+|Disconnects two ports. 
+|M
+|<<jack.port_name, *jack.port_name*>> ( _port_ )
+|_fullname_
+|Get the full name of a port.
+|M
+|<<jack.port_short_name, *jack.port_short_name*>> ( _port_ )
+|_shortname_
+|Get the short name of a port.
+|M
+|<<jack.port_set_name, *jack.port_set_name*>> ( _port_, _newname_ )
+|-
+|Changes the short name of a port.
+|M
+|<<jack.port_flags, *jack.port_flags*>> ( _port_ ) +
+<<jack.port_flags, *jack.nport_flags*>> ( _client_, _portname_ )
+|_flags_, _table_
+|Get the flags of a port.
+|M
+|<<jack.port_uuid, *jack.port_uuid*>> ( _port_ ) +
+<<jack.port_uuid, *jack.nport_uuid*>> ( _client_, _portname_ )
+|_uuid_
+|Get the UUID of a port.
+|M
+|<<jack.port_type, *jack.port_type*>> ( _port_ ) +
+<<jack.port_type, *jack.nport_type*>> ( _client_, _portname_ )
+|_type_
+|Get the type of a port.
+|M
+|<<jack.nport_exists, *jack.nport_exists*>> ( _client_, _portname_ )
+|_boolean_
+|Check if a port exists.
+|M
+|<<jack.port_is_mine, *jack.port_is_mine*>> ( _client_, _port_ ) +
+<<jack.port_is_mine, *jack.nport_is_mine*>> ( _client_, _portname_ )
+|_boolean_
+|Check if a port belongs to a given client.
+|M
+|<<jack.port_set_alias, *jack.port_set_alias*>> ( _port_, _alias_ ) +
+<<jack.port_set_alias, *jack.nport_set_alias*>> ( _client_, _portname_, _alias_ )
+|-
+|Set an alias for a port.
+|M
+|<<jack.port_unset_alias, *jack.port_unset_alias*>> ( _port_, _alias_ ) +
+<<jack.port_unset_alias, *jack.nport_unset_alias*>> ( _client_, _portname_, _alias_ )
+|-
+|Unset an alias for a port.
+|M
+|<<jack.port_aliases, *jack.port_aliases*>> ( _port_ ) +
+<<jack.port_aliases, *jack.nport_aliases*>> ( _client_, _portname_ )
+|_alias1_, _alias2_
+|Get the aliases for a port.
+|M
+|<<jack.port_connections, *jack.port_connections*>> ( _port_ [, _list_ ] ) +
+<<jack.port_connections, *jack.nport_connections*>> ( _client_, _portname_ [, _list_ ] )
+|_N_, _{ portname1, ..., portnameN }_
+|Get the connections for a port.
+|M
+|<<jack.port_connected_to, *jack.port_connected_to*>> ( _port_, _portname2_ ) +
+<<jack.port_connected_to, *jack.nport_connected_to*>> ( _client_, _portname1_, _portname2_ )
+|_boolean_
+|Check if two ports are connected.
+|M
+|<<jack.port_monitor, *jack.port_monitor*>> ( _port_, _onoff_ ) +
+<<jack.port_monitor, *jack.nport_monitor*>> ( _client_, _portname_, _onoff_ )
+|-
+|Enable/disable input monitoring for a port.
+|M
+|<<jack.port_monitoring, *jack.port_monitoring*>> ( _port_ ) +
+<<jack.port_monitoring, *jack.nport_monitoring*>> ( _client_, _portname_ )
+|_boolean_
+|Check if the input monitoring for a port is enabled.
+|M
+|<<jack.get_ports, *jack.get_ports*>> ( _client_ [, _filter_ ])
+|_{ portname1, ..., portnameN }_
+|List ports.
+|M
+|===
+
+<<<
+
+.Latency
+[cols="45,10,40,5", options="header"]
+|===
+|Function | Return values | Description | Avail.
+|<<jack.latency_range, *jack.latency_range*>> ( _port_, _mode_ )
+|_min_, _max_
+|Get the minimum and maximum latencies.
+|M
+|<<jack.set_latency_range, *jack.set_latency_range*>> ( _port_, _mode_, _min_, _max_ )
+|-
+|Set the minimum and maximum latencies.
+|M
+|<<jack.recompute_total_latencies, *jack.recompute_total_latencies*>> ( _client_ )
+|-
+|Request a complete recomputation of all port latencies.
+|M
+|===
+
+.Time
+[cols="35,15,45,5", options="header"]
+|===
+|Function | Return values | Description | Avail.
+|<<jack.time, *jack.time*>> ( )
+|_useconds_
+|Get the current system time.
+|MPT
+|<<jack.frame, *jack.frame*>> ( _client_ )
+|_frameno_
+|Get the estimated current time in frames.
+|MPT
+|<<jack.since, *jack.since*>> ( _useconds_ )
+|_elapsed_
+|Get the time elapsed since a point of time in the past.
+|MPT
+|<<jack.since_frame, *jack.since_frame*>> ( _client_, _frameno_ )
+|_nframes_
+|Get the time in frames elapsed since a frame number in the past.
+|MPT
+|<<jack.frames_to_time, *jack.frames_to_time*>> ( _client_, _nframes_ )
+|_useconds_
+|Translate time from microseconds to frames.
+|MPT
+|<<jack.time_to_frames, *jack.time_to_frames*>> ( _client_, _useconds_ )
+|_nframes_
+|Translate time from frames to microseconds.
+|MPT
+|<<jack.frames_since_cycle_start, *jack.frames_since_cycle_start*>> ( _client_ )
+|_nframes_
+|Get the no. of frames passed since the beginning of the current process cycle.
+|MPT
+|<<jack.last_frame_time, *jack.last_frame_time*>> ( _client_ 
+|_nframes_
+|Get the time in frames at the start of the current process cycle.
+|P
+|<<jack.cycle_times, *jack.cycle_times*>> ( _client_ )
+|_current_frames_, _current_usecs_, _next_usecs_, _period_usecs_ +
+|Get internal cycle timing information.
+|P
+|===
+
+.Transport and timebase
+[cols="40,15,40,5", options="header"]
+|===
+|Function | Return values | Description | Avail.
+|<<jack.current_transport_frame, *jack.current_transport_frame*>> ( _client_ )
+|_frameno_
+|Get an estimate of the current transport frame.
+|MPT
+|<<jack.transport_state, *jack.transport_state*>> ( _client_ )
+|_state_
+|Get the current transport state.
+|MPT
+|<<jack.transport_query, *jack.transport_query*>> ( _client_ )
+|_state_, _position_
+|Get the current transport state and position.
+|MPT
+|<<jack.transport_start, *jack.transport_start*>> ( _client_ )
+|-
+|Start the transport rolling. 
+|MPT
+|<<jack.transport_stop, *jack.transport_stop*>> ( _client_ )
+|-
+|Stop the transport rolling. 
+|MPT
+|<<jack.transport_locate, *jack.transport_locate*>> ( _client_, _frameno_ )
+|-
+|Reposition the transport frame.
+|MPT
+|<<jack.transport_reposition, *jack.transport_reposition*>> ( _client_, _position_ )
+|-
+|Request a new transport position.
+|MPT
+|-
+|Set the timeout for slow-sync clients.
+|MPT
+|===
+
+.Reading and writing audio data
+[cols="35,20,40,5", options="header"]
+|===
+|Function | Return values | Description | Avail.
+|<<audiojack.get_buffer, *jack.get_buffer*>> ( _port_ )
+|_nframes_
+|Get the port buffer.
+|P
+|<<audiojack.seek, *jack.seek*>> ( _port_ [, _position_ ] )
+|_position_, _available_
+|Get/set the port buffer's current position.
+|P
+|<<audiojack.read, *jack.read*>> ( _port_ [, _count_ ] )
+|_sample1_, _..._ 
+|Read samples from the port buffer.
+|P
+|<<audiojack.write, *jack.write*>> ( _port_ [, _sample1_ , _..._ ] )
+|_count_
+|Write samples to the port buffer.
+|P
+|<<audiojack.clear, *jack.clear*>> ( _port_ [, _count_ ] )
+|_count_
+|Clear buffer.
+|P
+|<<audiojack.copy, *jack.copy*>> ( _dstport_, _srcport_ [, _count_ ] )
+|_count_
+|Copy samples between ports buffers.
+|P
+|===
+
+.Reading and writing MIDI data
+[cols="35,20,40,5", options="header"]
+|===
+|Function | Return values | Description | Avail.
+|<<midijack.get_buffer, *jack.get_buffer*>> ( _port_ )
+|_eventcount_, _lostcount_
+|Get the port buffer (input port). 
+|P
+|<<midijack.get_buffer, *jack.get_buffer*>> ( _port_ )
+|_space_
+|Get the port buffer (output port). 
+|P
+|<<midijack.seek, *jack.seek*>> ( _port_ [, _index_ ] )
+|_index_, _available_
+|Get/set the port buffer's current index.
+|P
+|<<midijack.read, *jack.read*>> ( _port_ [, _index_ ] )
+|_time_, _data_
+|Read a MIDI event from the port buffer.
+|P
+|<<midijack.write, *jack.write*>> ( _port_, _time_, _data_ )
+|_space_
+|Write a MIDI event to the port buffer.
+|P
+|<<midijack.copy, *jack.copy*>> ( _dstport_, _srcport_ [, _count_ ] )
+|_count_
+|Copy MIDI events between port buffers.
+|P
+|===
+
+
+.Statistics
+[cols="40,15,40,5", options="header"]
+|===
+|Function | Return values | Description | Avail.
+|<<jack.max_delayed_usecs, *jack.max_delayed_usecs*>> ( _client_ )
+|_delay_
+|Get the the maximum reported delay.
+|M
+|<<jack.xrun_delayed_usecs, *jack.xrun_delayed_usecs*>> ( _client_ )
+|_delay_
+|Get the delay due to the most recent xrun.
+|M
+|<<jack.reset_max_delayed_usecs, *jack.reset_max_delayed_usecs*>> ( _client_ )
+|-
+|Reset the maximum delay counter.
+|M
+|===
+
+
+.Session API
+[cols="45,20,30,5", options="header"]
+|===
+|Function | Return values | Description | Avail.
+|<<jack.session_notify, *jack.session_notify*>> ( _client_, _target_, _type_, _path_ )
+|_{ reply1, ..., replyN }_
+|Send an event to session clients.
+|M
+|<<jack.has_session_callback, *jack.has_session_callback*>> ( _client_, _clientname_ )
+|_boolean_
+|Check if client is listening to session notifications.
+|M
+|<<jack.reserve_client_name, *jack.reserve_client_name*>> ( _client_, _clientname_ )
+|-
+|Reserve a client name.
+|M
+|===
+
+.Ringbuffers
+[cols="45,10,40,5", options="header"]
+|===
+|Function | Return values | Description | Avail.
+|<<jack.ringbuffer, *jack.ringbuffer*>> ( _client_, _size_ [, _mlock_ [, _usepipe_ ]] )
+|_rbuf_
+|Create a ringbuffer.
+|M
+|<<jack.ringbuffer_write, *jack.ringbuffer_write*>> ( _rbuf_, _tag_ [, _data_ ] )
+|_ok_
+|Write a message to a ringbuffer.
+|MPT
+|<<jack.ringbuffer_read, *jack.ringbuffer_read*>> ( _rbuf_ )
+|_tag_, _data_
+|Read a message from a ringbuffer.
+|MPT
+|<<jack.ringbuffer_reset, *jack.ringbuffer_reset*>> ( _rbuf_ )
+|-
+|Reset a ringbuffer.
+|MPT
+|<<jack.ringbuffer_peek, *jack.ringbuffer_peek*>> ( _rbuf_ )
+|_ok_
+|Check if there is a message to read from a ringbuffer.
+|MPT
+|<<jack.ringbuffer_getfd, *jack.ringbuffer_getfd*>> ( _rbuf_ )
+|_fd_
+|Get the read file descriptor of a ringbuffer's pipe.
+|MPT
+|===
+
+<<<

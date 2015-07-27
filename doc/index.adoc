@@ -1,0 +1,60 @@
+= LuaJack Reference Manual
+Stefano Trettel
+v0.1, 2015-06-3
+:toc: left
+:stylesdir: ./
+:stylesheet: colony.css
+:source-highlighter: pygments
+:pygments-style: autumn
+:source-language: lua
+:examplesdir: ../examples
+
+image::powered-by-lua.gif[Lua logo, link=http://www.lua.org]
+
+include::preface.adoc[]
+
+include::introduction.adoc[]
+
+include::client.adoc[]
+
+include::callbacks_rt.adoc[]
+
+include::callbacks_nonrt.adoc[]
+
+include::threads.adoc[]
+
+include::ports.adoc[]
+
+include::latency.adoc[]
+
+include::time.adoc[]
+
+include::transport.adoc[]
+
+include::buffer.adoc[]
+
+include::statistics.adoc[]
+
+include::session.adoc[]
+
+include::ringbuffers.adoc[]
+
+include::jackctl.adoc[]
+
+include::noncallback.adoc[]
+
+include::intclient.adoc[]
+
+include::metadata.adoc[]
+
+include::additional.adoc[]
+
+include::midi.adoc[]
+
+////
+@@ include::capi.adoc[]
+
+@@ include::examples.adoc[]
+////
+
+include::summary.adoc[]

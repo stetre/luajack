@@ -1,0 +1,33 @@
+
+== Statistics
+
+[[jack.max_delayed_usecs]]
+* *jack.max_delayed_usecs* ( _client_ ) +
+-> _delay_ +
+ +
+Returns the maximum delay reported by the backend since startup or reset.
+
+'''
+[[jack.xrun_delayed_usecs]]
+* *jack.xrun_delayed_usecs* ( _client_ ) +
+-> _delay_ +
+ +
+Returns the delay in microseconds due to the most recent xrun occurrence.
+
+'''
+[[jack.reset_max_delayed_usecs]]
+* *jack.reset_max_delayed_usecs* ( _client_ ) +
+ +
+Resets the maximum delay counter.
+
+
+////
+'''
+[[jack.profile]] @@TODO
+* *jack.profile* ( _client_[, _what_ ]) +
+ +
+_what_ = _start_, _restart_, _stop_ or nil for results
+
+////
+
+<<<

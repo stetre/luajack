@@ -1,0 +1,6 @@
+
+== Internal clients API
+
+Not supported by LuaJack.
+
+<<<

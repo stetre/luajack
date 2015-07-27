@@ -1,0 +1,131 @@
+
+== Real-time callbacks
+
+Real-time callbacks are executed in the <<luajack.contexts, process context>>.
+This context is to be created by the main script using
+<<jack.process_load, jack.process_load>>() 
+or <<jack.process_loadfile, jack.process_loadfile>>()
+before the client is activated.
+The loaded Lua chunk is expected to define the callbacks and register them using the
+functions described in this section, which are available only in the process context.
+
+[[realtime.considerations]]
+NOTE: The process chunk is actually loaded in an hybrid context, in that its main
+part is executed in the Lua state of the process context while still in the non-rt pthread
+of the main context (the rt-pthread will be created by JACK later and does not yet exist
+at the time the process chunk is loaded).
+This means that it can perform non real-time safe operations, e.g. pre-allocate large
+tables for samples storage.
+On the other side, the rt-callbacks that the chunk registers will be executed in the pure
+process context, and thus they should be real-time safe. +
+ +
+Note also that Lua is a garbage-collected language with automatic memory management.
+This implies that the execution of Lua callbacks potentially involves calls to functions
+which are not real-time safe (i.e. malloc() and friends) and that, if not adeguately
+controlled, the GC may kick in at any time in the real-time pthread. +
+ +
+To mitigate the GC problem, LuaJack disables garbage collection in the Lua state of
+the process context, and automatically executes a
+http://www.lua.org/manual/5.3/manual.html#pdf-collectgarbage[basic garbage-collection step]
+(with size=0) at the end of each rt-callback. This should suffice as long as the
+rt-callbacks do not allocate lots of memory (which would be a bad idea...). +
+ +
+Calls to malloc() and friends should not be a problem as long as they do not result
+in page faults. This can be accomplished first of all by avoiding the creation of large
+temporary objects (e.g. tables) in the rt-callbacks, and by pre-allocating them in the
+main part of the process chunk, instead. +
+ +
+As an additional measure one could use, via LD_PRELOAD, a custom malloc() implementation
+that does not return memory to the system
+(for example, https://code.google.com/p/ltalloc/[ltalloc]),
+and allocate+release 'enough' memory at the beginning of the program execution so that
+the allocator can serve subsequent memory requests without asking additional memory to
+the system. +
+ +
+_(The real-time aspects of LuaJack are, however, still under study so take the above
+considerations with salt)._
+
+'''
+[[jack.process_load]]
+* *jack.process_load* ( _client_, _chunk_, _..._ ) +
+ +
+This function is to be used in the main context to create the
+<<luajack.contexts, process context>> for _client_. +
+ +
+The _chunk_ argument is a string containing the Lua code to be executed in the
+process context.
+Additional arguments in the _..._ variadic part, if any, are passed as arguments
+to the chunk and may be of the following types only: _nil_, _boolean_, _number_, 
+and _string_
+(references to LuaJack objects are allowed, since their type is _number_). +
+ +
+A <<loading_luajack, limited LuaJack module>> is automatically
+pre-loaded in the process context, with the subset of JACK functionalities that
+can be accessed directly by the process chunk. +
+
+'''
+[[jack.process_loadfile]]
+* *jack.process_loadfile* ( _client_, _filename_, _..._ ) +
+ +
+Same as <<jack.process_load, jack.process_load>>(), with the only difference that it
+loads the chunk from the file specified by _filename_. The file is searched for using
+the same mechanism used by Lua's
+http://www.lua.org/manual/5.3/manual.html#pdf-require[require]()
+to search for modules. +
+
+'''
+[[jack.process_callback]]
+* *jack.process_callback* ( _client_, _func_ ) +
+ +
+Registers _func_ as 'process' callback (_func_ must be realtime safe). +
+ +
+The callback is executed as *_func(nframes)_*, where _nframes_ is the number of frames to process.
+
+'''
+[[jack.buffer_size_callback]]
+* *jack.buffer_size_callback* ( _client_, _func_ ) +
+ +
+Registers _func_ as callback for the 'buffer size change' event. +
+ +
+The callback is executed as *_func(nframes)_*, where _nframes_ is the new
+size of the JACK engine buffer.
+
+'''
+[[jack.sync_callback]]
+* *jack.sync_callback* ( _client_, _func_ ) +
+ +
+Registers _client_ as a 
+http://jackaudio.org/api/transport-design.html#slowsyncclients[slow-sync client] 
+and _func_ as its _sync_callback_ 
+(_func_ must be realtime safe and is invoked just before the _process_ callback). +
+ +
+The callback is executed as *_func(state, position)_*, where the additional arguments
+are the current transport _state_ and _position_. It is expected to return _true_ if the
+client is ready to roll, or _false_ (or _nil_) otherwise. 
+
+'''
+[[jack.timebase_callback]]
+* *jack.timebase_callback* ( _client_, _func_ [, _conditional_] ) +
+ +
+Registers _client_ as the 
+http://jackaudio.org/api/transport-design.html#timebase[timebase master]
+and _func_ as its _timebase callback_ 
+(_func_ must be realtime safe because and is invoked just after the _process_ callback). 
+If another client is already registered as timebase master, this client will take over 
+unless the optional _conditional_ argument (a boolean) is passed with the value _true_. +
+ +
+The callback is executed as *_func(state, nframes, position, new_position)_*, where 
+the additional arguments are the current transport _state_, the current transport _position_,
+and a boolean _new_position_ having the value _true_ for a newly requested position (which the
+_client_ should provide using <<jack.transport_reposition, jack.transport_reposition>>() and
+<<jack.transport_locate, jack.transport_locate>>()).
+
+'''
+[[jack.release_timebase]]
+* *jack.release_timebase* ( _client_ ) +
+ +
+Used by the client previously registered as the timebase master to withdraw that role
+and unregister the timebase callback.
+
+
+<<<

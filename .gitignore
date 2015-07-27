@@ -1,0 +1,7 @@
+# luajack .gitignore
+
+*.log
+core.*
+local/
+tests/
+ltalloc/

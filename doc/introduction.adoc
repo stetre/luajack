@@ -1,0 +1,114 @@
+
+== Introduction
+
+=== An example application
+
+A LuaJack application, apart from being written in Lua instead of C, looks very
+similar to a standard JACK application.
+
+An example is shown below: it creates a JACK client with a couple of ports, then
+it registers some callbacks, activates the client and eventually sleeps while waiting
+for JACK to call back.
+
+IMPORTANT: LuaJack applications must implement their main loop using the 
+<<jack.sleep, jack.sleep>>() function.
+
+[source,lua,indent=1]
+----
+jack = require("luajack")
+-- This is the 'main script', executed in the 'main context'.
+
+-- Open a JACK client:
+c = jack.client_open("myclient")
+
+-- Create two ports:
+p_in = jack.input_audio_port("port_in")
+p_out = jack.output_audio_port("port_out")
+
+-- Load the process chunk:
+jack.process_load(c, [[
+c, p_in, p_out = table.unpack(arg)
+
+function process(nframes)
+   -- Audio processing happens here (in this example, we just
+   -- copy the samples from the input port to the output port).
+   jack.get_buffer(p_in)
+   jack.get_buffer(p_out)
+   jack.copy(p_out, p_in) 
+end
+
+-- Register the (rt) process callback:
+jack.process_callback(c, process)
+]], c, p_in, p_out)
+
+-- Register a non-rt callback:
+jack.shutdown_callback(c, function() error("shutdown from server") end)
+
+-- Activate the client:
+jack.activate(c)
+
+-- Sleep, waiting for JACK to call back: 
+jack.sleep()
+----
+
+The main deviation from an hypothetical standard implementation of the same example
+is in the use of the <<jack.process_load, jack.process_load>>() function to 'load'
+the real-time part of the application. This difference should be (hopefully) clear
+after reading the next subsection.
+
+=== LuaJack contexts
+
+[[luajack.contexts]]
+In this document we use the word *'context'* to refer to the combination of 
+the pthread and the http://www.lua.org/manual/5.3/manual.html#lua_State[Lua state]
+a chunk of Lua code is executed in.
+
+Since LuaJack relies on libjack, which is a multithreaded library, it has more than
+one context where to execute the Lua chunks of an application. More precisely,
+there are (basically) three types of contexts in LuaJack:
+
+. The *main context*, where the main script is executed. Clients, ports, etc.
+are created here, and the <<jack.sleep, main loop>> and the (Lua) 
+<<_non_real_time_callbacks, non real-time callbacks>> are executed here, too.
+The main context is composed of the main pthread and the main Lua state, i.e. the
+state created by the Lua interpreter.
+There is one main context in a LuaJack application, and it is shared
+by all the clients the application creates. +
+. The *process context*, where the <<_real_time_callbacks, real-time callbacks>>
+are executed.
+It is composed of the (possibly) real-time pthread created by JACK for processing audio,
+and a dedicated Lua state. Each client has its own process context, which it creates
+with the <<jack.process_load, jack.process_load>>( ) function, passing it the Lua code
+to be executed there (the *'process chunk'*). +
+. The *thread context*, where a <<_client_threads, client thread>> is executed.
+It is composed of the pthread created for it by JACK and a dedicated Lua state. 
+Each client thread has its own thread context, which is created with the client thread
+itself by means of the <<jack.thread_load, jack.thread_load>>( ) function, passing it
+the Lua code to be executed there (the *'thread chunk'*). +
+
+All the above *Lua states are unrelated* (that is, independent) and thus the corresponding
+contexts are insulated one from each other (they have separated namespaces and don't share
+memory) as far as Lua code is concerned.
+
+Communication between different contexts is achievable by means of parameter passing (when
+creating a context), and via the lock-free <<_ringbuffers, ringbuffers>> provided by JACK.
+As another mechanism of communication, client threads may also <<jack.wait, wait>> in their
+context to be <<jack.signal, signalled>> from other contexts (each client thread has a
+pthread condition variable associated with it for this purpose).
+
+
+[[loading_luajack]]
+The LuaJack module is to be explicitly loaded (i.e. _jack = require("luajack")_)
+only in the main script. There is no need to load it in process chunks and thread chunks
+because they are executed in Lua states where the LuaJack module is automatically pre-loaded
+in a global table named *'jack'*. This pre-loaded module is actually a limited version of
+the full LuaJack module, in that it contains only the subset of functions that can be
+directly used in the process or thread context (the availability of functions
+in different contexts is indicated in the
+<<_summary_of_luajack_functions, summary tables>>).
+
+LuaJack functions are described in the following sections, whose organization somehow
+reflects the organization of the original
+http://jackaudio.org/api/[JACK API documentation] (on purpose).
+
+<<<
