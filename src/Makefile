@@ -53,7 +53,7 @@ endif
 
 LIBS := -ljack
 LIBS += -lpthread
-LIBS += -llua
+#LIBS += -llua
  
 override CFLAGS = $(COPT)
 
@@ -84,13 +84,14 @@ install:
 	@-ln -fsv $(C_DIR)/$(Tgt).so $(S_DIR)/lib$(Tgt).so
 	@-cp -fpvr ../$(Tgt) $(L_DIR)
 
-build:	clean $(Tgt)
+build:	clean $(Tgt) 
 
 symbols: build
 	@objdump -T $(Tgt).so > $(Tgt).symbols
 
 $(Tgt):		$(Objs)
-	@-$(CC) -shared -Wl,-soname,$(Tgt).so -o $(Tgt).so $(LIBS) $(Objs)
+	@-$(CC) -shared -Wl,-soname,$(Tgt).so,$(LIBS) -o $(Tgt).so $(Objs) $(LIBS)
+#	@-$(CC) -shared -Wl,-soname,$(Tgt).so -o $(Tgt).so $(LIBS) $(Objs)
 	@-rm -f $(Objs)
 	@echo
 

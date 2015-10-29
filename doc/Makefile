@@ -51,7 +51,8 @@ docbook: clean
 ifdef TgtAdoc
 # one file only
 pdf: clean
-	@asciidoctor-pdf -a pdf-style=asciidoctor $(TgtAdoc).adoc -o $(TgtPdf).pdf
+	@asciidoctor-pdf $(TgtAdoc).adoc -o $(TgtPdf).pdf
+	#@asciidoctor-pdf -a pdf-style=asciidoctor $(TgtAdoc).adoc -o $(TgtPdf).pdf
 	#@asciidoctor-pdf -a pdf-style=default $(TgtAdoc).adoc -o $(TgtPdf).pdf
 	#@asciidoctor -b pdf $(TgtAdoc).adoc -o $(TgtPdf).pdf
 else

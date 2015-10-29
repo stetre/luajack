@@ -119,7 +119,7 @@ int luajack_strerror(lua_State *L, int en)
 
 int luajack_checkonoff(lua_State *L, int arg)
 	{
-	char *onoff = luaL_checkstring(L, arg);
+	const char *onoff = luaL_checkstring(L, arg);
 	if(strncmp(onoff, "on", strlen(onoff)) == 0)
 		return 1;
 	if(strncmp(onoff, "off", strlen(onoff)) == 0)

@@ -87,14 +87,17 @@ int ringbuffer_luawrite(jack_ringbuffer_t *rbuf, lua_State *L, int arg)
 	hdr_t hdr;
 	int isnum;
 	size_t space, cnt;
+	size_t len;
 	const char *data;
 	hdr.tag = (uint32_t)lua_tointegerx(L, arg, &isnum);
 	if(!isnum)
 		luaL_error(L, "invalid tag");
 
-	data = luaL_optlstring(L, arg + 1, NULL, &(hdr.len));
+	data = luaL_optlstring(L, arg + 1, NULL, &len);
 	if(!data)
 		hdr.len = 0;
+	else
+		hdr.len = len; /*@@*/
 
 	space = jack_ringbuffer_write_space(rbuf);
 	if((sizeof(hdr) + hdr.len) > space)

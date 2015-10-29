@@ -291,8 +291,7 @@ static void Print(const char *msg)
 #if 0
 	DBG("error/info callback %u/%u\n", gettid(), getpid());
 #endif
-	fprintf(stderr, msg);
-	fprintf(stderr, "\n");
+	fprintf(stderr, "%s\n", msg);
 	}
 
 int (*luajack_verbose)(const char*, ...) = luajack_noprintf;
