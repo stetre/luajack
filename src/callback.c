@@ -308,7 +308,7 @@ static int  PortRegistration_(jack_port_id_t portid, int reg, void *arg)
 static void PortRegistration(jack_port_id_t port, int reg, void *arg)
     { PortRegistration_(port, reg, arg); }
 
-static int PortRename(jack_port_id_t portid, const char *old_name, const char *new_name, void *arg)
+static int PortRename_(jack_port_id_t portid, const char *old_name, const char *new_name, void *arg)
     {
     BEGIN(PortRename);
     (void) portid; /* unused */
@@ -316,6 +316,9 @@ static int PortRename(jack_port_id_t portid, const char *old_name, const char *n
     Copy(evt->arg2, new_name);
     END(0);
     }
+
+static void PortRename(jack_port_id_t portid, const char *old_name, const char *new_name, void *arg)
+	{ PortRename_(portid, old_name, new_name, arg); }
 
 static int  PortConnect_(jack_port_id_t a, jack_port_id_t b, int connect, void *arg)
     {

@@ -426,6 +426,7 @@ static int PortnameIsMine(lua_State *L)
 	return 1;
 	}
 
+#if 0 /* DEPRECATED */
 static int PortSetName(lua_State *L)
 	{
 	pud_t *pud = pud_check(L, 1);
@@ -435,6 +436,7 @@ static int PortSetName(lua_State *L)
 		return luajack_strerror(L, rc);
 	return 0;
 	}
+#endif
 
 static int GetPorts(lua_State *L)
 	{
@@ -826,7 +828,7 @@ static const struct luaL_Reg MFunctions[] =
 		{ "nport_exists", PortnameExists },
 		{ "port_is_mine", PortIsMine },
 		{ "nport_is_mine", PortnameIsMine },
-		{ "port_set_name", PortSetName },
+/*		{ "port_set_name", PortSetName }, DEPRECATED */
 		{ "get_ports", GetPorts },
 		{ "port_set_alias", PortSetAlias },
 		{ "nport_set_alias", PortnameSetAlias },

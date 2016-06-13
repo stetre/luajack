@@ -1,5 +1,7 @@
 # luajack .gitignore
 
+*.o
+*.so
 *.log
 core.*
 local/

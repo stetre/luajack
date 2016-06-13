@@ -4,7 +4,7 @@
 The tables below summarize the functions provided by LuaJack.
 
 The availability ('Avail.') column indicates whether a function is available in the
-main context (M), in the process context (T) and/or in the thread context (T).
+main context (M), in the process context (P) and/or in the thread context (T).
 
 On error, unless otherwise pointed out in the manual sections, all
 functions call Lua's http://www.lua.org/manual/5.3/manual.html#pdf-error[error]() 
