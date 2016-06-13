@@ -259,10 +259,6 @@ with a string message handler.
 |_shortname_
 |Get the short name of a port.
 |M
-|<<jack.port_set_name, *jack.port_set_name*>> ( _port_, _newname_ )
-|-
-|Changes the short name of a port.
-|M
 |<<jack.port_flags, *jack.port_flags*>> ( _port_ ) +
 <<jack.port_flags, *jack.nport_flags*>> ( _client_, _portname_ )
 |_flags_, _table_
@@ -327,6 +323,13 @@ with a string message handler.
 |List ports.
 |M
 |===
+
+////
+|<<jack.port_set_name, *jack.port_set_name*>> ( _port_, _newname_ )
+|-
+|Changes the short name of a port.
+|M
+////
 
 <<<
 

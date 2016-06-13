@@ -143,11 +143,14 @@ Returns the port's full name.
  +
 Returns the port's short name.
 
+////
+DEPRECATED
 '''
 [[jack.port_set_name]]
 * *jack.port_set_name* ( _port_, _newname_ ) +
  +
 Changes the port's short name to _newname_.
+////
 
 '''
 [[jack.port_flags]]
