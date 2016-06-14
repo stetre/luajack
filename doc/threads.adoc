@@ -50,6 +50,13 @@ Waits on the pthread condition variable associated with the calling thread.
 This function is available only to thread chunks (i.e. in thread contexts). 
 
 '''
+[[jack.testcancel]]
+* *jack.testcancel* ( ) +
+ +
+Creates a cancellation point in the calling thread.
+This function is available only to thread chunks (i.e. in thread contexts). 
+
+'''
 [[jack.real_time_priority]]
 * *jack.real_time_priority* ( _client_ ) +
 -> _priority_ +

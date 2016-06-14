@@ -181,6 +181,10 @@ with a string message handler.
 |-
 |Waits on the calling thread's condition variable.
 |T
+|<<jack.testcancel, *jack.testcancel*>> ( )
+|-
+|Creates a cancellation point.
+|T
 |<<jack.real_time_priority, *jack.real_time_priority*>> ( _client_ )
 |_priority_
 |Get the priority that threads created by JACK will run at.

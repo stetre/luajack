@@ -296,6 +296,17 @@ static int Wait(lua_State *T) /* thread only */
 	return 0;
 	}
 
+
+static int Testcancel(lua_State *T) /* thread only */
+	{
+	tud_t *tud = thread_tud();
+	if(!tud || !IsTudValid(tud))
+		return luaL_error(T, UNEXPECTED_ERROR);
+	pthread_testcancel();
+	return 0;
+	}
+
+
 static int Self(lua_State *T) /* thread only */ 
 /* returns client reference and thread reference */
 	{
@@ -390,6 +401,7 @@ static const struct luaL_Reg TFunctions [] =
 		{ "sleep", Sleep },
 		{ "signal", Signal },
 		{ "wait", Wait },
+		{ "testcancel", Testcancel },
 		COMMON_FUNCTIONS,
 		{ NULL, NULL } /* sentinel */
 	};

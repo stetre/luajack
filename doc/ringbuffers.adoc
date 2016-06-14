@@ -46,7 +46,7 @@ Returns _true_ on success, or _false_ if there was not enough space for the mess
  +
 Read a <<ringbuffersmessage, message>> from the ringbuffer _rbuf_.
 Returns _tag_=_nil_ if there are no messages available.
-If the is message is composed of the _tag_ only, then _data_ is returned as an
+If the message is composed of the _tag_ only, then _data_ is returned as an
 empty string (so that _data:len=0_).
 
 '''

@@ -1711,6 +1711,17 @@ This function is available only to thread chunks (i.e. in thread contexts).</p>
 </ul>
 </div>
 <hr>
+<div id="jack.testcancel" class="ulist">
+<ul>
+<li>
+<p><strong>jack.testcancel</strong> ( )<br>
+<br>
+Creates a cancellation point in the calling thread.
+This function is available only to thread chunks (i.e. in thread contexts).</p>
+</li>
+</ul>
+</div>
+<hr>
 <div id="jack.real_time_priority" class="ulist">
 <ul>
 <li>
@@ -2825,7 +2836,7 @@ Returns <em>true</em> on success, or <em>false</em> if there was not enough spac
 <br>
 Read a <a href="#ringbuffersmessage">message</a> from the ringbuffer <em>rbuf</em>.
 Returns <em>tag</em>=<em>nil</em> if there are no messages available.
-If the is message is composed of the <em>tag</em> only, then <em>data</em> is returned as an
+If the message is composed of the <em>tag</em> only, then <em>data</em> is returned as an
 empty string (so that <em>data:len=0</em>).</p>
 </li>
 </ul>
@@ -3916,6 +3927,12 @@ with a string message handler.</p>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.wait"><strong>jack.wait</strong></a> ( )</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Waits on the calling thread&#8217;s condition variable.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">T</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.testcancel"><strong>jack.testcancel</strong></a> ( )</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Creates a cancellation point.</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">T</p></td>
 </tr>
 <tr>

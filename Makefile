@@ -4,6 +4,8 @@ default: build
 check:
 	@cd src;		$(MAKE) -s $@
 
+docs:
+	@cd doc;		$(MAKE)
 build:
 	@cd src;		$(MAKE) $@
 
