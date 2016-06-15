@@ -186,7 +186,7 @@ static int ThreadCreate_(lua_State *L, int isscript)
 		return luaL_error(L, "jack_client_create_thread returned %d", rc);
 		}
 
-	DBG("new thread: tud=%p, thread=%d\n", (void*)tud,tud->key);
+	DBG("new thread: tud=%p, thread=%lu\n", (void*)tud,tud->key);
 	luajack_verbose("created client thread %u\n", tud->key);
 
 	tud->status = TUD_READY; /* now ThreadFunc() can finally execute the script */		

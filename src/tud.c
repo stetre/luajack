@@ -32,30 +32,30 @@
 static int cmp(tud_t *tud1, tud_t *tud2) /* the compare function */
 	{ return (tud1->key < tud2->key ? -1 : tud1->key > tud2->key); } 
 
-static RB_HEAD(tudtree_s, tud_s) head = RB_INITIALIZER(&head);
+static RB_HEAD(tudtree_s, tud_s) Head = RB_INITIALIZER(&Head);
 
 RB_PROTOTYPE_STATIC(tudtree_s, tud_s, entry, cmp) 
 RB_GENERATE_STATIC(tudtree_s, tud_s, entry, cmp) 
  
 static tud_t *tud_remove(tud_t *tud) 
-	{ return RB_REMOVE(tudtree_s, &head, tud); }
+	{ return RB_REMOVE(tudtree_s, &Head, tud); }
 static tud_t *tud_insert(tud_t *tud) 
-	{ return RB_INSERT(tudtree_s, &head, tud); }
+	{ return RB_INSERT(tudtree_s, &Head, tud); }
 static tud_t *tud_search(uintptr_t key) 
-	{ tud_t tmp; tmp.key = key; return RB_FIND(tudtree_s, &head, &tmp); }
+	{ tud_t tmp; tmp.key = key; return RB_FIND(tudtree_s, &Head, &tmp); }
 tud_t *tud_first(uintptr_t key) 
-	{ tud_t tmp; tmp.key = key; return RB_NFIND(tudtree_s, &head, &tmp); }
+	{ tud_t tmp; tmp.key = key; return RB_NFIND(tudtree_s, &Head, &tmp); }
 tud_t *tud_next(tud_t *tud)
-	{ return RB_NEXT(tudtree_s, &head, tud); }
+	{ return RB_NEXT(tudtree_s, &Head, tud); }
 #if 0
 tud_t *tud_prev(tud_t *tud)
-	{ return RB_PREV(tudtree_s, &head, tud); }
+	{ return RB_PREV(tudtree_s, &Head, tud); }
 tud_t *tud_min(void)
-	{ return RB_MIN(tudtree_s, &head); }
+	{ return RB_MIN(tudtree_s, &Head); }
 tud_t *tud_max(void)
-	{ return RB_MAX(tudtree_s, &head); }
+	{ return RB_MAX(tudtree_s, &Head); }
 tud_t *tud_root(void)
-	{ return RB_ROOT(&head); }
+	{ return RB_ROOT(&Head); }
 #endif
 
 tud_t *tud_new(void)

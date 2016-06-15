@@ -32,30 +32,30 @@
 static int cmp(cud_t *cud1, cud_t *cud2) /* the compare function */
     { return (cud1->key < cud2->key ? -1 : cud1->key > cud2->key); } 
 
-static RB_HEAD(cudtree_s, cud_s) head = RB_INITIALIZER(&head);
+static RB_HEAD(cudtree_s, cud_s) Head = RB_INITIALIZER(&Head);
 
 RB_PROTOTYPE_STATIC(cudtree_s, cud_s, entry, cmp) 
 RB_GENERATE_STATIC(cudtree_s, cud_s, entry, cmp) 
  
 static cud_t *cud_remove(cud_t *cud) 
-    { return RB_REMOVE(cudtree_s, &head, cud); }
+    { return RB_REMOVE(cudtree_s, &Head, cud); }
 static cud_t *cud_insert(cud_t *cud) 
-    { return RB_INSERT(cudtree_s, &head, cud); }
+    { return RB_INSERT(cudtree_s, &Head, cud); }
 cud_t *cud_search(uintptr_t key) 
-    { cud_t tmp; tmp.key = key; return RB_FIND(cudtree_s, &head, &tmp); }
+    { cud_t tmp; tmp.key = key; return RB_FIND(cudtree_s, &Head, &tmp); }
 cud_t *cud_first(uintptr_t key) 
-    { cud_t tmp; tmp.key = key; return RB_NFIND(cudtree_s, &head, &tmp); }
+    { cud_t tmp; tmp.key = key; return RB_NFIND(cudtree_s, &Head, &tmp); }
 cud_t *cud_next(cud_t *cud)
-    { return RB_NEXT(cudtree_s, &head, cud); }
+    { return RB_NEXT(cudtree_s, &Head, cud); }
 #if 0
 cud_t *cud_prev(cud_t *cud)
-    { return RB_PREV(cudtree_s, &head, cud); }
+    { return RB_PREV(cudtree_s, &Head, cud); }
 cud_t *cud_min(void)
-    { return RB_MIN(cudtree_s, &head); }
+    { return RB_MIN(cudtree_s, &Head); }
 cud_t *cud_max(void)
-    { return RB_MAX(cudtree_s, &head); }
+    { return RB_MAX(cudtree_s, &Head); }
 cud_t *cud_root(void)
-    { return RB_ROOT(&head); }
+    { return RB_ROOT(&Head); }
 #endif
 
 cud_t *cud_new(void)

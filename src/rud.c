@@ -32,30 +32,30 @@
 static int cmp(rud_t *rud1, rud_t *rud2) /* the compare function */
 	{ return (rud1->key < rud2->key ? -1 : rud1->key > rud2->key); } 
 
-static RB_HEAD(rudtree_s, rud_s) head = RB_INITIALIZER(&head);
+static RB_HEAD(rudtree_s, rud_s) Head = RB_INITIALIZER(&Head);
 
 RB_PROTOTYPE_STATIC(rudtree_s, rud_s, entry, cmp) 
 RB_GENERATE_STATIC(rudtree_s, rud_s, entry, cmp) 
  
 static rud_t *rud_remove(rud_t *rud) 
-	{ return RB_REMOVE(rudtree_s, &head, rud); }
+	{ return RB_REMOVE(rudtree_s, &Head, rud); }
 static rud_t *rud_insert(rud_t *rud) 
-	{ return RB_INSERT(rudtree_s, &head, rud); }
+	{ return RB_INSERT(rudtree_s, &Head, rud); }
 static rud_t *rud_search(uintptr_t key) 
-	{ rud_t tmp; tmp.key = key; return RB_FIND(rudtree_s, &head, &tmp); }
+	{ rud_t tmp; tmp.key = key; return RB_FIND(rudtree_s, &Head, &tmp); }
 rud_t *rud_first(uintptr_t key) 
-	{ rud_t tmp; tmp.key = key; return RB_NFIND(rudtree_s, &head, &tmp); }
+	{ rud_t tmp; tmp.key = key; return RB_NFIND(rudtree_s, &Head, &tmp); }
 rud_t *rud_next(rud_t *rud)
-	{ return RB_NEXT(rudtree_s, &head, rud); }
+	{ return RB_NEXT(rudtree_s, &Head, rud); }
 #if 0
 rud_t *rud_prev(rud_t *rud)
-	{ return RB_PREV(rudtree_s, &head, rud); }
+	{ return RB_PREV(rudtree_s, &Head, rud); }
 rud_t *rud_min(void)
-	{ return RB_MIN(rudtree_s, &head); }
+	{ return RB_MIN(rudtree_s, &Head); }
 rud_t *rud_max(void)
-	{ return RB_MAX(rudtree_s, &head); }
+	{ return RB_MAX(rudtree_s, &Head); }
 rud_t *rud_root(void)
-	{ return RB_ROOT(&head); }
+	{ return RB_ROOT(&Head); }
 #endif
 
 rud_t *rud_new(void)

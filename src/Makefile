@@ -1,78 +1,84 @@
-###############################################################################
-# LuaJack makefile
-###############################################################################
 
-# To override the defaults, do (for example):
-# $ make V=5.4
-# $ make install V=5.4 PREFIX=/home/joe/local
-
-# Lua version:
-V=5.3
-# Base install directory:
-PREFIX = /usr/local
-# Directory where to install Lua modules:
-L_DIR = $(PREFIX)/share/lua/$(V)
-# Directory where to install C modules:
-C_DIR = $(PREFIX)/lib/lua/$(V)
-# Directory where to install C headers:
-H_DIR = $(PREFIX)/include
-# Directory where to install C libraries:
-S_DIR = $(PREFIX)/lib
-
-ifeq ("$(V)","")
-$(error Missing Lua version)
+ifdef MINGW_PREFIX
+$(error "not available on this platform")
+MINGW=1
+else
+LINUX=1
 endif
 
-ifeq ("$(PREFIX)","")
-$(error Missing base install directory)
+# Lua version
+LUAVER?=5.3
+
+# Base install directory
+ifdef LINUX
+PREFIX?=/usr/local
+endif
+ifdef MINGW
+PREFIX?=$(MINGW_PREFIX)
 endif
 
-# Translates 5.3 into 503:
-LUAVER=$(shell lua -e "print((string.gsub("$(V)",'%.','0')))")
+# Directory where to install Lua modules
+L_DIR=$(PREFIX)/share/lua/$(LUAVER)
+# Directory where to install Lua C modules
+C_DIR=$(PREFIX)/lib/lua/$(LUAVER)
+# Directory where to install C headers
+H_DIR=$(PREFIX)/include
+# Directory where to install C libraries
+S_DIR=$(PREFIX)/lib
 
-# Check the Lua version of the installed lua interpreter:
-INSTLUAVER=$(shell lua -e "print(_VERSION:sub(5))")
-ifneq ("$(V)","$(INSTLUAVER)")
-#$(info $(V))
-$(warning Warning: using Lua $(V) but Lua interpreter version is $(INSTLUAVER))
+ifeq ($(D),1)
+DEBUG=1
+endif
+
+ifdef LINUX
+INCDIR = -I/usr/include
+LIBDIR = -L/usr/lib
+LIBS = -ljack -lpthread
+endif
+ifdef MINGW
+LIBS =
 endif
 
 Tgt	:= luajack
 Src := $(wildcard *.c)
 Objs := $(Src:.c=.o)
 
+ 
 COPT	+= -O2
 #COPT	+= -O0 -g
 COPT	+= -Wall -Wextra -Wpedantic
-COPT    += -fpic
 COPT    += -std=gnu99
-COPT    += -DLUAVER=$(LUAVER)
-ifeq ($(D),1)
+COPT 	+= -DLUAVER=$(LUAVER)
+ifdef LINUX
+COPT    += -fpic
+COPT	+= -DLINUX
+endif
+ifdef MINGW
+COPT	+= -DMINGW
+endif
+ifdef DEBUG
 COPT	+= -DDEBUG
+COPT 	+= -Wshadow -Wsign-compare -Wundef -Wwrite-strings
+COPT	+= -Wdisabled-optimization -Wdeclaration-after-statement
+COPT    += -Wmissing-prototypes -Wstrict-prototypes -Wnested-externs
+COPT    += -Wc++-compat -Wold-style-definition
 endif
 
-LIBS := -ljack
-LIBS += -lpthread
-#LIBS += -llua
- 
-override CFLAGS = $(COPT)
+override CFLAGS = $(COPT) $(INCDIR)
 
 default: build
 
+where:
+	@echo "PREFIX="$(PREFIX)
+	@echo "LUAVER="$(LUAVER)
+	@echo $(L_DIR)
+	@echo $(C_DIR)
+	@echo $(H_DIR)
+	@echo $(S_DIR)
 
 clean:
-	@-rm -f $(Tgt).so
+	@-rm -f *.so *.dll *.o *.err *.map *.S *~ *.log
 	@-rm -f $(Tgt).symbols
-	@-rm -f *~
-	@-rm -f *.log
-	@-rm -f *.o *.err *.map *.S
-
-check:
-	@-echo $(Tgt)".so will be installed in "$(C_DIR)
-	@-echo $(Tgt)"/*.lua will be installed in "$(L_DIR)"/"$(Tgt)
-	@-echo $(Tgt)".h will be installed in "$(H_DIR)
-	@-echo lib$(Tgt)".so will be installed in "$(S_DIR)
-	@-echo
 
 install:
 	@-mkdir -pv $(H_DIR)
@@ -80,9 +86,21 @@ install:
 	@-mkdir -pv $(S_DIR)
 	@-mkdir -pv $(L_DIR)
 	@-cp -fpv $(Tgt).h $(H_DIR)
+	@-cp -fpvr ../$(Tgt) $(L_DIR)
+ifdef LINUX
 	@-cp -fpv $(Tgt).so $(C_DIR)
 	@-ln -fsv $(C_DIR)/$(Tgt).so $(S_DIR)/lib$(Tgt).so
-	@-cp -fpvr ../$(Tgt) $(L_DIR)
+endif
+ifdef MINGW
+	@-cp -fpv $(Tgt).dll $(C_DIR)
+endif
+
+uninstall:
+	@-rm -f $(H_DIR)/$(Tgt).h
+	@-rm -f $(C_DIR)/$(Tgt).so
+	@-rm -f $(S_DIR)/lib$(Tgt).so
+	@-rm -fr $(L_DIR)/$(Tgt)
+	@-rm -f $(C_DIR)/$(Tgt).dll
 
 build:	clean $(Tgt) 
 
@@ -90,8 +108,12 @@ symbols: build
 	@objdump -T $(Tgt).so > $(Tgt).symbols
 
 $(Tgt):		$(Objs)
-	@-$(CC) -shared -Wl,-soname,$(Tgt).so,$(LIBS) -o $(Tgt).so $(Objs) $(LIBS)
-#	@-$(CC) -shared -Wl,-soname,$(Tgt).so -o $(Tgt).so $(LIBS) $(Objs)
+ifdef LINUX
+	@-$(CC) -shared -o $(Tgt).so $(Objs) $(LIBDIR) $(LIBS)
+endif
+ifdef MINGW
+	@-$(CC) -shared -o $(Tgt).dll $(Objs) $(LIBDIR) $(LIBS)
+endif
 	@-rm -f $(Objs)
 	@echo
 

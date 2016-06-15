@@ -367,7 +367,7 @@ int	luajack_transport_locate(luajack_t *client, jack_nframes_t frame)
 jack_transport_state_t luajack_transport_query(luajack_t *client, jack_position_t *pos)
 	{
 	cud_t *cud = get_cud(client);	
-	if(!cud) return 0;
+	if(!cud) return (jack_transport_state_t)0;
 	return jack_transport_query(cud->client, pos);
 	}
 

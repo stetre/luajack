@@ -1,23 +1,16 @@
 
 default: build
 
-check:
-	@cd src;		$(MAKE) -s $@
-
-docs:
-	@cd doc;		$(MAKE)
-build:
+build install uninstall where:
 	@cd src;		$(MAKE) $@
-
-install:
-	@cd src;		$(MAKE) $@
+	#@cd src;		$(MAKE) -s $@
 
 clean :
 	@cd src;		$(MAKE) $@
 	@cd doc;		$(MAKE) $@
-	@cd examples;	$(MAKE) $@
-	@cd doc;		$(MAKE) $@
-	@cd tests;		$(MAKE) $@
+
+docs:
+	@cd doc;		$(MAKE)
 
 cleanall: clean
 

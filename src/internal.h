@@ -58,11 +58,12 @@
 #error "LuaJack requires Lua v5.3 or greater"
 #endif
 
+/*
 #if (LUAVER != LUA_VERSION_NUM)
 #pragma message ("lua.h version is "TOSTR(LUA_VERSION_NUM))
 #error "Lua version mismatch"
 #endif
-
+*/
 
 
 /* Registry keys used by luajack */
@@ -285,6 +286,24 @@ void thread_free_all(cud_t *cud);
 #define thread_signal luajack_thread_signal
 int thread_signal(cud_t *cud, tud_t *tud);
 
+/* alloc.c */
+void luajack_malloc_init(lua_State *L);
+
+/* main.c */
+int luaopen_luajack(lua_State *L);
+int luajack_open_client(lua_State *L, int state_type);
+int luajack_open_callback(lua_State *L, int state_type);
+int luajack_open_port(lua_State *L, int state_type);
+int luajack_open_latency(lua_State *L, int state_type);
+int luajack_open_srvctl(lua_State *L, int state_type);
+int luajack_open_time(lua_State *L, int state_type);
+int luajack_open_statistics(lua_State *L, int state_type);
+int luajack_open_transport(lua_State *L, int state_type);
+int luajack_open_rbuf(lua_State *L, int state_type);
+int luajack_open_thread(lua_State *L, int state_type);
+int luajack_open_process(lua_State *L, int state_type);
+int luajack_open_buffer(lua_State *L, int state_type);
+int luajack_open_session(lua_State *L, int state_type);
 
 /*----------------------------------------------------------------------*
  | Debug utilities                                    					|

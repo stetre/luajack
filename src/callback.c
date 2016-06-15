@@ -151,9 +151,9 @@ static int Lua_Session(lua_State *L, cud_t *cud, evt_t *evt)
         { evt_free(evt); return lua_error(L); }
     command = luaL_optstring(L, -3, NULL);
     event->command_line = command ? strdup(command) : NULL;
-    event->flags = 0;
-    event->flags |= session_checkflag(L, -2);
-    event->flags |= session_checkflag(L, -1);
+    event->flags = (jack_session_flags_t)0;
+    event->flags = (jack_session_flags_t)(event->flags | session_checkflag(L, -2)); // I hate C++
+    event->flags = (jack_session_flags_t)(event->flags | session_checkflag(L, -1)); // I hate C++
     jack_session_reply(cud->client, event);
     lua_pop(L, nres);
     /* jack_session_event_free(event) is called by evt_free() */
@@ -245,7 +245,7 @@ int callback_flush(lua_State* L)
 #define Copy(dst, src)  do {                                        \
     size_t len = strnlen((src), MAX_ARG_LEN);                       \
     if(len == MAX_ARG_LEN) luajack_error(UNEXPECTED_ERROR);         \
-    (dst) = Malloc(len+1); /* deallocated by evt_free() */  \
+    (dst) = (char*)Malloc(len+1); /* deallocated by evt_free() */  	\
     if(!(dst)) luajack_error(UNEXPECTED_ERROR);                     \
     strncpy((dst), (src), len);                                     \
     (dst)[len]='\0';                                                \
@@ -274,7 +274,7 @@ static int GraphOrder(void *arg)
 static int  Freewheel_(int starting, void *arg)
     {
     BEGIN(Freewheel);
-    evt->mode = starting;
+    evt->mode = (jack_latency_callback_mode_t)starting;
     END(0);
     }
 

@@ -38,7 +38,7 @@ static unsigned int counter = 0;
 
 evt_t* evt_new(void)
     { 
-    evt_t *evt = Malloc(sizeof(evt_t));
+    evt_t *evt = (evt_t*)Malloc(sizeof(evt_t));
     if(!evt) return NULL;
     memset(evt, 0, sizeof(evt_t));
     return evt;

@@ -32,30 +32,30 @@
 static int cmp(pud_t *pud1, pud_t *pud2) /* the compare function */
 	{ return (pud1->key < pud2->key ? -1 : pud1->key > pud2->key); } 
 
-static RB_HEAD(pudtree_s, pud_s) head = RB_INITIALIZER(&head);
+static RB_HEAD(pudtree_s, pud_s) Head = RB_INITIALIZER(&Head);
 
 RB_PROTOTYPE_STATIC(pudtree_s, pud_s, entry, cmp) 
 RB_GENERATE_STATIC(pudtree_s, pud_s, entry, cmp) 
  
 static pud_t *pud_remove(pud_t *pud) 
-	{ return RB_REMOVE(pudtree_s, &head, pud); }
+	{ return RB_REMOVE(pudtree_s, &Head, pud); }
 static pud_t *pud_insert(pud_t *pud) 
-	{ return RB_INSERT(pudtree_s, &head, pud); }
+	{ return RB_INSERT(pudtree_s, &Head, pud); }
 static pud_t *pud_search(uintptr_t key) 
-	{ pud_t tmp; tmp.key = key; return RB_FIND(pudtree_s, &head, &tmp); }
+	{ pud_t tmp; tmp.key = key; return RB_FIND(pudtree_s, &Head, &tmp); }
 pud_t *pud_first(uintptr_t key) 
-	{ pud_t tmp; tmp.key = key; return RB_NFIND(pudtree_s, &head, &tmp); }
+	{ pud_t tmp; tmp.key = key; return RB_NFIND(pudtree_s, &Head, &tmp); }
 pud_t *pud_next(pud_t *pud)
-	{ return RB_NEXT(pudtree_s, &head, pud); }
+	{ return RB_NEXT(pudtree_s, &Head, pud); }
 #if 0
 pud_t *pud_prev(pud_t *pud)
-	{ return RB_PREV(pudtree_s, &head, pud); }
+	{ return RB_PREV(pudtree_s, &Head, pud); }
 pud_t *pud_min(void)
-	{ return RB_MIN(pudtree_s, &head); }
+	{ return RB_MIN(pudtree_s, &Head); }
 pud_t *pud_max(void)
-	{ return RB_MAX(pudtree_s, &head); }
+	{ return RB_MAX(pudtree_s, &Head); }
 pud_t *pud_root(void)
-	{ return RB_ROOT(&head); }
+	{ return RB_ROOT(&Head); }
 #endif
 pud_t *pud_new(cud_t *cud)
 	{

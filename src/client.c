@@ -85,7 +85,7 @@ static int ClientOpen(lua_State *L)
     const char *session_id = NULL;
     cud_t *cud = NULL;
     client_t *cli = NULL;
-    jack_options_t options = 0;
+    jack_options_t options = (jack_options_t)0;
     jack_status_t status;
     
 	luajack_checkcreate();
@@ -97,15 +97,15 @@ static int ClientOpen(lua_State *L)
     if(lua_istable(L, options_index))
         {
         lua_getfield(L, options_index, "use_exact_name");
-        if(lua_toboolean(L, -1)) options |= JackUseExactName;
+        if(lua_toboolean(L, -1)) options = (jack_options_t)(options | JackUseExactName);
         lua_getfield(L, options_index, "no_start_server");
-        if(lua_toboolean(L, -1)) options |= JackNoStartServer;
+        if(lua_toboolean(L, -1)) options = (jack_options_t)(options | JackNoStartServer);
         lua_getfield(L, options_index, "server_name");
         server_name = luaL_optstring(L, -1, NULL);
-        if(server_name != NULL) options |= JackServerName;
+        if(server_name != NULL) options = (jack_options_t)(options | JackServerName);
         lua_getfield(L, options_index, "session_id");
         session_id = luaL_optstring(L, -1, NULL);
-        if(session_id != NULL) options |= JackSessionID;
+        if(session_id != NULL) options = (jack_options_t)(options | JackSessionID);
         }
 
     /* create the client */

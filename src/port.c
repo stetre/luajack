@@ -549,11 +549,12 @@ static int PortConnectedTo(lua_State *L)
 
 static int PortnameConnectedTo(lua_State *L)
 	{
+	port_t *port;
 	const char *portname1, *portname2;
 	cud_t *cud = cud_check(L, 1);
 	portname1 = luaL_checkstring(L, 2);
 	portname2 = luaL_checkstring(L, 3);
-	port_t *port = jack_port_by_name(cud->client, portname1);
+	port = jack_port_by_name(cud->client, portname1);
 	if(!port)
 		luaL_error(L, "unknown port");
 	lua_pushboolean(L, jack_port_connected_to(port, portname2));

@@ -98,7 +98,8 @@ static int transport_checkposition(lua_State *L, int arg, jack_position_t *pos)
 #define GetNumber(x) do { 	\
 	lua_getfield(L, arg, #x); pos->x = luaL_checknumber(L, -1); lua_pop(L, 1);	} while(0)
 #define GetValid(bit, x) do { \
-		if(lua_getfield(L,arg,#x)!=LUA_TNIL) pos->valid |= bit; lua_pop(L, 1); } while(0)
+		if(lua_getfield(L,arg,#x)!=LUA_TNIL) \
+			pos->valid =(jack_position_bits_t)(pos->valid | bit); lua_pop(L, 1); } while(0)
 	GetInteger(unique_1);
 	GetInteger(usecs);
 	GetInteger(frame_rate);

@@ -52,18 +52,18 @@ static jack_session_event_type_t session_checktype(lua_State *L, int arg)
 	CASE("save_and_quit",JackSessionSaveAndQuit);
 	CASE("save_template",JackSessionSaveTemplate);
 #undef CASE
-	return luaL_error(L, "invalid session event type '%s'", type);
+	return (jack_session_event_type_t)luaL_error(L, "invalid session event type '%s'", type);
 	}
 
 jack_session_flags_t session_checkflag(lua_State *L, int arg)
 	{
 	const char* flag = luaL_optstring(L, arg, NULL);
-	if(!flag) return 0;
+	if(!flag) return (jack_session_flags_t )0;
 #define CASE(s,f) do { if(strncmp(flag, s, strlen(s)) == 0) return f; } while(0)
 	CASE("save_error",JackSessionSaveError);
 	CASE("need_terminal",JackSessionNeedTerminal);
 #undef CASE
-	return luaL_error(L, "invalid session flag '%s'", flag);
+	return (jack_session_flags_t)luaL_error(L, "invalid session flag '%s'", flag);
 	}
 
 static int session_pushcommands(lua_State *L, jack_session_command_t *command)

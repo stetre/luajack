@@ -1,4 +1,0 @@
-
-clean :
-	@rm -f core.*;
-	

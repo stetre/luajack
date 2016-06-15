@@ -46,7 +46,7 @@ static jack_latency_callback_mode_t CheckMode(lua_State *L, int arg)
     const char* mode = luaL_checkstring(L, arg);
     if(strncmp(mode, "capture", strlen("capture")) == 0) return JackCaptureLatency;
     if(strncmp(mode, "playback", strlen("playback")) == 0) return JackPlaybackLatency;
-    return luaL_error(L, "invalid latency callback mode '%s'", mode);
+    return (jack_latency_callback_mode_t)luaL_error(L, "invalid latency callback mode '%s'", mode);
     }
 
 /*--------------------------------------------------------------------------*

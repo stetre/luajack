@@ -339,20 +339,6 @@ static const struct luaL_Reg PFunctions[] =
 
 #define TFunctions PFunctions 
 
-int luajack_open_client(lua_State *L, int state_type);
-int luajack_open_callback(lua_State *L, int state_type);
-int luajack_open_port(lua_State *L, int state_type);
-int luajack_open_latency(lua_State *L, int state_type);
-int luajack_open_srvctl(lua_State *L, int state_type);
-int luajack_open_time(lua_State *L, int state_type);
-int luajack_open_statistics(lua_State *L, int state_type);
-int luajack_open_transport(lua_State *L, int state_type);
-int luajack_open_rbuf(lua_State *L, int state_type);
-int luajack_open_thread(lua_State *L, int state_type);
-int luajack_open_process(lua_State *L, int state_type);
-int luajack_open_buffer(lua_State *L, int state_type);
-int luajack_open_session(lua_State *L, int state_type);
-
 static int main_open(lua_State* L, int state_type)
 	{
 	/* overload os.exit() with OsExit() */
@@ -444,7 +430,6 @@ lua_State* luajack_newstate(lua_State *L, int state_type, lua_Alloc alloc, void 
 	}
 
 
-void luajack_malloc_init(lua_State *L);
 
 int luaopen_luajack(lua_State *L)
 /* Lua calls this function to load the luajack module */
