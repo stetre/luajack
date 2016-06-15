@@ -1,6 +1,6 @@
 = LuaJack Reference Manual
 Stefano Trettel
-v0.2, 2015-10-29
+v0.3, 2016-06-15
 :toc: left
 :stylesdir: ./
 :stylesheet: colony.css

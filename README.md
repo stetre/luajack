@@ -13,9 +13,20 @@ _Authored by:_ _[Stefano Trettel](https://www.linkedin.com/in/stetre)_
 
 MIT/X11 license (same as Lua). See [LICENSE](./LICENSE).
 
-#### Documentation, Getting and installing, etc.
+#### Documentation
 
 See the [Reference Manual](https://stetre.github.io/luajack/doc/index.html).
+
+#### Getting and installing (Ubuntu)
+
+Setup the build environment as described [here](./SETUP.md), then:
+
+```sh
+$ git clone https://github.com/stetre/luajack
+$ cd luajack
+luajack$ make
+luajack$ sudo make install
+```
 
 #### Example
 

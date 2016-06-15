@@ -20,6 +20,11 @@ http://jackaudio.org/api/[JACK API documentation].
  
 === Getting and installing
 
+For installation intructions, refer to the README file in the 
+https://github.com/stetre/luajack[*LuaJack official repository*]
+on GitHub.
+
+////
 The *official repository* of LuaJack is on GitHub at the following link:
 *https://github.com/stetre/luajack* .
 
@@ -57,6 +62,7 @@ in `/home/joe/local`:
 [luajack-0.1]$ make
 [luajack-0.1]$ make install PREFIX=/home/joe/local
 ----
+////
 
 === Module organization
 
