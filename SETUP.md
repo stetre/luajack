@@ -17,7 +17,7 @@ lua-5.3.2$ sudo make install
 Install JACK2:
 
 ```sh
-$ sudo apt-get install libjack-jack2-dev
+$ sudo apt-get install libjack-jackd2-dev
 ```
 
 <!---
