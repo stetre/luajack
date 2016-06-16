@@ -77,7 +77,6 @@ with a string message handler.
 |MP
 |===
 
-<<<
 
 .Process context
 [cols="40,5,50,5", options="header"]
@@ -114,7 +113,7 @@ with a string message handler.
 |P
 |===
 
-<<<
+
 
 .Non real-time callbacks
 [cols="45,50,5", options="header"]
@@ -155,7 +154,7 @@ with a string message handler.
 |M
 |===
 
-<<<
+
 
 .Client threads
 [cols="45,10,40,5", options="header"]
@@ -335,7 +334,7 @@ with a string message handler.
 |M
 ////
 
-<<<
+
 
 .Latency
 [cols="45,10,40,5", options="header"]
@@ -562,4 +561,4 @@ with a string message handler.
 |MPT
 |===
 
-<<<
+

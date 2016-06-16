@@ -1,6 +1,5 @@
 
-== Metadata API
+=== Metadata API
 
 Not implemented yet.
 
-<<<

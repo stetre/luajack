@@ -1,41 +1,37 @@
 
-== Session API
+=== Session API
+
+[small]#Rfr: link:++http://jackaudio.org/api/group__SessionClientFunctions.html++[Session API for clients]#
 
 Session clients are expected to use <<jack.session_callback, jack.session_callback>>() to
 register a session callback in order to listen to events sent by the session manage,
 which instead uses the functions described below in this section. 
 
-'''
+
 [[jack.session_notify]]
-* *jack.session_notify* ( _client_, _target_, _type_, _path_ ) +
+* *jack.session_notify* ( _client_, _target_, _type_, _path_ ) _M_ +
 -> _{ reply1, ..., replyN }_ +
- +
-Sends an event to clients that registered a session callback. 
-The _target_ argument (a string) is the name of the target client, or _nil_ for 'all'.
-The event _type_ must be one amongst _'save'_, _'save_and_quit'_ and _'save_template'_.
+[small]#Sends an event to clients that registered a session callback. +
+The _target_ argument (a string) is the name of the target client, or _nil_ for 'all'. +
+The event _type_ must be one amongst _'save'_, _'save_and_quit'_ and _'save_template'_. +
 The _path_ argument is the session directory path. +
- +
 The function returns a table with the replies from the session clients.
 Each entry of the table is a subtable containing the following elements: +
-[circle]
-- _reply.uuid_ (a string): the client's UUID;
-- _reply.name_ (a string): the client's name;
-- _reply.command_ (a string): the command line needed to restore the client;
-- _reply.save_error_ (_true_ or _nil_): session flag;
-- _reply.need_terminal_ (_true_ or _nil_): session flag;
+*reply.uuid* (a string): the client's UUID; +
+*reply.name* (a string): the client's name; +
+*reply.command* (a string): the command line needed to restore the client; +
+*reply.save_error* (_true_ or _nil_): session flag; +
+*reply.need_terminal* (_true_ or _nil_): session flag.#
 
-'''
+
 [[jack.has_session_callback]]
-* *jack.has_session_callback* ( _client_, _clientname_ ) +
+* *jack.has_session_callback* ( _client_, _clientname_ ) _M_ +
 -> _boolean_ +
- +
-Returns _true_ if the client named _clientname_ has registered a session callback,
-_false_ otherwise.
+[small]#Returns _true_ if the client named _clientname_ has registered a session callback,
+_false_ otherwise.#
 
-'''
+
 [[jack.reserve_client_name]]
-* *jack.reserve_client_name* ( _client_, _clientname_ ) +
- +
-Reserves the client name _clientname_ and associates it with the UUID _uuid_.
+* *jack.reserve_client_name* ( _client_, _clientname_ ) _M_ +
+[small]#Reserves the client name _clientname_ and associates it with the UUID _uuid_.#
 
-<<<

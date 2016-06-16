@@ -1,0 +1,13 @@
+
+== LuaJack functions
+
+LuaJack functions are described in the following sections. 
+
+The letters _M_, _P_ and/or _T_ beside a function description indicate whether it is available
+in the main context (_M_), in process contexts (_P_) and/or in thread contexts (_T_).
+For example, _MP_ means that the function is available in the main context and in process contexts, but
+not in thread contexts.
+
+On error, unless otherwise pointed out, all functions call Lua's 
+http://www.lua.org/manual/5.3/manual.html#pdf-error[error]() with a string message handler.
+

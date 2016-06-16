@@ -1,6 +1,5 @@
 
-== JACK server control API
+=== JACK server control API
 
 Not implemented yet.
 
-<<<

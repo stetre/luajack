@@ -1,5 +1,7 @@
 
-== Ringbuffers
+=== Ringbuffers
+
+[small]#Rfr: link:++http://jackaudio.org/api/ringbuffer_8h.html++[ringbuffer.h File Reference]#
 
 LuaJack wraps the 
 http://jackaudio.org/api/ringbuffer_8h.html[lock-free ringbuffers]
@@ -12,69 +14,62 @@ In LuaJack, data is written to and read from ringbuffers in form of tagged
 by _data_ (a Lua string). The tag can be used to represent the 'type' of the
 message or any other information (LuaJack by itself does not interpret it by any means).
 
-'''
+
 [[jack.ringbuffer]]
-* *jack.ringbuffer* ( _client_, _size_ [, _mlock_ [, _usepipe_ ]] ) +
+* *jack.ringbuffer* ( _client_, _size_ [, _mlock_ [, _usepipe_ ]] ) _M_ +
 -> _rbuf_ +
- +
-Creates a ringbuffer of the specified _size_ (in bytes) and returns a
+[small]#Creates a ringbuffer of the specified _size_ (in bytes) and returns a
 ringbuffer reference for subsequent operations. The returned reference
-is an integer which may be passed as argument to <<jack.thread, thread scripts>>.
-If _mlock=true_, the buffer is locked in memory. If _usepipe=true_, a
-pipe is associated with the ringbuffer allowing its 'read' end to be
+is an integer which may be passed as argument to <<jack.thread, thread scripts>>. +
+If _mlock=true_, the buffer is locked in memory. +
+If _usepipe=true_, a pipe is associated with the ringbuffer allowing its 'read' end to be
 turned in an object compatible with 
 https://github.com/diegonehab/luasocket[sockect.select]()
 and thus to be used in conjunction with sockets or other fd-based
 communication mechanisms (of course, you don't want to do this in an
 audio processing realtime thread...). +
- +
 This function is only available in the <<luajack.contexts, main context>> and must be
-used before the client is <<jack.activate, activated>>.
+used before the client is <<jack.activate, activated>>.#
 
-'''
+
 [[jack.ringbuffer_write]]
-* *jack.ringbuffer_write* ( _rbuf_, _tag_ [, _data_ ] ) +
+* *jack.ringbuffer_write* ( _rbuf_, _tag_ [, _data_ ] ) _MPT_ +
 -> _ok_ +
- +
-Write a <<ringbuffersmessage, message>> to the ringbuffer _rbuf_.
-Returns _true_ on success, or _false_ if there was not enough space for the message. 
+[small]#Write a <<ringbuffersmessage, message>> to the ringbuffer _rbuf_. +
+Returns _true_ on success, or _false_ if there was not enough space for the message.#
 
-'''
+
 [[jack.ringbuffer_read]]
-* *jack.ringbuffer_read* ( _rbuf_ ) +
+* *jack.ringbuffer_read* ( _rbuf_ ) _MPT_ +
 -> _tag_, _data_ +
- +
-Read a <<ringbuffersmessage, message>> from the ringbuffer _rbuf_.
-Returns _tag_=_nil_ if there are no messages available.
+[small]#Read a <<ringbuffersmessage, message>> from the ringbuffer _rbuf_.
+Returns _tag_=_nil_ if there are no messages available. +
 If the message is composed of the _tag_ only, then _data_ is returned as an
-empty string (so that _data:len=0_).
+empty string (so that _data:len=0_).#
 
-'''
+
 [[jack.ringbuffer_reset]]
-* *jack.ringbuffer_reset* ( _rbuf_ ) +
- +
-Resets the ringbuffer _rbuf_.
+* *jack.ringbuffer_reset* ( _rbuf_ ) _MPT_ +
+[small]#Resets the ringbuffer _rbuf_.#
 
-'''
+
 [[jack.ringbuffer_peek]]
-* *jack.ringbuffer_peek* ( _rbuf_ ) +
+* *jack.ringbuffer_peek* ( _rbuf_ ) _MPT_ +
 -> _ok_ +
- +
-Returns _true_ if there is a  <<ringbuffersmessage, message>> available to be read from
-the ringbuffer _rbuf_, otherwise it returns _false_.
+[small]#Returns _true_ if there is a  <<ringbuffersmessage, message>> available to be read from
+the ringbuffer _rbuf_, otherwise it returns _false_.#
 
-'''
+
 [[jack.ringbuffer_getfd]]
-* *jack.ringbuffer_getfd* ( _rbuf_ ) +
+* *jack.ringbuffer_getfd* ( _rbuf_ ) _MPT_ +
 -> _fd_ +
- +
-Returns the file descriptor of the pipe associated with the ringbuffer _rbuf_,
-or _nil_ if it was <<jack.ringbuffer, created>> without pipe.
+[small]#Returns the file descriptor of the pipe associated with the ringbuffer _rbuf_,
+or _nil_ if it was <<jack.ringbuffer, created>> without pipe.#
 
 ////
 - RINGBUFFER_HDRLEN header length in bytes @@
 
-'''
+
 [[jack.]]
 * *jack.* ( ) +
 -> __ +
@@ -87,4 +82,3 @@ or _nil_ if it was <<jack.ringbuffer, created>> without pipe.
 //^luajack/selectable.lua
 @@ TODO
 
-<<<

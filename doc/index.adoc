@@ -15,6 +15,8 @@ include::preface.adoc[]
 
 include::introduction.adoc[]
 
+include::functions.adoc[]
+
 include::client.adoc[]
 
 include::callbacks_rt.adoc[]
@@ -55,6 +57,6 @@ include::midi.adoc[]
 @@ include::capi.adoc[]
 
 @@ include::examples.adoc[]
-////
 
 include::summary.adoc[]
+////

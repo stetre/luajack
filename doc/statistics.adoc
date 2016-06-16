@@ -1,33 +1,30 @@
 
-== Statistics
+=== Statistics
+
+[small]#Rfr: link:++http://jackaudio.org/api/statistics_8h.html++[statistics.h File Reference]#
 
 [[jack.max_delayed_usecs]]
-* *jack.max_delayed_usecs* ( _client_ ) +
+* *jack.max_delayed_usecs* ( _client_ ) _M_ +
 -> _delay_ +
- +
-Returns the maximum delay reported by the backend since startup or reset.
+[small]#Returns the maximum delay reported by the backend since startup or reset.#
 
-'''
+
 [[jack.xrun_delayed_usecs]]
-* *jack.xrun_delayed_usecs* ( _client_ ) +
+* *jack.xrun_delayed_usecs* ( _client_ ) _M_ +
 -> _delay_ +
- +
-Returns the delay in microseconds due to the most recent xrun occurrence.
+[small]#Returns the delay in microseconds due to the most recent xrun occurrence.#
 
-'''
+
 [[jack.reset_max_delayed_usecs]]
-* *jack.reset_max_delayed_usecs* ( _client_ ) +
- +
-Resets the maximum delay counter.
+* *jack.reset_max_delayed_usecs* ( _client_ ) _M_ +
+[small]#Resets the maximum delay counter.#
 
 
 ////
-'''
+
 [[jack.profile]] @@TODO
 * *jack.profile* ( _client_[, _what_ ]) +
- +
-_what_ = _start_, _restart_, _stop_ or nil for results
+[small]#_what_ = _start_, _restart_, _stop_ or nil for results.#
 
 ////
 
-<<<

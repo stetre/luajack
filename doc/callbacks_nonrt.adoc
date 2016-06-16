@@ -1,5 +1,7 @@
 
-== Non real-time callbacks
+=== Non real-time callbacks
+
+[small]#Rfr: link:++http://jackaudio.org/api/group__ClientCallbacks.html++[Setting Client Callbacks].#
 
 The functions listed here are available only in the <<luajack.contexts, main context>>
 and can be used to register (Lua) callbacks for JACK events other than those that are
@@ -22,118 +24,92 @@ http://jackaudio.org/api/group__ClientCallbacks.html[JACK callbacks] and are sub
 the same considerations and constraints described in the JACK documentation.
 ////
 
-'''
+
 [[jack.shutdown_callback]]
-* *jack.shutdown_callback* ( _client_, _func_ ) +
- +
-Registers _func_ as callback for the 'shutdown' event. +
- +
+* *jack.shutdown_callback* ( _client_, _func_ ) _M_ +
+[small]#Registers _func_ as callback for the 'shutdown' event. +
 The callback is executed as *_func(client, code, reason)_*, where _code_ is a string
 version of the JackStatus flags and _reason_ is a string describing the shutdown reason.
 The callback need not be implemented as a signal handler (it may print, release resources
-etc.).
+etc.).#
 
-'''
+
 [[jack.freewheel_callback]]
-* *jack.freewheel_callback* ( _client_, _func_ ) +
- +
-Registers _func_ as callback for the 'starting or stopping freewheel mode' event. +
- +
+* *jack.freewheel_callback* ( _client_, _func_ ) _M_ +
+[small]#Registers _func_ as callback for the 'starting or stopping freewheel mode' event. +
 The callback is executed as *_func(client, operation)_*, where _operation_ is a string
-that may be either _'starting'_ or _'stopping'_.
+that may be either _'starting'_ or _'stopping'_.#
 
-'''
+
 [[jack.sample_rate_callback]]
-* *jack.sample_rate_callback* ( _client_, _func_ ) +
- +
-Registers _func_ as callback for the 'sample rate change' event. +
- +
+* *jack.sample_rate_callback* ( _client_, _func_ ) _M_ +
+[small]#Registers _func_ as callback for the 'sample rate change' event. +
 The callback is executed as *_func(client, nframes)_*, where _nframes_ is the new
-sample rate.
+sample rate.#
 
-'''
+
 [[jack.client_registration_callback]]
-* *jack.client_registration_callback* ( _client_, _func_ ) +
- +
-Registers _func_ as callback for the 'client (de)registration' event. +
- +
+* *jack.client_registration_callback* ( _client_, _func_ ) _M_ +
+[small]#Registers _func_ as callback for the 'client (de)registration' event. +
 The callback is executed as *_func(client, name, operation)_*, where _name_ is the name
 of the affected client and _operation_ is a string that may be either _'registered'_ 
-or _'unregistered'_.
+or _'unregistered'_.#
 
-'''
+
 [[jack.port_registration_callback]]
-* *jack.port_registration_callback* ( _client_, _func_ ) +
- +
-Registers _func_ as callback for the 'port (de)registration' event. +
- +
+* *jack.port_registration_callback* ( _client_, _func_ ) _M_ +
+[small]#Registers _func_ as callback for the 'port (de)registration' event. +
 The callback is executed as *_func(client, portname, operation)_*, where _portname_ is
 the (full) name of the affected port and _operation_ is a string that may be 
-either _'registered'_ or _'unregistered'_.
+either _'registered'_ or _'unregistered'_.#
 
-'''
+
 [[jack.port_rename_callback]]
-* *jack.port_rename_callback* ( _client_, _func_ ) +
- +
-Registers _func_ as callback for the 'port rename' event. +
- +
+* *jack.port_rename_callback* ( _client_, _func_ ) _M_ +
+[small]#Registers _func_ as callback for the 'port rename' event. +
 The callback is executed as *_func(client, portname, newname)_*, where _portname_ is
-the old (full) name of the affected port and _newname_ is its newly assigned name.
+the old (full) name of the affected port and _newname_ is its newly assigned name.#
 
-'''
+
 [[jack.port_connect_callback]]
-* *jack.port_connect_callback* ( _client_, _func_ ) +
- +
-Registers _func_ as callback for the 'ports connect or disconnect' event. +
- +
+* *jack.port_connect_callback* ( _client_, _func_ ) _M_ +
+[small]#Registers _func_ as callback for the 'ports connect or disconnect' event. +
 The callback is executed as *_func(client, srcname, dstname, operation)_*, where 
 _srcname_ and _dstname_ are the (full) names of the affected ports, and _operation_
-is a string that may be either _'connected'_ or _'disconnected'_.
+is a string that may be either _'connected'_ or _'disconnected'_.#
 
-'''
+
 [[jack.graph_order_callback]]
-* *jack.graph_order_callback* ( _client_, _func_ ) +
- +
-Registers _func_ as callback for the 'graph reorder' event. +
- +
-The callback is executed as *_func(client)_*.
+* *jack.graph_order_callback* ( _client_, _func_ ) _M_ +
+[small]#Registers _func_ as callback for the 'graph reorder' event. +
+The callback is executed as *_func(client)_*.#
 
-'''
+
 [[jack.xrun_callback]]
-* *jack.xrun_callback* ( _client_, _func_ ) +
- +
-Registers _func_ as callback for the 'xrun' event. +
- +
-The callback is executed as *_func(client)_*.
+* *jack.xrun_callback* ( _client_, _func_ ) _M_ +
+[small]#Registers _func_ as callback for the 'xrun' event. +
+The callback is executed as *_func(client)_*.#
 
-'''
+
 [[jack.latency_callback]]
-* *jack.latency_callback* ( _client_, _func_ ) +
- +
-Registers _func_ as callback for the 'latency recomputations needed' event. +
- +
+* *jack.latency_callback* ( _client_, _func_ ) _M_ +
+[small]#Registers _func_ as callback for the 'latency recomputations needed' event. +
 The callback is executed as *_func(client, mode)_*, where _mode_ is a string that
-may be either _'capture'_ or _'playback'_.
+may be either _'capture'_ or _'playback'_.#
 
-'''
+
 [[jack.session_callback]]
-* *jack.session_callback* ( _client_, _func_ ) +
- +
-Registers _func_ as callback for the 'session notification' event. +
- +
+* *jack.session_callback* ( _client_, _func_ ) _M_ +
+[small]#Registers _func_ as callback for the 'session notification' event. +
 The callback is executed as
 *_command, flag1, flag2 = func(client, type, path, uuid)_*, 
 where: +
-[circle]
-- _type_ (a string) is the type of this session event and may be one of _'save'_, 
+_type_ (a string) is the type of this session event and may be one of _'save'_, 
 _'save_and_quit'_ or _'save_template'_; +
-- _path_ (a string) is the session directory path; +
-- _uuid_ (a string) is the client UUID which must be used when opening the client. +
- +
+_path_ (a string) is the session directory path; +
+_uuid_ (a string) is the client UUID which must be used when opening the client. +
 The callback is expected to return the following values, which are used by LuaJack to
 reply to the event: +
-[circle]
-- _command_: the command line (a string) needed to restore the client;
-- _flag1_, _flag2_: optional session flags (_'save_error'_ and/or _'need_terminal'_).
+_command_: the command line (a string) needed to restore the client; +
+_flag1_, _flag2_: optional session flags (_'save_error'_ and/or _'need_terminal'_).#
 
-<<<

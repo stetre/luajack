@@ -56,6 +56,8 @@ is in the use of the <<jack.process_load, jack.process_load>>() function to 'loa
 the real-time part of the application. This difference should be (hopefully) clear
 after reading the next subsection.
 
+//=== LuaJack contexts
+
 === LuaJack contexts
 
 [[luajack.contexts]]
@@ -103,12 +105,7 @@ only in the main script. There is no need to load it in process chunks and threa
 because they are executed in Lua states where the LuaJack module is automatically pre-loaded
 in a global table named *'jack'*. This pre-loaded module is actually a limited version of
 the full LuaJack module, in that it contains only the subset of functions that can be
-directly used in the process or thread context (the availability of functions
-in different contexts is indicated in the
-<<_summary_of_luajack_functions, summary tables>>).
-
-LuaJack functions are described in the following sections, whose organization somehow
-reflects the organization of the original
-http://jackaudio.org/api/[JACK API documentation] (on purpose).
+directly used in the process or thread context.
 
 <<<
+

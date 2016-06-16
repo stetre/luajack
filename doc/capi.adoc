@@ -23,4 +23,3 @@ reference and returns a _luajack_t_ pointer representing the object in C (or rai
 error if the reference is not valid).
 ////
 
-<<<

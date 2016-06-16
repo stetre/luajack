@@ -1,6 +1,5 @@
 
-== Non-callback API
+=== Non-callback API
 
-Not supported by LuaJack.
+Not supported.
 
-<<<

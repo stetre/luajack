@@ -1,21 +1,18 @@
 
-== Additional functions
+=== Additional functions
 
-'''
 [[jack.sleep]]
 * *jack.sleep* ( [_seconds_] ) +
- +
-Sleeps for the specified number of _seconds_ (if _seconds_ is negative or _nil_, 
-sleeps forevever). 
+[small]#Sleeps for the specified number of _seconds_ (if _seconds_ is negative or _nil_, 
+sleeps forever). +
 This function must be used to implement the main loop in the <<luajack.contexts, main context>>,
-and can optionally be used in thread contexts as well.
+and can optionally be used in thread contexts as well.#
 
-'''
+
 [[jack.verbose]]
 * *jack.verbose* ( _onoff_ ) +
- +
-If _onoff='on'_, enables the LuaJack verbose mode. If _onoff='off'_, it disables it.
-By default, the verbose mode is disabled.
+[small]#If _onoff='on'_, enables the LuaJack verbose mode. If _onoff='off'_, it disables it.
+By default, the verbose mode is disabled.#
 
 ////
 @@ TODO 
@@ -28,4 +25,3 @@ DEFAULT_AUDIO_TYPE      (-> JACK_DEFAULT_AUDIO_TYPE)
 DEFAULT_MIDI_TYPE       (-> JACK_DEFAULT_MIDI_TYPE)
 ////
 
-<<<

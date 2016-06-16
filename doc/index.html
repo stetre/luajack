@@ -782,6 +782,8 @@ p.tableblock.header { color: #6d6e71; }
 <li><a href="#_luajack_contexts">LuaJack contexts</a></li>
 </ul>
 </li>
+<li><a href="#_luajack_functions">LuaJack functions</a>
+<ul class="sectlevel2">
 <li><a href="#_clients">Clients</a></li>
 <li><a href="#_real_time_callbacks">Real-time callbacks</a></li>
 <li><a href="#_non_real_time_callbacks">Non real-time callbacks</a></li>
@@ -794,24 +796,22 @@ p.tableblock.header { color: #6d6e71; }
 <li><a href="#_reading_and_writing_midi_data">Reading and writing MIDI data</a></li>
 <li><a href="#_statistics">Statistics</a></li>
 <li><a href="#_session_api">Session API</a></li>
-<li><a href="#_ringbuffers">Ringbuffers</a>
-<ul class="sectlevel2">
+<li><a href="#_ringbuffers">Ringbuffers</a></li>
 <li><a href="#_selectable_ringbuffers">Selectable ringbuffers</a></li>
-</ul>
-</li>
 <li><a href="#_jack_server_control_api">JACK server control API</a></li>
 <li><a href="#_non_callback_api">Non-callback API</a></li>
 <li><a href="#_internal_clients_api">Internal clients API</a></li>
 <li><a href="#_metadata_api">Metadata API</a></li>
 <li><a href="#_additional_functions">Additional functions</a></li>
-<li><a href="#_midi_utilities">MIDI utilities</a>
+</ul>
+</li>
+<li><a href="#midi_utilities">MIDI utilities (luajack.midi)</a>
 <ul class="sectlevel2">
 <li><a href="#_encoding_midi_messages">Encoding MIDI messages</a></li>
 <li><a href="#_decoding_midi_messages">Decoding MIDI messages</a></li>
 <li><a href="#_other_midi_utilities">Other MIDI utilities</a></li>
 </ul>
 </li>
-<li><a href="#_summary_of_luajack_functions">Summary of LuaJack functions</a></li>
 </ul>
 </div>
 </div>
@@ -1019,69 +1019,63 @@ only in the main script. There is no need to load it in process chunks and threa
 because they are executed in Lua states where the LuaJack module is automatically pre-loaded
 in a global table named <strong>'jack'</strong>. This pre-loaded module is actually a limited version of
 the full LuaJack module, in that it contains only the subset of functions that can be
-directly used in the process or thread context (the availability of functions
-in different contexts is indicated in the
-<a href="#_summary_of_luajack_functions">summary tables</a>).</p>
-</div>
-<div class="paragraph">
-<p>LuaJack functions are described in the following sections, whose organization somehow
-reflects the organization of the original
-<a href="http://jackaudio.org/api/">JACK API documentation</a> (on purpose).</p>
+directly used in the process or thread context.</p>
 </div>
 <div style="page-break-after: always;"></div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_clients">Clients</h2>
+<h2 id="_luajack_functions">LuaJack functions</h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p>LuaJack functions are described in the following sections.</p>
+</div>
+<div class="paragraph">
+<p>The letters <em>M</em>, <em>P</em> and/or <em>T</em> beside a function description indicate whether it is available
+in the main context (<em>M</em>), in process contexts (<em>P</em>) and/or in thread contexts (<em>T</em>).
+For example, <em>MP</em> means that the function is available in the main context and in process contexts, but
+not in thread contexts.</p>
+</div>
+<div class="paragraph">
+<p>On error, unless otherwise pointed out, all functions call Lua&#8217;s
+<a href="http://www.lua.org/manual/5.3/manual.html#pdf-error">error</a>() with a string message handler.</p>
+</div>
+<div class="sect2">
+<h3 id="_clients">Clients</h3>
+<div class="paragraph">
+<p><span class="small">Rfr: <a href="http://jackaudio.org/api/group__ClientFunctions.html">Creating &amp; manipulating clients</a>.</span></p>
+</div>
 <div id="jack.client_open" class="ulist">
 <ul>
 <li>
-<p><strong>jack.client_open</strong> ( <em>name</em> [, <em>options</em>])<br>
+<p><strong>jack.client_open</strong> ( <em>name</em> [, <em>options</em>]) <em>M</em><br>
 &#8594; <em>client</em><br>
-<br>
-Creates a JACK client with the passed <em>name</em> and returns an opaque reference for subsequent
+<span class="small">Creates a JACK client with the passed <em>name</em> and returns an opaque reference for subsequent
 operations.
 If the <em>options</em> parameter is passed, it must be a table containing zero or more of
-the following elements:<br></p>
-<div class="ulist">
-<ul>
-<li>
-<p><em>options.use_exact_name</em> (boolean): if <em>true</em>, do not automatically assign a new name if <em>name</em> is already in use;<br></p>
-</li>
-<li>
-<p><em>options.no_start_server</em> (boolean): if <em>true</em>, do not start the JACK server if not already running;<br></p>
-</li>
-<li>
-<p><em>options.server_name</em> (string): select the JACK server with this name;<br></p>
-</li>
-<li>
-<p><em>options.session_id</em> (string): pass this string as SessionID Token.</p>
+the following elements:<br>
+<strong>options.use_exact_name</strong> (boolean): if <em>true</em>, do not automatically assign a new name if <em>name</em> is already in use;<br>
+<strong>options.no_start_server</strong> (boolean): if <em>true</em>, do not start the JACK server if not already running;<br>
+<strong>options.server_name</strong> (string): select the JACK server with this name;<br>
+<strong>options.session_id</strong> (string): pass this string as SessionID Token.</span></p>
 </li>
 </ul>
 </div>
-</li>
-</ul>
-</div>
-<hr>
 <div id="jack.client_name_size" class="ulist">
 <ul>
 <li>
-<p><strong>jack.client_name_size</strong> ( )<br>
+<p><strong>jack.client_name_size</strong> ( ) <em>M</em><br>
 &#8594; <em>maxsize</em><br>
-<br>
-Returns the maximum allowed size for JACK clients names.</p>
+<span class="small">Returns the maximum allowed size for JACK clients names.</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.client_close" class="ulist">
 <ul>
 <li>
-<p><strong>jack.client_close</strong> ( <em>client</em> )<br>
-<br>
-Closes a client previously opened with <a href="#_jack.client">jack.client</a>().</p>
+<p><strong>jack.client_close</strong> ( <em>client</em> ) <em>M</em><br>
+<span class="small">Closes a client previously opened with <a href="#_jack.client">jack.client</a>().</span></p>
 </li>
 </ul>
 </div>
@@ -1097,140 +1091,116 @@ Clients are automatically closed by LuaJack when the application exits.
 </tr>
 </table>
 </div>
-<hr>
 <div id="jack.client_name" class="ulist">
 <ul>
 <li>
-<p><strong>jack.client_name</strong> ( <em>client</em> )<br>
+<p><strong>jack.client_name</strong> ( <em>client</em> ) <em>M</em><br>
 &#8594; <em>name</em><br>
-<br>
-Returns the client&#8217;s name.</p>
+<span class="small">Returns the client&#8217;s name.</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.client_uuid" class="ulist">
 <ul>
 <li>
-<p><strong>jack.client_uuid</strong> ( <em>client</em> )<br>
+<p><strong>jack.client_uuid</strong> ( <em>client</em> ) <em>M</em><br>
 &#8594; <em>uuid</em><br>
-<br>
-Returns the client&#8217;s UUID.</p>
+<span class="small">Returns the client&#8217;s UUID.</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.client_uuid_to_name" class="ulist">
 <ul>
 <li>
-<p><strong>jack.client_uuid_to_name</strong> ( <em>client</em>, <em>uuid</em> )<br>
+<p><strong>jack.client_uuid_to_name</strong> ( <em>client</em>, <em>uuid</em> ) <em>M</em><br>
 &#8594; <em>name</em><br>
-<br>
-Returns the name of the client whose UUID is <em>uuid</em>,  or <em>nil</em> if no such client exists.<br></p>
+<span class="small">Returns the name of the client whose UUID is <em>uuid</em>,  or <em>nil</em> if no such client exists.</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.client_name_to_uuid" class="ulist">
 <ul>
 <li>
-<p><strong>jack.client_name_to_uuid</strong> ( <em>client</em>, <em>name</em> )<br>
+<p><strong>jack.client_name_to_uuid</strong> ( <em>client</em>, <em>name</em> ) <em>M</em><br>
 &#8594; <em>uuid</em><br>
-<br>
-Returns the UUID of the client whose name is <em>name</em>,  or <em>nil</em> if no such client exists.<br></p>
+<span class="small">Returns the UUID of the client whose name is <em>name</em>,  or <em>nil</em> if no such client exists.</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.activate" class="ulist">
 <ul>
 <li>
-<p><strong>jack.activate</strong> ( <em>client</em> )<br>
-<br>
-Activates <em>client</em>.<br></p>
+<p><strong>jack.activate</strong> ( <em>client</em> ) <em>M</em><br>
+<span class="small">Activates <em>client</em>.</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.deactivate" class="ulist">
 <ul>
 <li>
-<p><strong>jack.deactivate</strong> ( <em>client</em> )<br>
-<br>
-Deactivates <em>client</em>.<br></p>
+<p><strong>jack.deactivate</strong> ( <em>client</em> ) <em>M</em><br>
+<span class="small">Deactivates <em>client</em>.</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.is_realtime" class="ulist">
 <ul>
 <li>
-<p><strong>jack.is_realtime</strong> ( <em>client</em> )<br>
+<p><strong>jack.is_realtime</strong> ( <em>client</em> ) <em>M</em><br>
 &#8594; <em>boolean</em><br>
-<br>
-Returns <em>true</em> if JACK is running realtime, <em>false</em> otherwise.<br></p>
+<span class="small">Returns <em>true</em> if JACK is running realtime, <em>false</em> otherwise.</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.cpu_load" class="ulist">
 <ul>
 <li>
-<p><strong>jack.cpu_load</strong> ( <em>client</em> )<br>
+<p><strong>jack.cpu_load</strong> ( <em>client</em> ) <em>MPT</em><br>
 &#8594; <em>cpuload</em><br>
-<br>
-Returns the current CPU load estimated by JACK.</p>
+<span class="small">Returns the current CPU load estimated by JACK.</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.sample_rate" class="ulist">
 <ul>
 <li>
-<p><strong>jack.sample_rate</strong> ( <em>client</em> )<br>
+<p><strong>jack.sample_rate</strong> ( <em>client</em> ) <em>MPT</em><br>
 &#8594; <em>sample_rate</em><br>
-<br>
-Returns the sample rate of the JACK system, as set by the user when the server was started.</p>
+<span class="small">Returns the sample rate of the JACK system, as set by the user when the server was started.</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.set_buffer_size" class="ulist">
 <ul>
 <li>
-<p><strong>jack.set_buffer_size</strong> ( <em>client</em>, <em>nframes</em> )<br>
-<br>
-Changes the buffer size passed to the <a href="#jack.process_callback">process callback</a> to <em>nframes</em>.</p>
+<p><strong>jack.set_buffer_size</strong> ( <em>client</em>, <em>nframes</em> ) <em>MP</em><br>
+<span class="small">Changes the buffer size passed to the <a href="#jack.process_callback">process callback</a> to <em>nframes</em>.</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.buffer_size" class="ulist">
 <ul>
 <li>
-<p><strong>jack.buffer_size</strong> ( <em>client</em> )<br>
+<p><strong>jack.buffer_size</strong> ( <em>client</em> ) <em>MPT</em><br>
 &#8594; <em>nframes</em><br>
-<br>
-Returns the current maximum buffer size that will ever be passed to the <a href="#jack.process_callback">process callback</a> (to be used only before the client is activated).</p>
+<span class="small">Returns the current maximum buffer size that will ever be passed to the <a href="#jack.process_callback">process callback</a> (to be used only before the client is activated).</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.freewheel" class="ulist">
 <ul>
 <li>
-<p><strong>jack.freewheel</strong> ( <em>client</em>, <em>onoff</em> )<br>
-<br>
-Starts/stops JACK&#8217;s '<em>freewheel</em>' mode. The <em>onoff</em> argument is a string and may be <em>'on'</em> (to start) or <em>'off'</em> (to stop).</p>
+<p><strong>jack.freewheel</strong> ( <em>client</em>, <em>onoff</em> ) <em>MP</em><br>
+<span class="small">Starts/stops JACK&#8217;s '<em>freewheel</em>' mode. The <em>onoff</em> argument is a string and may be <em>'on'</em> (to start) or <em>'off'</em> (to stop).</span></p>
 </li>
 </ul>
 </div>
-<div style="page-break-after: always;"></div>
 </div>
+<div class="sect2">
+<h3 id="_real_time_callbacks">Real-time callbacks</h3>
+<div class="paragraph">
+<p><span class="small">Rfr: <a href="http://jackaudio.org/api/group__ClientCallbacks.html">Setting Client Callbacks</a>.</span></p>
 </div>
-<div class="sect1">
-<h2 id="_real_time_callbacks">Real-time callbacks</h2>
-<div class="sectionbody">
 <div class="paragraph">
 <p>Real-time callbacks are executed in the <a href="#luajack.contexts">process context</a>.
 This context is to be created by the main script using
@@ -1240,167 +1210,146 @@ before the client is activated.
 The loaded Lua chunk is expected to define the callbacks and register them using the
 functions described in this section, which are available only in the process context.</p>
 </div>
-<div id="realtime.considerations" class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Note</div>
-</td>
-<td class="content">
-The process chunk is actually loaded in an hybrid context, in that its main
-part is executed in the Lua state of the process context while still in the non-rt pthread
-of the main context (the rt-pthread will be created by JACK later and does not yet exist
-at the time the process chunk is loaded).
-This means that it can perform non real-time safe operations, e.g. pre-allocate large
-tables for samples storage.
-On the other side, the rt-callbacks that the chunk registers will be executed in the pure
-process context, and thus they should be real-time safe.<br>
-<br>
-Note also that Lua is a garbage-collected language with automatic memory management.
-This implies that the execution of Lua callbacks potentially involves calls to functions
-which are not real-time safe (i.e. malloc() and friends) and that, if not adeguately
-controlled, the GC may kick in at any time in the real-time pthread.<br>
-<br>
-To mitigate the GC problem, LuaJack disables garbage collection in the Lua state of
-the process context, and automatically executes a
-<a href="http://www.lua.org/manual/5.3/manual.html#pdf-collectgarbage">basic garbage-collection step</a>
-(with size=0) at the end of each rt-callback. This should suffice as long as the
-rt-callbacks do not allocate lots of memory (which would be a bad idea&#8230;&#8203;).<br>
-<br>
-Calls to malloc() and friends should not be a problem as long as they do not result
-in page faults. This can be accomplished first of all by avoiding the creation of large
-temporary objects (e.g. tables) in the rt-callbacks, and by pre-allocating them in the
-main part of the process chunk, instead.<br>
-<br>
-As an additional measure one could use, via LD_PRELOAD, a custom malloc() implementation
-that does not return memory to the system
-(for example, <a href="https://code.google.com/p/ltalloc/">ltalloc</a>),
-and allocate+release 'enough' memory at the beginning of the program execution so that
-the allocator can serve subsequent memory requests without asking additional memory to
-the system.<br>
-<br>
-<em>(The real-time aspects of LuaJack are, however, still under study so take the above
-considerations with salt).</em>
-</td>
-</tr>
-</table>
-</div>
-<hr>
 <div id="jack.process_load" class="ulist">
 <ul>
 <li>
-<p><strong>jack.process_load</strong> ( <em>client</em>, <em>chunk</em>, <em>&#8230;&#8203;</em> )<br>
-<br>
-This function is to be used in the main context to create the
+<p><strong>jack.process_load</strong> ( <em>client</em>, <em>chunk</em>, <em>&#8230;&#8203;</em> ) <em>M</em><br>
+<span class="small">This function is to be used in the main context to create the
 <a href="#luajack.contexts">process context</a> for <em>client</em>.<br>
-<br>
 The <em>chunk</em> argument is a string containing the Lua code to be executed in the
-process context.
+process context (the <strong>process chunk</strong>).<br>
 Additional arguments in the <em>&#8230;&#8203;</em> variadic part, if any, are passed as arguments
 to the chunk and may be of the following types only: <em>nil</em>, <em>boolean</em>, <em>number</em>,
-and <em>string</em>
-(references to LuaJack objects are allowed, since their type is <em>number</em>).<br>
-<br>
+and <em>string</em>. References to LuaJack objects are allowed, since their type is <em>number</em>.<br>
 A <a href="#loading_luajack">limited LuaJack module</a> is automatically
 pre-loaded in the process context, with the subset of JACK functionalities that
-can be accessed directly by the process chunk.<br></p>
+can be accessed directly by the process chunk.</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.process_loadfile" class="ulist">
 <ul>
 <li>
-<p><strong>jack.process_loadfile</strong> ( <em>client</em>, <em>filename</em>, <em>&#8230;&#8203;</em> )<br>
-<br>
-Same as <a href="#jack.process_load">jack.process_load</a>(), with the only difference that it
+<p><strong>jack.process_loadfile</strong> ( <em>client</em>, <em>filename</em>, <em>&#8230;&#8203;</em> ) <em>M</em><br>
+<span class="small">Same as <a href="#jack.process_load">jack.process_load</a>(), with the only difference that it
 loads the chunk from the file specified by <em>filename</em>. The file is searched for using
 the same mechanism used by Lua&#8217;s
 <a href="http://www.lua.org/manual/5.3/manual.html#pdf-require">require</a>()
-to search for modules.<br></p>
+to search for modules.</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.process_callback" class="ulist">
 <ul>
 <li>
-<p><strong>jack.process_callback</strong> ( <em>client</em>, <em>func</em> )<br>
-<br>
-Registers <em>func</em> as 'process' callback (<em>func</em> must be realtime safe).<br>
-<br>
-The callback is executed as <strong><em>func(nframes)</em></strong>, where <em>nframes</em> is the number of frames to process.</p>
+<p><strong>jack.process_callback</strong> ( <em>client</em>, <em>func</em> ) <em>P</em><br>
+<span class="small">Registers <em>func</em> as 'process' callback (<em>func</em> must be realtime safe).<br>
+The callback is executed as <strong><em>func(nframes)</em></strong>, where <em>nframes</em> is the number of frames to process.</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.buffer_size_callback" class="ulist">
 <ul>
 <li>
-<p><strong>jack.buffer_size_callback</strong> ( <em>client</em>, <em>func</em> )<br>
-<br>
-Registers <em>func</em> as callback for the 'buffer size change' event.<br>
-<br>
+<p><strong>jack.buffer_size_callback</strong> ( <em>client</em>, <em>func</em> ) <em>P</em><br>
+<span class="small">Registers <em>func</em> as callback for the 'buffer size change' event.<br>
 The callback is executed as <strong><em>func(nframes)</em></strong>, where <em>nframes</em> is the new
-size of the JACK engine buffer.</p>
+size of the JACK engine buffer.</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.sync_callback" class="ulist">
 <ul>
 <li>
-<p><strong>jack.sync_callback</strong> ( <em>client</em>, <em>func</em> )<br>
-<br>
-Registers <em>client</em> as a
+<p><strong>jack.sync_callback</strong> ( <em>client</em>, <em>func</em> ) <em>P</em><br>
+<span class="small">Registers <em>client</em> as a
 <a href="http://jackaudio.org/api/transport-design.html#slowsyncclients">slow-sync client</a>
 and <em>func</em> as its <em>sync_callback</em>
 (<em>func</em> must be realtime safe and is invoked just before the <em>process</em> callback).<br>
-<br>
 The callback is executed as <strong><em>func(state, position)</em></strong>, where the additional arguments
 are the current transport <em>state</em> and <em>position</em>. It is expected to return <em>true</em> if the
-client is ready to roll, or <em>false</em> (or <em>nil</em>) otherwise.</p>
+client is ready to roll, or <em>false</em> (or <em>nil</em>) otherwise.</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.timebase_callback" class="ulist">
 <ul>
 <li>
-<p><strong>jack.timebase_callback</strong> ( <em>client</em>, <em>func</em> [, <em>conditional</em>] )<br>
-<br>
-Registers <em>client</em> as the
+<p><strong>jack.timebase_callback</strong> ( <em>client</em>, <em>func</em> [, <em>conditional</em>] ) <em>P</em><br>
+<span class="small">Registers <em>client</em> as the
 <a href="http://jackaudio.org/api/transport-design.html#timebase">timebase master</a>
 and <em>func</em> as its <em>timebase callback</em>
 (<em>func</em> must be realtime safe because and is invoked just after the <em>process</em> callback).
 If another client is already registered as timebase master, this client will take over
 unless the optional <em>conditional</em> argument (a boolean) is passed with the value <em>true</em>.<br>
-<br>
 The callback is executed as <strong><em>func(state, nframes, position, new_position)</em></strong>, where
 the additional arguments are the current transport <em>state</em>, the current transport <em>position</em>,
 and a boolean <em>new_position</em> having the value <em>true</em> for a newly requested position (which the
 <em>client</em> should provide using <a href="#jack.transport_reposition">jack.transport_reposition</a>() and
-<a href="#jack.transport_locate">jack.transport_locate</a>()).</p>
+<a href="#jack.transport_locate">jack.transport_locate</a>()).</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.release_timebase" class="ulist">
 <ul>
 <li>
-<p><strong>jack.release_timebase</strong> ( <em>client</em> )<br>
-<br>
-Used by the client previously registered as the timebase master to withdraw that role
-and unregister the timebase callback.</p>
+<p><strong>jack.release_timebase</strong> ( <em>client</em> ) <em>P</em><br>
+<span class="small">Used by the client previously registered as the timebase master to withdraw that role
+and unregister the timebase callback.</span></p>
 </li>
 </ul>
 </div>
-<div style="page-break-after: always;"></div>
+<div class="paragraph">
+<p><strong>Real-time considerations</strong></p>
+</div>
+<div class="paragraph">
+<p>The process chunk passed to <a href="#jack.process_load">jack.process_load</a>()
+or <a href="#jack.process_loadfile">jack.process_loadfile</a>() is actually loaded in an hybrid context,
+in that its main part is executed in the Lua state of the process context while still in the
+non-rt pthread of the main context (the rt-pthread will be created by JACK later and does not
+yet exist at the time the process chunk is loaded).
+This means that it can perform non real-time safe operations, e.g. pre-allocate large
+tables for samples storage.
+On the other side, the rt-callbacks that the chunk registers will be executed in the pure
+process context, and thus they should be real-time safe.</p>
+</div>
+<div class="paragraph">
+<p>Note also that Lua is a garbage-collected language with automatic memory management.
+This implies that the execution of Lua callbacks potentially involves calls to functions
+which are not real-time safe (e.g. malloc() and friends) and that, if not adeguately
+controlled, the GC may kick in at any time in the real-time pthread.</p>
+</div>
+<div class="paragraph">
+<p>To mitigate the GC problem, LuaJack disables garbage collection in the Lua state of
+the process context, and automatically executes a
+<a href="http://www.lua.org/manual/5.3/manual.html#pdf-collectgarbage">basic garbage-collection step</a>
+(with size=0) at the end of each rt-callback. This should suffice as long as the
+rt-callbacks do not allocate lots of memory (which would be a bad idea&#8230;&#8203;).</p>
+</div>
+<div class="paragraph">
+<p>Calls to malloc() and friends should not be a problem as long as they do not result
+in page faults. This can be accomplished first of all by avoiding the creation of large
+temporary objects (e.g. tables) in the rt-callbacks, and by pre-allocating them in the
+main part of the process chunk, instead.</p>
+</div>
+<div class="paragraph">
+<p>As an additional measure one could use, via LD_PRELOAD, a custom malloc() implementation
+that does not return memory to the system
+(for example, <a href="https://code.google.com/p/ltalloc/">ltalloc</a>),
+and allocate+release 'enough' memory at the beginning of the program execution so that
+the allocator can serve subsequent memory requests without asking additional memory to
+the system.</p>
+</div>
+<div class="paragraph">
+<p><em>(The real-time aspects of LuaJack are, however, still under study so take the above
+considerations with salt).</em></p>
 </div>
 </div>
-<div class="sect1">
-<h2 id="_non_real_time_callbacks">Non real-time callbacks</h2>
-<div class="sectionbody">
+<div class="sect2">
+<h3 id="_non_real_time_callbacks">Non real-time callbacks</h3>
+<div class="paragraph">
+<p><span class="small">Rfr: <a href="http://jackaudio.org/api/group__ClientCallbacks.html">Setting Client Callbacks</a>.</span></p>
+</div>
 <div class="paragraph">
 <p>The functions listed here are available only in the <a href="#luajack.contexts">main context</a>
 and can be used to register (Lua) callbacks for JACK events other than those that are
@@ -1428,311 +1377,243 @@ main pthread.
 </tr>
 </table>
 </div>
-<hr>
 <div id="jack.shutdown_callback" class="ulist">
 <ul>
 <li>
-<p><strong>jack.shutdown_callback</strong> ( <em>client</em>, <em>func</em> )<br>
-<br>
-Registers <em>func</em> as callback for the 'shutdown' event.<br>
-<br>
+<p><strong>jack.shutdown_callback</strong> ( <em>client</em>, <em>func</em> ) <em>M</em><br>
+<span class="small">Registers <em>func</em> as callback for the 'shutdown' event.<br>
 The callback is executed as <strong><em>func(client, code, reason)</em></strong>, where <em>code</em> is a string
 version of the JackStatus flags and <em>reason</em> is a string describing the shutdown reason.
 The callback need not be implemented as a signal handler (it may print, release resources
-etc.).</p>
+etc.).</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.freewheel_callback" class="ulist">
 <ul>
 <li>
-<p><strong>jack.freewheel_callback</strong> ( <em>client</em>, <em>func</em> )<br>
-<br>
-Registers <em>func</em> as callback for the 'starting or stopping freewheel mode' event.<br>
-<br>
+<p><strong>jack.freewheel_callback</strong> ( <em>client</em>, <em>func</em> ) <em>M</em><br>
+<span class="small">Registers <em>func</em> as callback for the 'starting or stopping freewheel mode' event.<br>
 The callback is executed as <strong><em>func(client, operation)</em></strong>, where <em>operation</em> is a string
-that may be either <em>'starting'</em> or <em>'stopping'</em>.</p>
+that may be either <em>'starting'</em> or <em>'stopping'</em>.</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.sample_rate_callback" class="ulist">
 <ul>
 <li>
-<p><strong>jack.sample_rate_callback</strong> ( <em>client</em>, <em>func</em> )<br>
-<br>
-Registers <em>func</em> as callback for the 'sample rate change' event.<br>
-<br>
+<p><strong>jack.sample_rate_callback</strong> ( <em>client</em>, <em>func</em> ) <em>M</em><br>
+<span class="small">Registers <em>func</em> as callback for the 'sample rate change' event.<br>
 The callback is executed as <strong><em>func(client, nframes)</em></strong>, where <em>nframes</em> is the new
-sample rate.</p>
+sample rate.</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.client_registration_callback" class="ulist">
 <ul>
 <li>
-<p><strong>jack.client_registration_callback</strong> ( <em>client</em>, <em>func</em> )<br>
-<br>
-Registers <em>func</em> as callback for the 'client (de)registration' event.<br>
-<br>
+<p><strong>jack.client_registration_callback</strong> ( <em>client</em>, <em>func</em> ) <em>M</em><br>
+<span class="small">Registers <em>func</em> as callback for the 'client (de)registration' event.<br>
 The callback is executed as <strong><em>func(client, name, operation)</em></strong>, where <em>name</em> is the name
 of the affected client and <em>operation</em> is a string that may be either <em>'registered'</em>
-or <em>'unregistered'</em>.</p>
+or <em>'unregistered'</em>.</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.port_registration_callback" class="ulist">
 <ul>
 <li>
-<p><strong>jack.port_registration_callback</strong> ( <em>client</em>, <em>func</em> )<br>
-<br>
-Registers <em>func</em> as callback for the 'port (de)registration' event.<br>
-<br>
+<p><strong>jack.port_registration_callback</strong> ( <em>client</em>, <em>func</em> ) <em>M</em><br>
+<span class="small">Registers <em>func</em> as callback for the 'port (de)registration' event.<br>
 The callback is executed as <strong><em>func(client, portname, operation)</em></strong>, where <em>portname</em> is
 the (full) name of the affected port and <em>operation</em> is a string that may be
-either <em>'registered'</em> or <em>'unregistered'</em>.</p>
+either <em>'registered'</em> or <em>'unregistered'</em>.</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.port_rename_callback" class="ulist">
 <ul>
 <li>
-<p><strong>jack.port_rename_callback</strong> ( <em>client</em>, <em>func</em> )<br>
-<br>
-Registers <em>func</em> as callback for the 'port rename' event.<br>
-<br>
+<p><strong>jack.port_rename_callback</strong> ( <em>client</em>, <em>func</em> ) <em>M</em><br>
+<span class="small">Registers <em>func</em> as callback for the 'port rename' event.<br>
 The callback is executed as <strong><em>func(client, portname, newname)</em></strong>, where <em>portname</em> is
-the old (full) name of the affected port and <em>newname</em> is its newly assigned name.</p>
+the old (full) name of the affected port and <em>newname</em> is its newly assigned name.</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.port_connect_callback" class="ulist">
 <ul>
 <li>
-<p><strong>jack.port_connect_callback</strong> ( <em>client</em>, <em>func</em> )<br>
-<br>
-Registers <em>func</em> as callback for the 'ports connect or disconnect' event.<br>
-<br>
+<p><strong>jack.port_connect_callback</strong> ( <em>client</em>, <em>func</em> ) <em>M</em><br>
+<span class="small">Registers <em>func</em> as callback for the 'ports connect or disconnect' event.<br>
 The callback is executed as <strong><em>func(client, srcname, dstname, operation)</em></strong>, where
 <em>srcname</em> and <em>dstname</em> are the (full) names of the affected ports, and <em>operation</em>
-is a string that may be either <em>'connected'</em> or <em>'disconnected'</em>.</p>
+is a string that may be either <em>'connected'</em> or <em>'disconnected'</em>.</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.graph_order_callback" class="ulist">
 <ul>
 <li>
-<p><strong>jack.graph_order_callback</strong> ( <em>client</em>, <em>func</em> )<br>
-<br>
-Registers <em>func</em> as callback for the 'graph reorder' event.<br>
-<br>
-The callback is executed as <strong><em>func(client)</em></strong>.</p>
+<p><strong>jack.graph_order_callback</strong> ( <em>client</em>, <em>func</em> ) <em>M</em><br>
+<span class="small">Registers <em>func</em> as callback for the 'graph reorder' event.<br>
+The callback is executed as <strong><em>func(client)</em></strong>.</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.xrun_callback" class="ulist">
 <ul>
 <li>
-<p><strong>jack.xrun_callback</strong> ( <em>client</em>, <em>func</em> )<br>
-<br>
-Registers <em>func</em> as callback for the 'xrun' event.<br>
-<br>
-The callback is executed as <strong><em>func(client)</em></strong>.</p>
+<p><strong>jack.xrun_callback</strong> ( <em>client</em>, <em>func</em> ) <em>M</em><br>
+<span class="small">Registers <em>func</em> as callback for the 'xrun' event.<br>
+The callback is executed as <strong><em>func(client)</em></strong>.</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.latency_callback" class="ulist">
 <ul>
 <li>
-<p><strong>jack.latency_callback</strong> ( <em>client</em>, <em>func</em> )<br>
-<br>
-Registers <em>func</em> as callback for the 'latency recomputations needed' event.<br>
-<br>
+<p><strong>jack.latency_callback</strong> ( <em>client</em>, <em>func</em> ) <em>M</em><br>
+<span class="small">Registers <em>func</em> as callback for the 'latency recomputations needed' event.<br>
 The callback is executed as <strong><em>func(client, mode)</em></strong>, where <em>mode</em> is a string that
-may be either <em>'capture'</em> or <em>'playback'</em>.</p>
+may be either <em>'capture'</em> or <em>'playback'</em>.</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.session_callback" class="ulist">
 <ul>
 <li>
-<p><strong>jack.session_callback</strong> ( <em>client</em>, <em>func</em> )<br>
-<br>
-Registers <em>func</em> as callback for the 'session notification' event.<br>
-<br>
+<p><strong>jack.session_callback</strong> ( <em>client</em>, <em>func</em> ) <em>M</em><br>
+<span class="small">Registers <em>func</em> as callback for the 'session notification' event.<br>
 The callback is executed as
 <strong><em>command, flag1, flag2 = func(client, type, path, uuid)</em></strong>,
-where:<br></p>
-<div class="ulist circle">
-<ul class="circle">
-<li>
-<p><em>type</em> (a string) is the type of this session event and may be one of <em>'save'</em>,
-<em>'save_and_quit'</em> or <em>'save_template'</em>;<br></p>
-</li>
-<li>
-<p><em>path</em> (a string) is the session directory path;<br></p>
-</li>
-<li>
-<p><em>uuid</em> (a string) is the client UUID which must be used when opening the client.<br>
-<br>
+where:<br>
+<em>type</em> (a string) is the type of this session event and may be one of <em>'save'</em>,
+<em>'save_and_quit'</em> or <em>'save_template'</em>;<br>
+<em>path</em> (a string) is the session directory path;<br>
+<em>uuid</em> (a string) is the client UUID which must be used when opening the client.<br>
 The callback is expected to return the following values, which are used by LuaJack to
-reply to the event:<br></p>
-</li>
-<li>
-<p><em>command</em>: the command line (a string) needed to restore the client;</p>
-</li>
-<li>
-<p><em>flag1</em>, <em>flag2</em>: optional session flags (<em>'save_error'</em> and/or <em>'need_terminal'</em>).</p>
+reply to the event:<br>
+<em>command</em>: the command line (a string) needed to restore the client;<br>
+<em>flag1</em>, <em>flag2</em>: optional session flags (<em>'save_error'</em> and/or <em>'need_terminal'</em>).</span></p>
 </li>
 </ul>
 </div>
-</li>
-</ul>
 </div>
-<div style="page-break-after: always;"></div>
+<div class="sect2">
+<h3 id="_client_threads">Client threads</h3>
+<div class="paragraph">
+<p><span class="small">Rfr: <a href="http://jackaudio.org/api/group__ClientThreads.html">Creating and managing client threads</a>.</span></p>
 </div>
-</div>
-<div class="sect1">
-<h2 id="_client_threads">Client threads</h2>
-<div class="sectionbody">
 <div id="jack.thread_load" class="ulist">
 <ul>
 <li>
-<p><strong>jack.thread_load</strong> ( <em>client</em>, <em>chunk</em>, <em>&#8230;&#8203;</em> )<br>
+<p><strong>jack.thread_load</strong> ( <em>client</em>, <em>chunk</em>, <em>&#8230;&#8203;</em> ) <em>M</em><br>
 &#8594; <em>thread</em><br>
-<br>
-Creates a client thread with its dedicated <a href="#luajack.contexts">thread context</a> and
+<span class="small">Creates a client thread with its dedicated <a href="#luajack.contexts">thread context</a> and
 returns a reference for subsequent operations.
 The <em>chunk</em> argument is a string containing the Lua code to be executed in the
 thread.
-Additional arguments in the <em>&#8230;&#8203;</em> variadic part, if any, are passed as arguments
+Additional arguments in the variadic part (<em>&#8230;&#8203;</em>), if any, are passed as arguments
 to the chunk and may be of the following types only: <em>nil</em>, <em>boolean</em>, <em>number</em>, <em>string</em>
 (references to LuaJack objects are allowed, since their type is <em>number</em>).<br>
-<br>
 A <a href="#loading_luajack">limited LuaJack module</a> is automatically
 pre-loaded in the thread context, with the subset of JACK functionalities that
-can be accessed directly by the thread chunk.<br></p>
+can be accessed directly by the thread chunk.</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.thread_loadfile" class="ulist">
 <ul>
 <li>
-<p><strong>jack.thread_loadfile</strong> ( <em>client</em>, <em>filename</em>, <em>&#8230;&#8203;</em> )<br>
+<p><strong>jack.thread_loadfile</strong> ( <em>client</em>, <em>filename</em>, <em>&#8230;&#8203;</em> ) <em>M</em><br>
 &#8594; <em>thread</em><br>
-<br>
-Same as <a href="#jack.thread_load">jack.thread_load</a>(), with the only difference that it
+<span class="small">Same as <a href="#jack.thread_load">jack.thread_load</a>(), with the only difference that it
 loads the chunk from the file specified by <em>filename</em>. The file is searched for using
 the same mechanism used by Lua&#8217;s
 <a href="http://www.lua.org/manual/5.3/manual.html#pdf-require">require</a>()
-to search for modules.<br></p>
+to search for modules.</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.self" class="ulist">
 <ul>
 <li>
-<p><strong>jack.self</strong> ( )<br>
+<p><strong>jack.self</strong> ( ) <em>T</em><br>
 &#8594; <em>client</em>, <em>thread</em><br>
-<br>
-Returns the client and thread references of the calling thread.
-This function is available only to thread chunks (i.e. in thread contexts).</p>
+<span class="small">Returns the client and thread references of the calling thread.
+This function is available only to thread chunks (i.e. in thread contexts).</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.signal" class="ulist">
 <ul>
 <li>
-<p><strong>jack.signal</strong> ( <em>client</em>, <em>thread</em> )<br>
-<br>
-Signals the pthread condition variable associated with <em>thread</em>.</p>
+<p><strong>jack.signal</strong> ( <em>client</em>, <em>thread</em> ) <em>MPT</em><br>
+<span class="small">Signals the pthread condition variable associated with <em>thread</em>.</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.wait" class="ulist">
 <ul>
 <li>
-<p><strong>jack.wait</strong> ( )<br>
-<br>
-Waits on the pthread condition variable associated with the calling thread.
-This function is available only to thread chunks (i.e. in thread contexts).</p>
+<p><strong>jack.wait</strong> ( ) <em>T</em><br>
+<span class="small">Waits on the pthread condition variable associated with the calling thread.
+This function is available only to thread chunks (i.e. in thread contexts).</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.testcancel" class="ulist">
 <ul>
 <li>
-<p><strong>jack.testcancel</strong> ( )<br>
-<br>
-Creates a cancellation point in the calling thread.
-This function is available only to thread chunks (i.e. in thread contexts).</p>
+<p><strong>jack.testcancel</strong> ( ) <em>T</em><br>
+<span class="small">Creates a cancellation point in the calling thread.
+This function is available only to thread chunks (i.e. in thread contexts).</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.real_time_priority" class="ulist">
 <ul>
 <li>
-<p><strong>jack.real_time_priority</strong> ( <em>client</em> )<br>
+<p><strong>jack.real_time_priority</strong> ( <em>client</em> ) <em>MPT</em><br>
 &#8594; <em>priority</em><br>
-<br>
-If JACK is running with realtime priority, returns the priority that any thread
-created by JACK will run at. Otherwise it returns <em>nil</em>.</p>
+<span class="small">If JACK is running with realtime priority, returns the priority that any thread
+created by JACK will run at. Otherwise it returns <em>nil</em>.</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.max_real_time_priority" class="ulist">
 <ul>
 <li>
-<p><strong>jack.max_real_time_priority</strong> ( <em>client</em> )<br>
+<p><strong>jack.max_real_time_priority</strong> ( <em>client</em> ) <em>MPT</em><br>
 &#8594; <em>priority</em><br>
-<br>
-If JACK is running with realtime priority, returns the maximum priority that a
-realtime client thread should use. Otherwise it returns <em>nil</em>.</p>
+<span class="small">If JACK is running with realtime priority, returns the maximum priority that a
+realtime client thread should use. Otherwise it returns <em>nil</em>.</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.acquire_real_time_scheduling" class="ulist">
 <ul>
 <li>
-<p><strong>jack.acquire_real_time_scheduling</strong> ( <em>priority</em> )<br>
-<br>
-Enables realtime scheduling, with the specified <em>priority</em>, for the calling thread.</p>
+<p><strong>jack.acquire_real_time_scheduling</strong> ( <em>priority</em> ) <em>MPT</em><br>
+<span class="small">Enables realtime scheduling, with the specified <em>priority</em>, for the calling thread.</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.drop_real_time_scheduling" class="ulist">
 <ul>
 <li>
-<p><strong>jack.drop_real_time_scheduling</strong> ( )<br>
-<br>
-Drops realtime scheduling for the calling thread.</p>
+<p><strong>jack.drop_real_time_scheduling</strong> ( ) <em>MPT</em><br>
+<span class="small">Drops realtime scheduling for the calling thread.</span></p>
 </li>
 </ul>
 </div>
-<div style="page-break-after: always;"></div>
 </div>
+<div class="sect2">
+<h3 id="_ports">Ports</h3>
+<div class="paragraph">
+<p><span class="small">Rfr: <a href="http://jackaudio.org/api/group__PortFunctions.html">Creating &amp; manipulating ports</a> - <a href="http://jackaudio.org/api/group__PortSearching.html">Looking up ports</a>.</span></p>
 </div>
-<div class="sect1">
-<h2 id="_ports">Ports</h2>
-<div class="sectionbody">
 <div class="paragraph">
 <p>Instead of a single port_register() function, LuaJack provides a few functions to
 create ports depending on the desired direction (<em>input</em> or <em>output</em>) and port type
@@ -1747,125 +1628,96 @@ used only in the application that created the port; the version named <strong>ja
 on the other side, is slower because it acts on the port by its name, but it can be used
 also on ports not created by the invoking application.</p>
 </div>
-<hr>
 <div id="jack.input_audio_port" class="ulist">
 <ul>
 <li>
-<p><strong>jack.input_audio_port</strong> ( <em>client</em> , <em>name</em> [, <em>options</em> ] )<br>
+<p><strong>jack.input_audio_port</strong> ( <em>client</em> , <em>name</em> [, <em>options</em> ] ) <em>M</em><br>
 &#8594; <em>port</em><br>
-<br>
-Creates an input port of the default audio type for <em>client</em> and returns a reference
+<span class="small">Creates an input port of the default audio type for <em>client</em> and returns a reference
 for subsequent operations.<br>
-<br>
 The mandatory <em>name</em> argument (a string) is the short name to be assigned to the port, while
 the <em>options</em> parameter, if present, must be a table with zero or more of the following
-elements:<br></p>
-<div class="ulist">
-<ul>
-<li>
-<p><em>options.is_physical</em> (boolean): JackPortIsPhysical flag;<br></p>
-</li>
-<li>
-<p><em>options.can_monitor</em> (boolean): JackPortCanMonitor flag;<br></p>
-</li>
-<li>
-<p><em>options.is_terminal</em> (boolean): JackPortIsTerminal flag.</p>
+elements:<br>
+<strong>options.is_physical</strong> (boolean): JackPortIsPhysical flag;<br>
+<strong>options.can_monitor</strong> (boolean): JackPortCanMonitor flag;<br>
+<strong>options.is_terminal</strong> (boolean): JackPortIsTerminal flag.</span></p>
 </li>
 </ul>
 </div>
-</li>
-</ul>
-</div>
-<hr>
 <div id="jack.output_audio_port" class="ulist">
 <ul>
 <li>
-<p><strong>jack.output_audio_port</strong> ( <em>client</em> , <em>name</em> [, <em>options</em> ] )<br>
+<p><strong>jack.output_audio_port</strong> ( <em>client</em> , <em>name</em> [, <em>options</em> ] ) <em>M</em><br>
 &#8594; <em>port</em><br>
-<br>
-Creates an output port of the default audio type
+<span class="small">Creates an output port of the default audio type
 for <em>client</em> and returns a reference for subsequent operations.<br>
-The meaning of the arguments is the same as for <a href="#jack.input_audio_port">jack.input_audio_port</a>().</p>
+The meaning of the arguments is the same as for <a href="#jack.input_audio_port">jack.input_audio_port</a>().</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.input_midi_port" class="ulist">
 <ul>
 <li>
-<p><strong>jack.input_midi_port</strong> ( <em>client</em> , <em>name</em> [, <em>options</em> ] )<br>
+<p><strong>jack.input_midi_port</strong> ( <em>client</em> , <em>name</em> [, <em>options</em> ] ) <em>M</em><br>
 &#8594; <em>port</em><br>
-<br>
-Creates an input port of the default MIDI type
+<span class="small">Creates an input port of the default MIDI type
 for <em>client</em> and returns a reference for subsequent operations.<br>
-The meaning of the arguments is the same as for <a href="#jack.input_audio_port">jack.input_audio_port</a>().</p>
+The meaning of the arguments is the same as for <a href="#jack.input_audio_port">jack.input_audio_port</a>().</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.output_midi_port" class="ulist">
 <ul>
 <li>
-<p><strong>jack.output_midi_port</strong> ( <em>client</em> , <em>name</em> [, <em>options</em> ] )<br>
+<p><strong>jack.output_midi_port</strong> ( <em>client</em> , <em>name</em> [, <em>options</em> ] ) <em>M</em><br>
 &#8594; <em>port</em><br>
-<br>
-Creates an output port of the default MIDI type
+<span class="small">Creates an output port of the default MIDI type
 for <em>client</em> and returns a reference for subsequent operations.<br>
-The meaning of the arguments is the same as for <a href="#jack.input_audio_port">jack.input_audio_port</a>().</p>
+The meaning of the arguments is the same as for <a href="#jack.input_audio_port">jack.input_audio_port</a>().</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.input_custom_port" class="ulist">
 <ul>
 <li>
-<p><strong>jack.input_custom_port</strong> ( <em>client</em> , <em>name</em> [, <em>options</em> ] )<br>
+<p><strong>jack.input_custom_port</strong> ( <em>client</em> , <em>name</em> [, <em>options</em> ] ) <em>M</em><br>
 &#8594; <em>port</em><br>
-<br>
-Not available yet.</p>
+<span class="small">Not available yet.</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.output_custom_port" class="ulist">
 <ul>
 <li>
-<p><strong>jack.output_custom_port</strong> ( <em>client</em> , <em>name</em> [, <em>options</em> ] )<br>
+<p><strong>jack.output_custom_port</strong> ( <em>client</em> , <em>name</em> [, <em>options</em> ] ) <em>M</em><br>
 &#8594; <em>port</em><br>
-<br>
-Not available yet.</p>
+<span class="small">Not available yet.</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.port_name_size" class="ulist">
 <ul>
 <li>
-<p><strong>jack.port_name_size</strong> ( )<br>
+<p><strong>jack.port_name_size</strong> ( ) <em>M</em><br>
 &#8594; <em>maxsize</em><br>
-<br>
-Returns the maximum allowed size for JACK port names.</p>
+<span class="small">Returns the maximum allowed size for JACK port names.</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.port_type_size" class="ulist">
 <ul>
 <li>
-<p><strong>jack.port_type_size</strong> ( )<br>
+<p><strong>jack.port_type_size</strong> ( ) <em>M</em><br>
 &#8594; <em>maxsize</em><br>
-<br>
-Returns the maximum allowed size for JACK port types.</p>
+<span class="small">Returns the maximum allowed size for JACK port types.</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.port_unregister" class="ulist">
 <ul>
 <li>
-<p><strong>jack.port_unregister</strong> ( <em>port</em> )<br>
-<br>
-Unregisters and deletes <em>port</em>.</p>
+<p><strong>jack.port_unregister</strong> ( <em>port</em> ) <em>M</em><br>
+<span class="small">Unregisters and deletes <em>port</em>.</span></p>
 </li>
 </ul>
 </div>
@@ -1882,536 +1734,400 @@ A port is automatically unregistered by LuaJack when the client that created it 
 </tr>
 </table>
 </div>
-<hr>
 <div id="jack.connect" class="ulist">
 <ul>
 <li>
-<p><strong>jack.port_connect</strong> ( <em>port</em>, <em>portname2</em> )<br></p>
-</li>
-<li>
-<p><strong>jack.nport_connect</strong> ( <em>client</em>, <em>portname1</em>, <em>portname2</em> ) alias <strong>jack.connect</strong><br>
-<br>
-Connects two ports. One of the two ports must be an output port (source of the connection)
-and the other must be an input port (destination). The two ports can be passed in any order.</p>
+<p><strong>jack.port_connect</strong> ( <em>port</em>, <em>portname2</em> ) <em>M</em><br>
+<strong>jack.nport_connect</strong> ( <em>client</em>, <em>portname1</em>, <em>portname2</em> ) alias <strong>jack.connect</strong> <em>M</em><br>
+<span class="small">Connects two ports. One of the two ports must be an output port (source of the connection)
+and the other must be an input port (destination). The two ports can be passed in any order.</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.disconnect" class="ulist">
 <ul>
 <li>
-<p><strong>jack.port_disconnect</strong> ( <em>port</em> [, <em>portname2</em>] )<br></p>
-</li>
-<li>
-<p><strong>jack.nport_disconnect</strong> ( <em>client</em>, <em>portname1</em> [, <em>portname2</em>] )  alias <strong>jack.disconnect</strong><br>
-<br>
-Disconnects two ports.
-If <em>portname2</em> is <em>nil</em>, the first port is disconnected from all the ports it is connected to.</p>
+<p><strong>jack.port_disconnect</strong> ( <em>port</em> [, <em>portname2</em>] ) <em>M</em><br>
+<strong>jack.nport_disconnect</strong> ( <em>client</em>, <em>portname1</em> [, <em>portname2</em>] )  alias <strong>jack.disconnect</strong> <em>M</em><br>
+<span class="small">Disconnects two ports.
+If <em>portname2</em> is <em>nil</em>, the first port is disconnected from all the ports it is connected to.</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.port_name" class="ulist">
 <ul>
 <li>
-<p><strong>jack.port_name</strong> ( <em>port</em> )<br>
+<p><strong>jack.port_name</strong> ( <em>port</em> ) <em>M</em><br>
 &#8594; <em>fullname</em><br>
-<br>
-Returns the port&#8217;s full name.</p>
+<span class="small">Returns the port&#8217;s full name.</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.port_short_name" class="ulist">
 <ul>
 <li>
-<p><strong>jack.port_short_name</strong> ( <em>port</em> )<br>
+<p><strong>jack.port_short_name</strong> ( <em>port</em> ) <em>M</em><br>
 &#8594; <em>shortname</em><br>
-<br>
-Returns the port&#8217;s short name.</p>
+<span class="small">Returns the port&#8217;s short name.</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.port_flags" class="ulist">
 <ul>
 <li>
-<p><strong>jack.port_flags</strong> ( <em>port</em> )<br></p>
-</li>
-<li>
-<p><strong>jack.nport_flags</strong> ( <em>client</em>, <em>portname</em> )<br>
+<p><strong>jack.port_flags</strong> ( <em>port</em> ) <em>M</em><br>
+<strong>jack.nport_flags</strong> ( <em>client</em>, <em>portname</em> ) <em>M</em><br>
 &#8594; <em>flags</em>, <em>table</em><br>
-<br>
-Returns the port&#8217;s flags, in two equivalent formats:<br></p>
-<div class="ulist circle">
-<ul class="circle">
-<li>
-<p><em>flags</em> : a string concatenating the flags that apply to the port, and</p>
-</li>
-<li>
-<p><em>table</em>: a table where <em>table.&lt;flag&gt;</em> is <em>true</em> if <em>&lt;flag&gt;</em> applies to the port,
-or <em>nil</em> otherwise.
-<br>
+<span class="small">Returns the port&#8217;s flags, in two equivalent formats:<br>
+<strong>flags</strong> : a string concatenating the flags that apply to the port, and<br>
+<strong>table</strong>: a table where <em>table.&lt;flag&gt;</em> is <em>true</em> if <em>&lt;flag&gt;</em> applies to the port,
+or <em>nil</em> otherwise.<br>
 (<em>&lt;flag&gt;</em> = <em>'input'</em> | <em>'output'</em> | <em>'audio'</em> | <em>'midi'</em> | <em>'custom'</em> |
-<em>'is_physical'</em> | <em>'can_monitor'</em> | <em>'is_terminal'</em> )</p>
+<em>'is_physical'</em> | <em>'can_monitor'</em> | <em>'is_terminal'</em> )</span></p>
 </li>
 </ul>
 </div>
-</li>
-</ul>
-</div>
-<hr>
 <div id="jack.port_uuid" class="ulist">
 <ul>
 <li>
-<p><strong>jack.port_uuid</strong> ( <em>port</em> )<br></p>
-</li>
-<li>
-<p><strong>jack.nport_uuid</strong> ( <em>client</em>, <em>portname</em> )<br>
+<p><strong>jack.port_uuid</strong> ( <em>port</em> ) <em>M</em><br>
+<strong>jack.nport_uuid</strong> ( <em>client</em>, <em>portname</em> ) <em>M</em><br>
 &#8594; <em>uuid</em><br>
-<br>
-Returns the port&#8217;s UUID (a string), or <em>nil</em> if not found.</p>
+<span class="small">Returns the port&#8217;s UUID (a string), or <em>nil</em> if not found.</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.port_type" class="ulist">
 <ul>
 <li>
-<p><strong>jack.port_type</strong> ( <em>port</em> )<br></p>
-</li>
-<li>
-<p><strong>jack.nport_type</strong> ( <em>client</em>, <em>portname</em> )<br>
+<p><strong>jack.port_type</strong> ( <em>port</em> ) <em>M</em><br>
+<strong>jack.nport_type</strong> ( <em>client</em>, <em>portname</em> ) <em>M</em><br>
 &#8594; <em>type</em><br>
-<br>
-Returns the port&#8217;s type (a string), or <em>nil</em> if not found.</p>
+<span class="small">Returns the port&#8217;s type (a string), or <em>nil</em> if not found.</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.nport_exists" class="ulist">
 <ul>
 <li>
-<p><strong>jack.nport_exists</strong> ( <em>client</em>, <em>portname</em> )<br>
+<p><strong>jack.nport_exists</strong> ( <em>client</em>, <em>portname</em> ) <em>M</em><br>
 &#8594; <em>boolean</em><br>
-<br>
-Returns <em>true</em> if the port with the full named <em>portname</em> exists, otherwise it returns <em>false</em>.</p>
+<span class="small">Returns <em>true</em> if the port with the full named <em>portname</em> exists, otherwise it returns <em>false</em>.</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.port_is_mine" class="ulist">
 <ul>
 <li>
-<p><strong>jack.port_is_mine</strong> ( <em>client</em>, <em>port</em> )<br></p>
-</li>
-<li>
-<p><strong>jack.nport_is_mine</strong> ( <em>client</em>, <em>portname</em> )<br>
+<p><strong>jack.port_is_mine</strong> ( <em>client</em>, <em>port</em> ) <em>M</em><br>
+<strong>jack.nport_is_mine</strong> ( <em>client</em>, <em>portname</em> ) <em>M</em><br>
 &#8594; <em>boolean</em><br>
-<br>
-Returns <em>true</em> if the port is owned by the invoking <em>client</em>, otherwise it returns <em>false</em>.</p>
+<span class="small">Returns <em>true</em> if the port is owned by the invoking <em>client</em>, otherwise it returns <em>false</em>.</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.port_set_alias" class="ulist">
 <ul>
 <li>
-<p><strong>jack.port_set_alias</strong> ( <em>port</em>, <em>alias</em> )<br></p>
-</li>
-<li>
-<p><strong>jack.nport_set_alias</strong> ( <em>client</em>, <em>portname</em>, <em>alias</em> )<br>
-<br>
-Sets <em>alias</em> as an alias for the port.</p>
+<p><strong>jack.port_set_alias</strong> ( <em>port</em>, <em>alias</em> ) <em>M</em><br>
+<strong>jack.nport_set_alias</strong> ( <em>client</em>, <em>portname</em>, <em>alias</em> ) <em>M</em><br>
+<span class="small">Sets <em>alias</em> as an alias for the port.</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.port_unset_alias" class="ulist">
 <ul>
 <li>
-<p><strong>jack.port_unset_alias</strong> ( <em>port</em>, <em>alias</em> )<br></p>
-</li>
-<li>
-<p><strong>jack.nport_unset_alias</strong> ( <em>client</em>, <em>portname</em>, <em>alias</em> )<br>
-<br>
-Unsets <em>alias</em> as an alias for the port.</p>
+<p><strong>jack.port_unset_alias</strong> ( <em>port</em>, <em>alias</em> ) <em>M</em><br>
+<strong>jack.nport_unset_alias</strong> ( <em>client</em>, <em>portname</em>, <em>alias</em> ) <em>M</em><br>
+<span class="small">Unsets <em>alias</em> as an alias for the port.</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.port_aliases" class="ulist">
 <ul>
 <li>
-<p><strong>jack.port_aliases</strong> ( <em>port</em> )<br></p>
-</li>
-<li>
-<p><strong>jack.nport_aliases</strong> ( <em>client</em>, <em>portname</em> )<br>
+<p><strong>jack.port_aliases</strong> ( <em>port</em> ) <em>M</em><br>
+<strong>jack.nport_aliases</strong> ( <em>client</em>, <em>portname</em> ) <em>M</em><br>
 &#8594; <em>alias1</em>, <em>alias2</em><br>
-<br>
-Returns the aliases for the port (if it has any).</p>
+<span class="small">Returns the aliases for the port (if it has any).</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.port_connections" class="ulist">
 <ul>
 <li>
-<p><strong>jack.port_connections</strong> ( <em>port</em> [, <em>list</em> ] )<br></p>
-</li>
-<li>
-<p><strong>jack.nport_connections</strong> ( <em>client</em>, <em>portname</em> [, <em>list</em> ] )<br>
+<p><strong>jack.port_connections</strong> ( <em>port</em> [, <em>list</em> ] ) <em>M</em><br>
+<strong>jack.nport_connections</strong> ( <em>client</em>, <em>portname</em> [, <em>list</em> ] ) <em>M</em><br>
 &#8594; <em>N</em>, <em>{ portname1, &#8230;&#8203;, portnameN }</em><br>
-<br>
-Returns the number of connections the port is involved in. If <em>list = true</em>, it returns also
-a table containing the full names of the ports the port is connected to.</p>
+<span class="small">Returns the number of connections the port is involved in. If <em>list = true</em>, it returns also
+a table containing the full names of the ports the port is connected to.</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.port_connected_to" class="ulist">
 <ul>
 <li>
-<p><strong>jack.port_connected_to</strong> ( <em>port</em>, <em>portname2</em> )<br></p>
-</li>
-<li>
-<p><strong>jack.nport_connected_to</strong> ( <em>client</em>, <em>portname1</em>, <em>portname2</em> )<br>
+<p><strong>jack.port_connected_to</strong> ( <em>port</em>, <em>portname2</em> ) <em>M</em><br>
+<strong>jack.nport_connected_to</strong> ( <em>client</em>, <em>portname1</em>, <em>portname2</em> ) <em>M</em><br>
 &#8594; <em>boolean</em><br>
-<br>
-Returns <em>true</em> if the two ports are connected, <em>false</em> otherwise.</p>
+<span class="small">Returns <em>true</em> if the two ports are connected, <em>false</em> otherwise.</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.port_monitor" class="ulist">
 <ul>
 <li>
-<p><strong>jack.port_monitor</strong> ( <em>port</em>, <em>onoff</em> )<br></p>
-</li>
-<li>
-<p><strong>jack.nport_monitor</strong> ( <em>client</em>, <em>portname</em>, <em>onoff</em> )<br>
-<br>
-Turns input monitoring on or off for the port (implemented with jack_port_ensure_monitor()).
-The <em>onoff</em> argument is a string and may be <em>'on'</em> or <em>'off</em>.</p>
+<p><strong>jack.port_monitor</strong> ( <em>port</em>, <em>onoff</em> ) <em>M</em><br>
+<strong>jack.nport_monitor</strong> ( <em>client</em>, <em>portname</em>, <em>onoff</em> ) <em>M</em><br>
+<span class="small">Turns input monitoring on or off for the port (implemented with jack_port_ensure_monitor()).
+The <em>onoff</em> argument is a string and may be <em>'on'</em> or <em>'off</em>.</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.port_monitoring" class="ulist">
 <ul>
 <li>
-<p><strong>jack.port_monitoring</strong> ( <em>port</em> )<br></p>
-</li>
-<li>
-<p><strong>jack.nport_monitoring</strong> ( <em>client</em>, <em>portname</em> )<br>
+<p><strong>jack.port_monitoring</strong> ( <em>port</em> ) <em>M</em><br>
+<strong>jack.nport_monitoring</strong> ( <em>client</em>, <em>portname</em> ) <em>M</em><br>
 &#8594; <em>boolean</em><br>
-<br>
-Returns <em>true</em> if input monitoring has been requested for the port, <em>false</em> otherwise
-or if no port with this name was found.</p>
+<span class="small">Returns <em>true</em> if input monitoring has been requested for the port, <em>false</em> otherwise
+or if no port with this name was found.</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.get_ports" class="ulist">
 <ul>
 <li>
-<p><strong>jack.get_ports</strong> ( <em>client</em> [, <em>filter</em> ])<br>
+<p><strong>jack.get_ports</strong> ( <em>client</em> [, <em>filter</em> ]) <em>M</em><br>
 &#8594; <em>{ portname1, &#8230;&#8203;, portnameN }</em><br>
-<br>
-Returns a list (table) of full port names. If <em>filter</em> is <em>nil</em>, all the ports are listed,
+<span class="small">Returns a list (table) of full port names. If <em>filter</em> is <em>nil</em>, all the ports are listed,
 otherwise the ports are selected according to the <em>filter</em> parameter, which must be a table
-containing zero or more of the following optional elements:<br></p>
-<div class="ulist">
-<ul>
-<li>
-<p><em>filter.name_pattern</em>: a regular expression (string) used to select ports by name;</p>
-</li>
-<li>
-<p><em>filter.type_pattern</em>: a regular expression (string) used to select ports by type;</p>
-</li>
-<li>
-<p><em>filter.direction</em>: a string that may be <em>'input'</em> or <em>'output'</em>, to select input ports only
-or output ports only, respectively;</p>
-</li>
-<li>
-<p><em>filter.is_physical</em> (boolean): if <em>true</em>, list only physical ports;</p>
-</li>
-<li>
-<p><em>filter.can_monitor</em> (boolean): if <em>true</em>, list only ports that can monitor;</p>
-</li>
-<li>
-<p><em>filter.is_terminal</em> (boolean): if <em>true</em>, list only terminal ports.</p>
+containing zero or more of the following optional elements:<br>
+<strong>filter.name_pattern</strong>: a regular expression (string) used to select ports by name;<br>
+<strong>filter.type_pattern</strong>: a regular expression (string) used to select ports by type;<br>
+<strong>filter.direction</strong>: a string that may be <em>'input'</em> or <em>'output'</em>, to select input ports only<br>
+or output ports only, respectively;<br>
+<strong>filter.is_physical</strong> (boolean): if <em>true</em>, list only physical ports;<br>
+<strong>filter.can_monitor</strong> (boolean): if <em>true</em>, list only ports that can monitor;<br>
+<strong>filter.is_terminal</strong> (boolean): if <em>true</em>, list only terminal ports.</span></p>
 </li>
 </ul>
 </div>
-</li>
-</ul>
 </div>
-<div style="page-break-after: always;"></div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_latency">Latency</h2>
-<div class="sectionbody">
+<div class="sect2">
+<h3 id="_latency">Latency</h3>
 <div class="paragraph">
-<p>Refer to <a href="http://jackaudio.org/api/group__LatencyFunctions.html">'Managing and determining latency'</a>
-in the JACK documentation for details on how latencies should be managed.</p>
+<p><span class="small">Rfr: <a href="http://jackaudio.org/api/group__LatencyFunctions.html">Managing and determining Latency</a></span></p>
 </div>
-<hr>
 <div id="jack.latency_range" class="ulist">
 <ul>
 <li>
-<p><strong>jack.latency_range</strong> ( <em>port</em>, <em>mode</em> )<br>
+<p><strong>jack.latency_range</strong> ( <em>port</em>, <em>mode</em> ) <em>M</em><br>
 &#8594; <em>min</em>, <em>max</em><br>
-<br>
-Gets the minimum and maximum latencies (in frames) defined by <em>mode</em> for the port.
-The <em>mode</em> parameter (a string) may be <em>'capture'</em> or <em>'playback'</em>.</p>
+<span class="small">Gets the minimum and maximum latencies (in frames) defined by <em>mode</em> for the port.
+The <em>mode</em> parameter (a string) may be <em>'capture'</em> or <em>'playback'</em>.</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.set_latency_range" class="ulist">
 <ul>
 <li>
-<p><strong>jack.set_latency_range</strong> ( <em>port</em>, <em>mode</em>, <em>min</em>, <em>max</em> )<br>
-<br>
-Sets the minimum and maximum latencies (in frames) defined by <em>mode</em> for <em>port</em>.
+<p><strong>jack.set_latency_range</strong> ( <em>port</em>, <em>mode</em>, <em>min</em>, <em>max</em> ) <em>M</em><br>
+<span class="small">Sets the minimum and maximum latencies (in frames) defined by <em>mode</em> for <em>port</em>.
 The <em>mode</em> parameter (a string) may be <em>'capture'</em> or <em>playback</em>.
-This function should only be used inside a <a href="#jack.latency_callback">latency callback</a>.</p>
+This function should only be used inside a <a href="#jack.latency_callback">latency callback</a>.</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.recompute_total_latencies" class="ulist">
 <ul>
 <li>
-<p><strong>jack.recompute_total_latencies</strong> ( <em>client</em> )<br>
-<br>
-Requests a complete recomputation of all port latencies.</p>
+<p><strong>jack.recompute_total_latencies</strong> ( <em>client</em> ) <em>M</em><br>
+<span class="small">Requests a complete recomputation of all port latencies.</span></p>
 </li>
 </ul>
 </div>
-<div style="page-break-after: always;"></div>
 </div>
+<div class="sect2">
+<h3 id="_time">Time</h3>
+<div class="paragraph">
+<p><span class="small">Rfr: <a href="http://jackaudio.org/api/group__TimeFunctions.html">Handling time</a></span></p>
 </div>
-<div class="sect1">
-<h2 id="_time">Time</h2>
-<div class="sectionbody">
 <div id="jack.time" class="ulist">
 <ul>
 <li>
-<p><strong>jack.time</strong> ( )<br>
+<p><strong>jack.time</strong> ( ) <em>MPT</em><br>
 &#8594; <em>useconds</em><br>
-<br>
-Returns JACK&#8217;s current system time in microseconds.</p>
+<span class="small">Returns JACK&#8217;s current system time in microseconds.</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.frame" class="ulist">
 <ul>
 <li>
 <p><strong>jack.frame</strong> ( <em>client</em> ) alias <strong>jack.frame_time</strong><br>
 &#8594; <em>frameno</em><br>
-<br>
-Returns the estimated current time in frames (to be used outside the process callback).</p>
+<span class="small">Returns the estimated current time in frames (to be used outside the process callback).</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.since" class="ulist">
 <ul>
 <li>
-<p><strong>jack.since</strong> ( <em>useconds</em> )<br>
+<p><strong>jack.since</strong> ( <em>useconds</em> ) <em>MPT</em><br>
 &#8594; <em>elapsed</em><br>
-<br>
-Returns the time, in microseconds, elapsed since JACK&#8217;s system time <em>useconds</em>.</p>
+<span class="small">Returns the time, in microseconds, elapsed since JACK&#8217;s system time <em>useconds</em>.</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.since_frame" class="ulist">
 <ul>
 <li>
-<p><strong>jack.since_frame</strong> ( <em>client</em>, <em>frameno</em> )<br>
+<p><strong>jack.since_frame</strong> ( <em>client</em>, <em>frameno</em> ) <em>MPT</em><br>
 &#8594; <em>nframes</em><br>
-<br>
-Returns the number of frames elapsed since the estimated time <em>frameno</em>, in frames
-(to be used outside the process callback).</p>
+<span class="small">Returns the number of frames elapsed since the estimated time <em>frameno</em>, in frames
+(to be used outside the process callback).</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.frames_to_time" class="ulist">
 <ul>
 <li>
-<p><strong>jack.frames_to_time</strong> ( <em>client</em>, <em>nframes</em> )<br>
+<p><strong>jack.frames_to_time</strong> ( <em>client</em>, <em>nframes</em> ) <em>MPT</em><br>
 &#8594; <em>useconds</em><br>
-<br>
-Returns the estimated time in microseconds of the specified time in frames.</p>
+<span class="small">Returns the estimated time in microseconds of the specified time in frames.</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.time_to_frames" class="ulist">
 <ul>
 <li>
-<p><strong>jack.time_to_frames</strong> ( <em>client</em>, <em>useconds</em> )<br>
+<p><strong>jack.time_to_frames</strong> ( <em>client</em>, <em>useconds</em> ) <em>MPT</em><br>
 &#8594; <em>nframes</em><br>
-<br>
-Returns the estimated time in frames of the specified time in microseconds.</p>
+<span class="small">Returns the estimated time in frames of the specified time in microseconds.</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.frames_since_cycle_start" class="ulist">
 <ul>
 <li>
-<p><strong>jack.frames_since_cycle_start</strong> ( <em>client</em> )<br>
+<p><strong>jack.frames_since_cycle_start</strong> ( <em>client</em> ) <em>MPT</em><br>
 &#8594; <em>nframes</em><br>
-<br>
-Returns the estimated time in frames that has passed since the JACK server began the
-current process cycle.</p>
+<span class="small">Returns the estimated time in frames that has passed since the JACK server began the
+current process cycle.</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.last_frame_time" class="ulist">
 <ul>
 <li>
-<p><strong>jack.last_frame_time</strong> ( <em>client</em> )<br>
+<p><strong>jack.last_frame_time</strong> ( <em>client</em> ) <em>P</em><br>
 &#8594; <em>nframes</em><br>
-<br>
-Returns the time, in frames, at the start of the current process cycle.
+<span class="small">Returns the time, in frames, at the start of the current process cycle.
 Available in the process callback only, to be used to interpret timestamps generated with
-<a href="#jack.frame">jack.frame</a>() in other threads.</p>
+<a href="#jack.frame">jack.frame</a>() in other threads.</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.cycle_times" class="ulist">
 <ul>
 <li>
-<p><strong>jack.cycle_times</strong> ( <em>client</em> )<br>
+<p><strong>jack.cycle_times</strong> ( <em>client</em> ) <em>P</em><br>
 &#8594; <em>current_frames</em>, <em>current_usecs</em>, <em>next_usecs</em>, <em>period_usecs</em><br>
-<br>
-Available in the process callback only, returns internal cycle timing information
+<span class="small">Available in the process callback only, returns internal cycle timing information
 (refer to <a href="http://jackaudio.org/api/group__TimeFunctions.html">jack_get_cycle_time</a>()
-in the JACK documentation for more details).</p>
+in the JACK documentation for more details).</span></p>
 </li>
 </ul>
 </div>
-<div style="page-break-after: always;"></div>
 </div>
-</div>
-<div class="sect1">
-<h2 id="_transport_and_timebase">Transport and timebase</h2>
-<div class="sectionbody">
+<div class="sect2">
+<h3 id="_transport_and_timebase">Transport and timebase</h3>
 <div class="paragraph">
-<p>Refer to
-<a href="http://jackaudio.org/api/transport-design.html">'JACK Transport Design'</a> in the
-JACK documentation for details on the transport mechanism.</p>
+<p><span class="small">Rfr: <a href="http://jackaudio.org/api/group__TransportControl.html">Transport and Timebase control</a> -
+<a href="http://jackaudio.org/api/transport-design.html">JACK Transport Design</a>.</span></p>
 </div>
-<hr>
 <div id="jack.current_transport_frame" class="ulist">
 <ul>
 <li>
-<p><strong>jack.current_transport_frame</strong> ( <em>client</em> )<br>
+<p><strong>jack.current_transport_frame</strong> ( <em>client</em> ) <em>MPT</em><br>
 &#8594; <em>frameno</em><br>
-<br>
-Returns an estimate of the current transport frame.</p>
+<span class="small">Returns an estimate of the current transport frame.</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.transport_state" class="ulist">
 <ul>
 <li>
-<p><strong>jack.transport_state</strong> ( <em>client</em> )<br>
+<p><strong>jack.transport_state</strong> ( <em>client</em> ) <em>MPT</em><br>
 &#8594; <em>state</em><br>
-<br>
-Returns the current transport <em>state</em> (a string that may have one of the following values:
-<em>'starting'</em>, <em>'rolling'</em>, or <em>'stopping'</em>).</p>
+<span class="small">Returns the current transport <em>state</em> (a string that may have one of the following values:
+<em>'starting'</em>, <em>'rolling'</em>, or <em>'stopping'</em>).</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.transport_query" class="ulist">
 <ul>
 <li>
-<p><strong>jack.transport_query</strong> ( <em>client</em> )<br>
+<p><strong>jack.transport_query</strong> ( <em>client</em> ) <em>MPT</em><br>
 &#8594; <em>state</em>, <em>position</em><br>
-<br>
-Returns the current transport <em>state</em> (see <a href="#jack.transport_state">jack.transport_state</a>())
+<span class="small">Returns the current transport <em>state</em> (see <a href="#jack.transport_state">jack.transport_state</a>())
 and the current transport <em>position</em>.<br>
-<br>
 The transport position is a Lua-table representation of the
 <a href="http://jackaudio.org/api/structjack__position__t.html">jack_position_t</a> struct.
 Its elements have the same name and meaning as the fields of the struct, except for the
 <em>valid</em> field, which in the table representation is not used (optional elements which
-are not present are set to <em>nil</em>, i.e. not set at all).</p>
+are not present are set to <em>nil</em>, i.e. not set at all).</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.transport_start" class="ulist">
 <ul>
 <li>
-<p><strong>jack.transport_start</strong> ( <em>client</em> )<br>
-<br>
-Starts the JACK transport rolling.</p>
+<p><strong>jack.transport_start</strong> ( <em>client</em> ) <em>MPT</em><br>
+<span class="small">Starts the JACK transport rolling.</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.transport_stop" class="ulist">
 <ul>
 <li>
-<p><strong>jack.transport_stop</strong> ( <em>client</em> )<br>
-<br>
-Stops the JACK transport rolling.</p>
+<p><strong>jack.transport_stop</strong> ( <em>client</em> ) <em>MPT</em><br>
+<span class="small">Stops the JACK transport rolling.</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.transport_locate" class="ulist">
 <ul>
 <li>
-<p><strong>jack.transport_locate</strong> ( <em>client</em>, <em>frameno</em> )<br>
-<br>
-Repositions the JACK transport to the frame number <em>frameno</em>
-(realtime safe, may be used in the <a href="#jack.timebase_callback">timebase callback</a>).</p>
+<p><strong>jack.transport_locate</strong> ( <em>client</em>, <em>frameno</em> ) <em>MPT</em><br>
+<span class="small">Repositions the JACK transport to the frame number <em>frameno</em>
+(realtime safe, may be used in the <a href="#jack.timebase_callback">timebase callback</a>).</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.transport_reposition" class="ulist">
 <ul>
 <li>
-<p><strong>jack.transport_reposition</strong> ( <em>client</em>, <em>position</em> )<br>
-<br>
-Request a new transport <em>position</em>
-(realtime safe, may be used in the <a href="#jack.timebase_callback">timebase callback</a>).</p>
+<p><strong>jack.transport_reposition</strong> ( <em>client</em>, <em>position</em> ) <em>MPT</em><br>
+<span class="small">Request a new transport <em>position</em>
+(realtime safe, may be used in the <a href="#jack.timebase_callback">timebase callback</a>).</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.set_sync_timeout" class="ulist">
 <ul>
 <li>
-<p><strong>jack.set_sync_timeout</strong> ( <em>client</em>, <em>timeout</em> )<br>
-<br>
-Sets the <em>timeout</em> value (in microseconds) for
-<a href="http://jackaudio.org/api/transport-design.html#slowsyncclients">slow-sync clients</a>.</p>
+<p><strong>jack.set_sync_timeout</strong> ( <em>client</em>, <em>timeout</em> ) <em>MPT</em><br>
+<span class="small">Sets the <em>timeout</em> value (in microseconds) for
+<a href="http://jackaudio.org/api/transport-design.html#slowsyncclients">slow-sync clients</a>.</span></p>
 </li>
 </ul>
 </div>
-<div style="page-break-after: always;"></div>
 </div>
-</div>
-<div class="sect1">
-<h2 id="_reading_and_writing_audio_data">Reading and writing audio data</h2>
-<div class="sectionbody">
+<div class="sect2">
+<h3 id="_reading_and_writing_audio_data">Reading and writing audio data</h3>
 <div class="paragraph">
 <p>The functions described in this section are available only in the
 <a href="#jack.process_callback">process callback</a>, and allow to read and write
@@ -2420,103 +2136,92 @@ samples from/to ports of the default audio type.</p>
 <div class="paragraph">
 <p>For this type of ports, a sample is represented by a Lua number.</p>
 </div>
-<hr>
 <div id="audiojack.get_buffer" class="ulist">
 <ul>
 <li>
-<p><strong>jack.get_buffer</strong> ( <em>port</em> )<br>
+<p><strong>jack.get_buffer</strong> ( <em>port</em> ) <em>P</em><br>
 &#8594; <em>nframes</em><br>
-<br>
-Retrieves the port buffer and initializes the buffer&#8217;s <em>current position</em> to the first
-sample. Returns the buffer size in samples (which is the same value as the <em>nframes</em>
+<span class="small">Retrieves the port buffer and initializes the buffer&#8217;s <em>current position</em> to the first
+sample.<br>
+Returns the buffer size in samples (which is the same value as the <em>nframes</em>
 parameter passed to the process callback).<br>
-<br>
 This function must be invoked in the <a href="#jack.process_callback">process callback</a>, at each
-process cycle, before any other operation on the buffer.</p>
+process cycle, before any other operation on the buffer.</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="audiojack.seek" class="ulist">
 <ul>
 <li>
-<p><strong>jack.seek</strong> ( <em>port</em> [, <em>position</em> ] )<br>
+<p><strong>jack.seek</strong> ( <em>port</em> [, <em>position</em> ] ) <em>P</em><br>
 &#8594; <em>position</em>, <em>available</em><br>
-<br>
-Returns the current <em>position</em> in the port&#8217;s buffer and the number of available
-samples from the current position to the end of the buffer.
-If <em>position</em> is passed as argument, the function sets the current position to that value.</p>
+<span class="small">Returns the current <em>position</em> in the port&#8217;s buffer and the number of available
+samples from the current position to the end of the buffer.<br>
+If <em>position</em> is passed as argument, the function sets the current position to that value.</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="audiojack.read" class="ulist">
 <ul>
 <li>
-<p><strong>jack.read</strong> ( <em>port</em> [, <em>count</em> ] )<br>
+<p><strong>jack.read</strong> ( <em>port</em> [, <em>count</em> ] ) <em>P</em><br>
 &#8594; <em>sample1</em>, <em>&#8230;&#8203;</em><br>
-<br>
-Returns up to <em>count</em> samples from the (input) port buffer.
+<span class="small">Returns up to <em>count</em> samples from the (input) port buffer.<br>
 Samples are read starting from the current position, which is then advanced by the
-number of returned samples.
+number of returned samples.<br>
 If <em>count</em> exceeds the available samples, this function returns the available samples
-only. If no samples are available, it returns <em>nil</em>.
-If <em>count</em> is not passed, it defaults to <em>'all the remaining samples'</em>.</p>
+only. If no samples are available, it returns <em>nil</em>.<br>
+If <em>count</em> is not passed, it defaults to <em>'all the remaining samples'</em>.</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="audiojack.write" class="ulist">
 <ul>
 <li>
-<p><strong>jack.write</strong> ( <em>port</em> [, <em>sample1</em> , <em>&#8230;&#8203;</em> ] )<br>
+<p><strong>jack.write</strong> ( <em>port</em> [, <em>sample1</em> , <em>&#8230;&#8203;</em> ] ) <em>P</em><br>
 &#8594; <em>count</em><br>
-<br>
-Writes the passed samples to the (output) port&#8217;s buffer and returns the <em>count</em> of
-written samples.
+<span class="small">Writes the passed samples to the (output) port&#8217;s buffer and returns the <em>count</em> of
+written samples.<br>
 Samples are written starting from the current position, which is then advanced by <em>count</em>.
 If the number of passed samples exceeds the available space in the buffer, the exceeding
-samples are discarded.</p>
+samples are discarded.</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="audiojack.clear" class="ulist">
 <ul>
 <li>
-<p><strong>jack.clear</strong> ( <em>port</em> [, <em>count</em> ] )<br>
+<p><strong>jack.clear</strong> ( <em>port</em> [, <em>count</em> ] ) <em>P</em><br>
 &#8594; <em>count</em><br>
-<br>
-Same as <a href="#audiojack.write">jack.write</a>(), with the difference that it writes up to <em>count</em>
-samples to zero. If <em>count</em> is not passed, it defaults to <em>'all the remaining samples'</em>.<br></p>
+<span class="small">Same as <a href="#audiojack.write">jack.write</a>(), with the difference that it writes up to <em>count</em>
+samples to zero.<br>
+If <em>count</em> is not passed, it defaults to <em>'all the remaining samples'</em>.</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="audiojack.copy" class="ulist">
 <ul>
 <li>
-<p><strong>jack.copy</strong> ( <em>dstport</em>, <em>srcport</em> [, <em>count</em> ] )<br>
+<p><strong>jack.copy</strong> ( <em>dstport</em>, <em>srcport</em> [, <em>count</em> ] ) <em>P</em><br>
 &#8594; <em>count</em><br>
-<br>
-Copies up to <em>count</em> samples from the buffer of the input port <em>srcport</em> to the
-buffer of the output port <em>dstport</em> and returns the number of copied samples.
+<span class="small">Copies up to <em>count</em> samples from the buffer of the input port <em>srcport</em> to the
+buffer of the output port <em>dstport</em> and returns the number of copied samples.<br>
 This function uses the current positions of both ports, and advances them by the
-number of copied samples.
+number of copied samples.<br>
 If <em>count</em> is not passed, it defaults to <em>maxcount</em>, which is defined as the
 minimum between the remaining samples in the input port&#8217;s buffer and the space
-left in the output port&#8217;s buffer.
+left in the output port&#8217;s buffer.<br>
 If count is passed but it is greater than <em>maxcount</em>, only <em>maxcount</em> samples
-are copied.</p>
+are copied.</span></p>
 </li>
 </ul>
 </div>
-<div style="page-break-after: always;"></div>
 </div>
+<div class="sect2">
+<h3 id="_reading_and_writing_midi_data">Reading and writing MIDI data</h3>
+<div class="paragraph">
+<p><span class="small">Rfr: <a href="http://jackaudio.org/api/group__MIDIAPI.html">Reading and writing MIDI data</a></span></p>
 </div>
-<div class="sect1">
-<h2 id="_reading_and_writing_midi_data">Reading and writing MIDI data</h2>
-<div class="sectionbody">
 <div class="paragraph">
 <p>The functions described in this section are available only in the
 <a href="#jack.process_callback">process callback</a>, and allow to read and write
@@ -2539,38 +2244,33 @@ MIDI events from/to ports of the default MIDI type.</p>
 <p>The <em>data</em> value may be handled with Lua&#8217;s native
 <a href="http://www.lua.org/manual/5.3/manual.html#pdf-string.pack">string.pack</a>() and
 <a href="http://www.lua.org/manual/5.3/manual.html#pdf-string.pack">string.unpack</a>() functions,
-or with the utilities provided in the <a href="#_midi_utilities">luajack/midi.lua</a> module.</p>
+or with the utilities provided in the <a href="#midi_utilities">luajack/midi.lua</a> module.</p>
 </div>
-<hr>
 <div id="midijack.get_buffer" class="ulist">
 <ul>
 <li>
-<p><strong>jack.get_buffer</strong> ( <em>port</em> )<br>
+<p><strong>jack.get_buffer</strong> ( <em>port</em> ) <em>P</em><br>
 &#8594; <em>eventcount</em>, <em>lostcount</em> (if port is input)<br>
 &#8594; <em>space</em> (if port is output)<br>
-<br>
-Retrieves the port buffer.
+<span class="small">Retrieves the port buffer.<br>
 If <em>port</em> is an input port, this function returns the number of events in the buffer
 (<em>eventcount</em>) and the number of lost events (<em>lostcount</em>).
-It also initializes the current index to <em>0</em>, i.e. to the first event in the buffer.
+It also initializes the current index to <em>0</em>, i.e. to the first event in the buffer.<br>
 If <em>port</em> is an output port, the function returns the <em>space</em> available in the buffer for
 writing MIDI event data.<br>
-<br>
 This function must be invoked in the <a href="#jack.process_callback">process callback</a>, at each
-process cycle, before any other operation on the buffer.</p>
+process cycle, before any other operation on the buffer.</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="midijack.seek" class="ulist">
 <ul>
 <li>
-<p><strong>jack.seek</strong> ( <em>port</em> [, <em>index</em> ] )<br>
+<p><strong>jack.seek</strong> ( <em>port</em> [, <em>index</em> ] ) <em>P</em><br>
 &#8594; <em>index</em>, <em>available</em><br>
-<br>
-Returns the current <em>index</em> in the (input) port buffer and the number of <em>available</em>
-events from the current index to the end of the buffer.
-If <em>index</em> is passed as argument, sets the current index to that value.</p>
+<span class="small">Returns the current <em>index</em> in the (input) port buffer and the number of <em>available</em>
+events from the current index to the end of the buffer.<br>
+If <em>index</em> is passed as argument, sets the current index to that value.</span></p>
 </li>
 </ul>
 </div>
@@ -2586,162 +2286,130 @@ Only input MIDI ports are seekable (output MIDI ports are not).
 </tr>
 </table>
 </div>
-<hr>
 <div id="midijack.read" class="ulist">
 <ul>
 <li>
-<p><strong>jack.read</strong> ( <em>port</em> [, <em>index</em> ] )<br>
+<p><strong>jack.read</strong> ( <em>port</em> [, <em>index</em> ] ) <em>P</em><br>
 &#8594; <em>time</em>, <em>data</em><br>
-<br>
-Returns the <a href="#midi_event">MIDI event</a> from the (input) port&#8217;s buffer at its current index,
-which it then advances by <em>1</em>.
+<span class="small">Returns the <a href="#midi_event">MIDI event</a> from the (input) port&#8217;s buffer at its current index,
+which it then advances by <em>1</em>.<br>
 If an <em>index</em> is passed as argument, this function sets the current index to that value
 before reading the event. If the current index exceeds <em>eventcount - 1</em>, the function
-returns <em>nil</em>.</p>
+returns <em>nil</em>.</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="midijack.write" class="ulist">
 <ul>
 <li>
-<p><strong>jack.write</strong> ( <em>port</em>, <em>time</em>, <em>data</em> )<br>
+<p><strong>jack.write</strong> ( <em>port</em>, <em>time</em>, <em>data</em> ) <em>P</em><br>
 &#8594; <em>space</em><br>
-<br>
-Writes a <a href="#midi_event">MIDI event</a> to the (output) port&#8217;s buffer and returns the <em>space</em>
+<span class="small">Writes a <a href="#midi_event">MIDI event</a> to the (output) port&#8217;s buffer and returns the <em>space</em>
 available in the buffer for the next event data.
-If there is not enough space to write the event, this function returns <em>nil</em>.</p>
+If there is not enough space to write the event, this function returns <em>nil</em>.</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="midijack.copy" class="ulist">
 <ul>
 <li>
-<p><strong>jack.copy</strong> ( <em>dstport</em>, <em>srcport</em> [, <em>count</em> ] )<br>
+<p><strong>jack.copy</strong> ( <em>dstport</em>, <em>srcport</em> [, <em>count</em> ] ) <em>P</em><br>
 &#8594; <em>count</em><br>
-<br>
-Copies up to <em>count</em> <a href="#midi_event">MIDI events</a> from the buffer of the input port
+<span class="small">Copies up to <em>count</em> <a href="#midi_event">MIDI events</a> from the buffer of the input port
 <em>srcport</em>  to the buffer of the output port <em>dstport</em>, and returns the number of copied events.
 Events are copied starting from the current index of <em>srcport</em>, which is then
-advanced by the number of copied events.
+advanced by the number of copied events.<br>
 If <em>count</em> is not passed, this function attempts to copy all of the remaining events
-in the input port&#8217;s buffer that fit in the output port&#8217;s buffer.</p>
+in the input port&#8217;s buffer that fit in the output port&#8217;s buffer.</span></p>
 </li>
 </ul>
 </div>
-<div style="page-break-after: always;"></div>
 </div>
+<div class="sect2">
+<h3 id="_statistics">Statistics</h3>
+<div class="paragraph">
+<p><span class="small">Rfr: <a href="http://jackaudio.org/api/statistics_8h.html">statistics.h File Reference</a></span></p>
 </div>
-<div class="sect1">
-<h2 id="_statistics">Statistics</h2>
-<div class="sectionbody">
 <div id="jack.max_delayed_usecs" class="ulist">
 <ul>
 <li>
-<p><strong>jack.max_delayed_usecs</strong> ( <em>client</em> )<br>
+<p><strong>jack.max_delayed_usecs</strong> ( <em>client</em> ) <em>M</em><br>
 &#8594; <em>delay</em><br>
-<br>
-Returns the maximum delay reported by the backend since startup or reset.</p>
+<span class="small">Returns the maximum delay reported by the backend since startup or reset.</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.xrun_delayed_usecs" class="ulist">
 <ul>
 <li>
-<p><strong>jack.xrun_delayed_usecs</strong> ( <em>client</em> )<br>
+<p><strong>jack.xrun_delayed_usecs</strong> ( <em>client</em> ) <em>M</em><br>
 &#8594; <em>delay</em><br>
-<br>
-Returns the delay in microseconds due to the most recent xrun occurrence.</p>
+<span class="small">Returns the delay in microseconds due to the most recent xrun occurrence.</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.reset_max_delayed_usecs" class="ulist">
 <ul>
 <li>
-<p><strong>jack.reset_max_delayed_usecs</strong> ( <em>client</em> )<br>
-<br>
-Resets the maximum delay counter.</p>
+<p><strong>jack.reset_max_delayed_usecs</strong> ( <em>client</em> ) <em>M</em><br>
+<span class="small">Resets the maximum delay counter.</span></p>
 </li>
 </ul>
 </div>
-<div style="page-break-after: always;"></div>
 </div>
+<div class="sect2">
+<h3 id="_session_api">Session API</h3>
+<div class="paragraph">
+<p><span class="small">Rfr: <a href="http://jackaudio.org/api/group__SessionClientFunctions.html">Session API for clients</a></span></p>
 </div>
-<div class="sect1">
-<h2 id="_session_api">Session API</h2>
-<div class="sectionbody">
 <div class="paragraph">
 <p>Session clients are expected to use <a href="#jack.session_callback">jack.session_callback</a>() to
 register a session callback in order to listen to events sent by the session manage,
 which instead uses the functions described below in this section.</p>
 </div>
-<hr>
 <div id="jack.session_notify" class="ulist">
 <ul>
 <li>
-<p><strong>jack.session_notify</strong> ( <em>client</em>, <em>target</em>, <em>type</em>, <em>path</em> )<br>
+<p><strong>jack.session_notify</strong> ( <em>client</em>, <em>target</em>, <em>type</em>, <em>path</em> ) <em>M</em><br>
 &#8594; <em>{ reply1, &#8230;&#8203;, replyN }</em><br>
-<br>
-Sends an event to clients that registered a session callback.
-The <em>target</em> argument (a string) is the name of the target client, or <em>nil</em> for 'all'.
-The event <em>type</em> must be one amongst <em>'save'</em>, <em>'save_and_quit'</em> and <em>'save_template'</em>.
+<span class="small">Sends an event to clients that registered a session callback.<br>
+The <em>target</em> argument (a string) is the name of the target client, or <em>nil</em> for 'all'.<br>
+The event <em>type</em> must be one amongst <em>'save'</em>, <em>'save_and_quit'</em> and <em>'save_template'</em>.<br>
 The <em>path</em> argument is the session directory path.<br>
-<br>
 The function returns a table with the replies from the session clients.
-Each entry of the table is a subtable containing the following elements:<br></p>
-<div class="ulist circle">
-<ul class="circle">
-<li>
-<p><em>reply.uuid</em> (a string): the client&#8217;s UUID;</p>
-</li>
-<li>
-<p><em>reply.name</em> (a string): the client&#8217;s name;</p>
-</li>
-<li>
-<p><em>reply.command</em> (a string): the command line needed to restore the client;</p>
-</li>
-<li>
-<p><em>reply.save_error</em> (<em>true</em> or <em>nil</em>): session flag;</p>
-</li>
-<li>
-<p><em>reply.need_terminal</em> (<em>true</em> or <em>nil</em>): session flag;</p>
+Each entry of the table is a subtable containing the following elements:<br>
+<strong>reply.uuid</strong> (a string): the client&#8217;s UUID;<br>
+<strong>reply.name</strong> (a string): the client&#8217;s name;<br>
+<strong>reply.command</strong> (a string): the command line needed to restore the client;<br>
+<strong>reply.save_error</strong> (<em>true</em> or <em>nil</em>): session flag;<br>
+<strong>reply.need_terminal</strong> (<em>true</em> or <em>nil</em>): session flag.</span></p>
 </li>
 </ul>
 </div>
-</li>
-</ul>
-</div>
-<hr>
 <div id="jack.has_session_callback" class="ulist">
 <ul>
 <li>
-<p><strong>jack.has_session_callback</strong> ( <em>client</em>, <em>clientname</em> )<br>
+<p><strong>jack.has_session_callback</strong> ( <em>client</em>, <em>clientname</em> ) <em>M</em><br>
 &#8594; <em>boolean</em><br>
-<br>
-Returns <em>true</em> if the client named <em>clientname</em> has registered a session callback,
-<em>false</em> otherwise.</p>
+<span class="small">Returns <em>true</em> if the client named <em>clientname</em> has registered a session callback,
+<em>false</em> otherwise.</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.reserve_client_name" class="ulist">
 <ul>
 <li>
-<p><strong>jack.reserve_client_name</strong> ( <em>client</em>, <em>clientname</em> )<br>
-<br>
-Reserves the client name <em>clientname</em> and associates it with the UUID <em>uuid</em>.</p>
+<p><strong>jack.reserve_client_name</strong> ( <em>client</em>, <em>clientname</em> ) <em>M</em><br>
+<span class="small">Reserves the client name <em>clientname</em> and associates it with the UUID <em>uuid</em>.</span></p>
 </li>
 </ul>
 </div>
-<div style="page-break-after: always;"></div>
 </div>
+<div class="sect2">
+<h3 id="_ringbuffers">Ringbuffers</h3>
+<div class="paragraph">
+<p><span class="small">Rfr: <a href="http://jackaudio.org/api/ringbuffer_8h.html">ringbuffer.h File Reference</a></span></p>
 </div>
-<div class="sect1">
-<h2 id="_ringbuffers">Ringbuffers</h2>
-<div class="sectionbody">
 <div class="paragraph">
 <p>LuaJack wraps the
 <a href="http://jackaudio.org/api/ringbuffer_8h.html">lock-free ringbuffers</a>
@@ -2754,166 +2422,134 @@ nature and adding means to use them in conjunction with sockets.</p>
 by <em>data</em> (a Lua string). The tag can be used to represent the 'type' of the
 message or any other information (LuaJack by itself does not interpret it by any means).</p>
 </div>
-<hr>
 <div id="jack.ringbuffer" class="ulist">
 <ul>
 <li>
-<p><strong>jack.ringbuffer</strong> ( <em>client</em>, <em>size</em> [, <em>mlock</em> [, <em>usepipe</em> ]] )<br>
+<p><strong>jack.ringbuffer</strong> ( <em>client</em>, <em>size</em> [, <em>mlock</em> [, <em>usepipe</em> ]] ) <em>M</em><br>
 &#8594; <em>rbuf</em><br>
-<br>
-Creates a ringbuffer of the specified <em>size</em> (in bytes) and returns a
+<span class="small">Creates a ringbuffer of the specified <em>size</em> (in bytes) and returns a
 ringbuffer reference for subsequent operations. The returned reference
-is an integer which may be passed as argument to <a href="#jack.thread">thread scripts</a>.
-If <em>mlock=true</em>, the buffer is locked in memory. If <em>usepipe=true</em>, a
-pipe is associated with the ringbuffer allowing its 'read' end to be
+is an integer which may be passed as argument to <a href="#jack.thread">thread scripts</a>.<br>
+If <em>mlock=true</em>, the buffer is locked in memory.<br>
+If <em>usepipe=true</em>, a pipe is associated with the ringbuffer allowing its 'read' end to be
 turned in an object compatible with
 <a href="https://github.com/diegonehab/luasocket">sockect.select</a>()
 and thus to be used in conjunction with sockets or other fd-based
 communication mechanisms (of course, you don&#8217;t want to do this in an
 audio processing realtime thread&#8230;&#8203;).<br>
-<br>
 This function is only available in the <a href="#luajack.contexts">main context</a> and must be
-used before the client is <a href="#jack.activate">activated</a>.</p>
+used before the client is <a href="#jack.activate">activated</a>.</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.ringbuffer_write" class="ulist">
 <ul>
 <li>
-<p><strong>jack.ringbuffer_write</strong> ( <em>rbuf</em>, <em>tag</em> [, <em>data</em> ] )<br>
+<p><strong>jack.ringbuffer_write</strong> ( <em>rbuf</em>, <em>tag</em> [, <em>data</em> ] ) <em>MPT</em><br>
 &#8594; <em>ok</em><br>
-<br>
-Write a <a href="#ringbuffersmessage">message</a> to the ringbuffer <em>rbuf</em>.
-Returns <em>true</em> on success, or <em>false</em> if there was not enough space for the message.</p>
+<span class="small">Write a <a href="#ringbuffersmessage">message</a> to the ringbuffer <em>rbuf</em>.<br>
+Returns <em>true</em> on success, or <em>false</em> if there was not enough space for the message.</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.ringbuffer_read" class="ulist">
 <ul>
 <li>
-<p><strong>jack.ringbuffer_read</strong> ( <em>rbuf</em> )<br>
+<p><strong>jack.ringbuffer_read</strong> ( <em>rbuf</em> ) <em>MPT</em><br>
 &#8594; <em>tag</em>, <em>data</em><br>
-<br>
-Read a <a href="#ringbuffersmessage">message</a> from the ringbuffer <em>rbuf</em>.
-Returns <em>tag</em>=<em>nil</em> if there are no messages available.
+<span class="small">Read a <a href="#ringbuffersmessage">message</a> from the ringbuffer <em>rbuf</em>.
+Returns <em>tag</em>=<em>nil</em> if there are no messages available.<br>
 If the message is composed of the <em>tag</em> only, then <em>data</em> is returned as an
-empty string (so that <em>data:len=0</em>).</p>
+empty string (so that <em>data:len=0</em>).</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.ringbuffer_reset" class="ulist">
 <ul>
 <li>
-<p><strong>jack.ringbuffer_reset</strong> ( <em>rbuf</em> )<br>
-<br>
-Resets the ringbuffer <em>rbuf</em>.</p>
+<p><strong>jack.ringbuffer_reset</strong> ( <em>rbuf</em> ) <em>MPT</em><br>
+<span class="small">Resets the ringbuffer <em>rbuf</em>.</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.ringbuffer_peek" class="ulist">
 <ul>
 <li>
-<p><strong>jack.ringbuffer_peek</strong> ( <em>rbuf</em> )<br>
+<p><strong>jack.ringbuffer_peek</strong> ( <em>rbuf</em> ) <em>MPT</em><br>
 &#8594; <em>ok</em><br>
-<br>
-Returns <em>true</em> if there is a  <a href="#ringbuffersmessage">message</a> available to be read from
-the ringbuffer <em>rbuf</em>, otherwise it returns <em>false</em>.</p>
+<span class="small">Returns <em>true</em> if there is a  <a href="#ringbuffersmessage">message</a> available to be read from
+the ringbuffer <em>rbuf</em>, otherwise it returns <em>false</em>.</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.ringbuffer_getfd" class="ulist">
 <ul>
 <li>
-<p><strong>jack.ringbuffer_getfd</strong> ( <em>rbuf</em> )<br>
+<p><strong>jack.ringbuffer_getfd</strong> ( <em>rbuf</em> ) <em>MPT</em><br>
 &#8594; <em>fd</em><br>
-<br>
-Returns the file descriptor of the pipe associated with the ringbuffer <em>rbuf</em>,
-or <em>nil</em> if it was <a href="#jack.ringbuffer">created</a> without pipe.</p>
+<span class="small">Returns the file descriptor of the pipe associated with the ringbuffer <em>rbuf</em>,
+or <em>nil</em> if it was <a href="#jack.ringbuffer">created</a> without pipe.</span></p>
 </li>
 </ul>
+</div>
 </div>
 <div class="sect2">
 <h3 id="_selectable_ringbuffers">Selectable ringbuffers</h3>
 <div class="paragraph">
 <p>@@ TODO</p>
 </div>
-<div style="page-break-after: always;"></div>
 </div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_jack_server_control_api">JACK server control API</h2>
-<div class="sectionbody">
+<div class="sect2">
+<h3 id="_jack_server_control_api">JACK server control API</h3>
 <div class="paragraph">
 <p>Not implemented yet.</p>
 </div>
-<div style="page-break-after: always;"></div>
 </div>
-</div>
-<div class="sect1">
-<h2 id="_non_callback_api">Non-callback API</h2>
-<div class="sectionbody">
+<div class="sect2">
+<h3 id="_non_callback_api">Non-callback API</h3>
 <div class="paragraph">
-<p>Not supported by LuaJack.</p>
-</div>
-<div style="page-break-after: always;"></div>
+<p>Not supported.</p>
 </div>
 </div>
-<div class="sect1">
-<h2 id="_internal_clients_api">Internal clients API</h2>
-<div class="sectionbody">
+<div class="sect2">
+<h3 id="_internal_clients_api">Internal clients API</h3>
 <div class="paragraph">
-<p>Not supported by LuaJack.</p>
-</div>
-<div style="page-break-after: always;"></div>
+<p>Not supported.</p>
 </div>
 </div>
-<div class="sect1">
-<h2 id="_metadata_api">Metadata API</h2>
-<div class="sectionbody">
+<div class="sect2">
+<h3 id="_metadata_api">Metadata API</h3>
 <div class="paragraph">
 <p>Not implemented yet.</p>
 </div>
-<div style="page-break-after: always;"></div>
 </div>
-</div>
-<div class="sect1">
-<h2 id="_additional_functions">Additional functions</h2>
-<div class="sectionbody">
-<hr>
+<div class="sect2">
+<h3 id="_additional_functions">Additional functions</h3>
 <div id="jack.sleep" class="ulist">
 <ul>
 <li>
 <p><strong>jack.sleep</strong> ( [<em>seconds</em>] )<br>
-<br>
-Sleeps for the specified number of <em>seconds</em> (if <em>seconds</em> is negative or <em>nil</em>,
-sleeps forevever).
+<span class="small">Sleeps for the specified number of <em>seconds</em> (if <em>seconds</em> is negative or <em>nil</em>,
+sleeps forever).<br>
 This function must be used to implement the main loop in the <a href="#luajack.contexts">main context</a>,
-and can optionally be used in thread contexts as well.</p>
+and can optionally be used in thread contexts as well.</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="jack.verbose" class="ulist">
 <ul>
 <li>
 <p><strong>jack.verbose</strong> ( <em>onoff</em> )<br>
-<br>
-If <em>onoff='on'</em>, enables the LuaJack verbose mode. If <em>onoff='off'</em>, it disables it.
-By default, the verbose mode is disabled.</p>
+<span class="small">If <em>onoff='on'</em>, enables the LuaJack verbose mode. If <em>onoff='off'</em>, it disables it.
+By default, the verbose mode is disabled.</span></p>
 </li>
 </ul>
 </div>
-<div style="page-break-after: always;"></div>
+</div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_midi_utilities">MIDI utilities</h2>
+<h2 id="midi_utilities">MIDI utilities (luajack.midi)</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>The <strong>luajack.midi</strong> module is a LuaJack submodule that provides convenient utilities
@@ -2921,8 +2557,8 @@ for dealing with MIDI messages in Lua.</p>
 </div>
 <div class="paragraph">
 <p>Although it is part of the LuaJack package, <strong>luajack.midi</strong> is actually an independent module
-that can be used also in non-LuaJack applications. Since it is a plain Lua script, it can be
-easily customized or replaced
+that can be used also in non-LuaJack applications. Since it is a self-contained script written
+in pure Lua, it can be easily customized or replaced
 (its source is in the <em>luajack/midi.lua</em> file in the LuaJack package).</p>
 </div>
 <div class="paragraph">
@@ -2944,182 +2580,140 @@ different name could be used as well).</p>
 <p>Each of the following routines returns a binary string containing an encoded
 MIDI message (starting from the MIDI status byte) with the passed parameters.</p>
 </div>
-<hr>
 <div id="midi.note_onoff" class="ulist">
 <ul>
 <li>
-<p><strong>midi.note_off</strong> ( <em>channel</em>, <em>key</em> [, <em>velocity</em> ] )<br></p>
-</li>
-<li>
-<p><strong>midi.note_on</strong> ( <em>channel</em>, <em>key</em> [, <em>velocity</em> ] )<br>
+<p><strong>midi.note_off</strong> ( <em>channel</em>, <em>key</em> [, <em>velocity</em> ] )<br>
+<strong>midi.note_on</strong> ( <em>channel</em>, <em>key</em> [, <em>velocity</em> ] )<br>
 &#8594; <em>msg</em><br>
-<br>
-Parameters: <em>channel</em> = 1-16, <em>key</em> = 0-127, <em>velocity</em> = 0-127 (default=64).</p>
+<span class="small">Parameters: <em>channel</em> = 1-16, <em>key</em> = 0-127, <em>velocity</em> = 0-127 (default=64).</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="midi.aftertouch" class="ulist">
 <ul>
 <li>
 <p><strong>midi.aftertouch</strong> ( <em>channel</em>, <em>key</em>, <em>pressure</em> ) a.k.a. 'polyphonic key pressure'<br>
 &#8594; <em>msg</em><br>
-<br>
-Parameters: <em>channel</em> = 1-16, <em>key</em> = 0-127, <em>pressure</em> = 0-127.</p>
+<span class="small">Parameters: <em>channel</em> = 1-16, <em>key</em> = 0-127, <em>pressure</em> = 0-127.</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="midi.control_change" class="ulist">
 <ul>
 <li>
 <p><strong>midi.control_change</strong> ( <em>channel</em>, <em>control</em> [, <em>value</em> ] )<br>
 &#8594; <em>msg</em><br>
-<br>
-Parameters: <em>channel</em> = 1-16, <em>control</em> = 0-127 or controller name,
+<span class="small">Parameters: <em>channel</em> = 1-16, <em>control</em> = 0-127 or controller name,
 <em>value</em> = 0-127 or <em>'on'</em>|<em>'off'</em> (default=0='off').<br>
-See the table in the following section for <a href="#midi.controllers">controller names</a>.</p>
+See the table in the following section for <a href="#midi.controllers">controller names</a>.</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="midi.program_change" class="ulist">
 <ul>
 <li>
 <p><strong>midi.program_change</strong> ( <em>channel</em>, <em>number</em> )<br>
 &#8594; <em>msg</em><br>
-<br>
-Parameters: <em>channel</em> = 1-16, <em>number</em> = 1-128.</p>
+<span class="small">Parameters: <em>channel</em> = 1-16, <em>number</em> = 1-128.</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="midi.channel_pressure" class="ulist">
 <ul>
 <li>
 <p><strong>midi.channel_pressure</strong> ( <em>channel</em>, <em>pressure</em> )<br>
 &#8594; <em>msg</em><br>
-<br>
-Parameters: <em>channel</em> = 1-16, <em>pressure</em> = 0-127.</p>
+<span class="small">Parameters: <em>channel</em> = 1-16, <em>pressure</em> = 0-127.</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="midi.pitch_wheel" class="ulist">
 <ul>
 <li>
 <p><strong>midi.pitch_wheel</strong> ( <em>channel</em>, <em>value</em> ) a.k.a. 'pitch bend change'<br>
 &#8594; <em>msg</em><br>
-<br>
-Parameters: <em>channel</em> = 1-16, <em>value</em> = 0-16383 (0x3fff).</p>
+<span class="small">Parameters: <em>channel</em> = 1-16, <em>value</em> = 0-16383 (0x3fff).</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="midi.mtc_quarter_frame" class="ulist">
 <ul>
 <li>
 <p><strong>midi.mtc_quarter_frame</strong> ( <em>nnn</em>, <em>dddd</em> ) a.k.a. 'time code quarter frame'<br>
 &#8594; <em>msg</em><br>
-<br>
-Parameters: <em>nnn</em> = 0-7 (MTC message type), <em>dddd</em> = 0-15 (MTC message value).</p>
+<span class="small">Parameters: <em>nnn</em> = 0-7 (MTC message type), <em>dddd</em> = 0-15 (MTC message value).</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="midi.song_position" class="ulist">
 <ul>
 <li>
 <p><strong>midi.song_position</strong> ( <em>value</em> )<br>
 &#8594; <em>msg</em><br>
-<br>
-Parameters: <em>value</em> = 0-16383 (0x3fff).</p>
+<span class="small">Parameters: <em>value</em> = 0-16383 (0x3fff).</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="midi.song_select" class="ulist">
 <ul>
 <li>
 <p><strong>midi.song_select</strong> ( <em>number</em> )<br>
 &#8594; <em>msg</em><br>
-<br>
-Parameters: <em>number</em> = 1-128.</p>
+<span class="small">Parameters: <em>number</em> = 1-128.</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="midi.encode" class="ulist">
 <ul>
 <li>
-<p><strong>midi.tune_request</strong> ( )<br></p>
-</li>
-<li>
-<p><strong>midi.end_of_exclusive</strong> ( )<br></p>
-</li>
-<li>
-<p><strong>midi.clock</strong> ( )<br></p>
-</li>
-<li>
-<p><strong>midi.start</strong> ( )<br></p>
-</li>
-<li>
-<p><strong>midi.continue</strong> ( )<br></p>
-</li>
-<li>
-<p><strong>midi.stop</strong> ( )<br></p>
-</li>
-<li>
-<p><strong>midi.active_sensing</strong> ( )<br></p>
-</li>
-<li>
-<p><strong>midi.reset</strong> ( )<br>
+<p><strong>midi.tune_request</strong> ( )<br>
+<strong>midi.end_of_exclusive</strong> ( )<br>
+<strong>midi.clock</strong> ( )<br>
+<strong>midi.start</strong> ( )<br>
+<strong>midi.continue</strong> ( )<br>
+<strong>midi.stop</strong> ( )<br>
+<strong>midi.active_sensing</strong> ( )<br>
+<strong>midi.reset</strong> ( )<br>
 &#8594; <em>msg</em><br>
-<br>
-Parameters: none.</p>
+<span class="small">Parameters: none.</span></p>
 </li>
 </ul>
 </div>
 </div>
 <div class="sect2">
 <h3 id="_decoding_midi_messages">Decoding MIDI messages</h3>
-<hr>
 <div id="midi.decode" class="ulist">
 <ul>
 <li>
 <p><strong>midi.decode</strong> ( <em>msg</em> [, <em>stringize</em> ] )<br>
 &#8594; <em>name</em>, <em>channel</em>, <em>parameters</em><br>
-<br>
-Decodes a MIDI message. The <em>msg</em> argument is expected to be a binary string
-containing the MIDI message starting from the MIDI status byte.
+<span class="small">Decodes a MIDI message. The <em>msg</em> argument is expected to be a binary string
+containing the MIDI message starting from the MIDI status byte.<br>
 Returns the MIDI message <em>name</em> (or <em>nil</em> if not recognized), the <em>channel</em>
 (1-16,  or <em>nil</em> if not applicable), and a table containing the decoded <em>parameters</em>
-(see the table below).
+(see the table below).<br>
 If <em>stringize</em> is <em>true</em>, the parameters are returned as a string instead of a table
-(this may be useful for dumps).<br></p>
+(this may be useful for dumps).</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="midi.tostring" class="ulist">
 <ul>
 <li>
 <p><strong>midi.tostring</strong> ( <em>time</em>, <em>msg</em> )<br>
 &#8594; <em>string</em><br>
-<br>
-Returns a printable string containing the passed <em>time</em> (an integer) and the decoded <em>msg</em>
-(for dumps).</p>
+<span class="small">Returns a printable string containing the passed <em>time</em> (an integer) and the decoded <em>msg</em>
+(for dumps).</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="midi.tohex" class="ulist">
 <ul>
 <li>
 <p><strong>midi.tohex</strong> ( <em>msg</em> )<br>
 &#8594; <em>msg</em><br>
-<br>
-Returns a string containing the <em>msg</em> bytes in hexadecimal format (e.g. '84 0c 2f').</p>
+<span class="small">Returns a string containing the <em>msg</em> bytes in hexadecimal format (e.g. '84 0c 2f').</span></p>
 </li>
 </ul>
 </div>
@@ -3521,1010 +3115,46 @@ Returns a string containing the <em>msg</em> bytes in hexadecimal format (e.g. '
 </div>
 <div class="sect2">
 <h3 id="_other_midi_utilities">Other MIDI utilities</h3>
-<hr>
 <div id="midi.note_key" class="ulist">
 <ul>
 <li>
 <p><strong>midi.note_key</strong> ( <em>frequency</em> )<br>
 &#8594; <em>msg</em><br>
-<br>
-Returns the nearest MIDI note key corresponding to <em>frequency</em> (Hz).</p>
+<span class="small">Returns the nearest MIDI note key corresponding to <em>frequency</em> (Hz).</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="midi.note_frequency" class="ulist">
 <ul>
 <li>
 <p><strong>midi.note_frequency</strong> ( <em>key</em> )<br>
 &#8594; <em>msg</em><br>
-<br>
-Returns the <em>frequency</em> (Hz) corresponding to the MIDI note <em>key</em>.</p>
+<span class="small">Returns the <em>frequency</em> (Hz) corresponding to the MIDI note <em>key</em>.</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="midi.tmsg" class="ulist">
 <ul>
 <li>
 <p><strong>midi.tmsg</strong> ( <em>time</em>, <em>msg</em> )<br>
 &#8594; <em>tmsg</em><br>
-<br>
-Returns a binary string obtained by concatenating the passed <em>time</em> (an integer)
+<span class="small">Returns a binary string obtained by concatenating the passed <em>time</em> (an integer)
 and the binary MIDI <em>msg</em> (this format can be convenient if one wants to send MIDI events
-over <a href="#_ringbuffers">ringbuffers</a>).</p>
+over <a href="#_ringbuffers">ringbuffers</a>).</span></p>
 </li>
 </ul>
 </div>
-<hr>
 <div id="midi.time_msg" class="ulist">
 <ul>
 <li>
 <p><strong>midi.time_msg</strong> ( <em>tmsg</em> )<br>
 &#8594; <em>time</em>, <em>msg</em><br>
-<br>
-Extracts the <em>time</em> and <em>msg</em> from a <em>tmsg</em> binary string constructed with the
-<a href="#midi.tmsg">midi.tmsg</a>() function.</p>
+<span class="small">Extracts the <em>time</em> and <em>msg</em> from a <em>tmsg</em> binary string constructed with the
+<a href="#midi.tmsg">midi.tmsg</a>() function.</span></p>
 </li>
 </ul>
 </div>
-<div style="page-break-after: always;"></div>
 </div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_summary_of_luajack_functions">Summary of LuaJack functions</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>The tables below summarize the functions provided by LuaJack.</p>
-</div>
-<div class="paragraph">
-<p>The availability ('Avail.') column indicates whether a function is available in the
-main context (M), in the process context (P) and/or in the thread context (T).</p>
-</div>
-<div class="paragraph">
-<p>On error, unless otherwise pointed out in the manual sections, all
-functions call Lua&#8217;s <a href="http://www.lua.org/manual/5.3/manual.html#pdf-error">error</a>()
-with a string message handler.</p>
-</div>
-<table class="tableblock frame-all grid-all spread">
-<caption class="title">Table 3. Clients</caption>
-<colgroup>
-<col style="width: 40%;">
-<col style="width: 15%;">
-<col style="width: 40%;">
-<col style="width: 5%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Function</th>
-<th class="tableblock halign-left valign-top">Return values</th>
-<th class="tableblock halign-left valign-top">Description</th>
-<th class="tableblock halign-left valign-top">Avail.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.client_open"><strong>jack.client_open</strong></a> ( <em>name</em> [, <em>options</em>])</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>client</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Create a JACK client.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">M</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.client_name_size"><strong>jack.client_name_size</strong></a> ( )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>maxsize</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Get the maximum allowed size for client names.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">M</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.client_close"><strong>jack.client_close</strong></a> ( <em>client</em> )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Close a client.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">M</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.client_name"><strong>jack.client_name</strong></a> ( <em>client</em> )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>name</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Get a client&#8217;s name.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">M</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.client_uuid"><strong>jack.client_uuid</strong></a> ( <em>client</em> )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>uuid</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Get a client&#8217;s UUID.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">M</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.client_uuid_to_name"><strong>jack.client_uuid_to_name</strong></a> ( <em>client</em>, <em>uuid</em> )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>name</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Translate a client&#8217;s UUID into its name.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">M</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.client_name_to_uuid"><strong>jack.client_name_to_uuid</strong></a> ( <em>client</em>, <em>name</em> )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>uuid</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Translate a client&#8217;s name into its UUID.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">M</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.activate"><strong>jack.activate</strong></a> ( <em>client</em> )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Activate a client.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">M</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.deactivate"><strong>jack.deactivate</strong></a> ( <em>client</em> )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Deactivate a client.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">M</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.is_realtime"><strong>jack.is_realtime</strong></a> ( <em>client</em> )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>boolean</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Check if JACK is running realtime.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">M</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.cpu_load"><strong>jack.cpu_load</strong></a> ( <em>client</em> )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>cpuload</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Get the current CPU load estimate.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">MPT</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.sample_rate"><strong>jack.sample_rate</strong></a> ( <em>client</em> )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>sample_rate</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Get the sample rate.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">MPT</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.set_buffer_size"><strong>jack.set_buffer_size</strong></a> ( <em>client</em>, <em>nframes</em> )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Change the buffer size.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">MP</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.buffer_size"><strong>jack.buffer_size</strong></a> ( <em>client</em> )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>nframes</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Get the current maximum buffer size.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">MPT</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.freewheel"><strong>jack.freewheel</strong></a> ( <em>client</em>, <em>onoff</em> )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Start/stop JACK&#8217;s '<em>freewheel</em>' mode.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">MP</p></td>
-</tr>
-</tbody>
-</table>
-<div style="page-break-after: always;"></div>
-<table class="tableblock frame-all grid-all spread">
-<caption class="title">Table 4. Process context</caption>
-<colgroup>
-<col style="width: 40%;">
-<col style="width: 5%;">
-<col style="width: 50%;">
-<col style="width: 5%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Function</th>
-<th class="tableblock halign-left valign-top">Return values</th>
-<th class="tableblock halign-left valign-top">Description</th>
-<th class="tableblock halign-left valign-top">Avail.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.process_load"><strong>jack.process_load</strong></a> ( <em>client</em>, <em>chunk</em>, <em>&#8230;&#8203;</em> )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Create process context loading the chunk from string.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">M</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.process_loadfile"><strong>jack.process_loadfile</strong></a> ( <em>client</em>, <em>filename</em>, <em>&#8230;&#8203;</em> )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Create process context loading the chunk from file.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">M</p></td>
-</tr>
-</tbody>
-</table>
-<table class="tableblock frame-all grid-all spread">
-<caption class="title">Table 5. Real-time callbacks</caption>
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 45%;">
-<col style="width: 5%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Function</th>
-<th class="tableblock halign-left valign-top">Callback prototype</th>
-<th class="tableblock halign-left valign-top">Avail.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.process_callback"><strong>jack.process_callback</strong></a> ( <em>client</em>, <em>func</em> )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>func(nframes)</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">P</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.buffer_size_callback"><strong>jack.buffer_size_callback</strong></a> ( <em>func</em> )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>func(nframes)</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">P</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.sync_callback"><strong>jack.sync_callback</strong></a> ( <em>client</em>, <em>func</em> )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>func(state, position)</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">P</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.timebase_callback"><strong>jack.timebase_callback</strong></a> ( <em>client</em>, <em>func</em> [, <em>conditional</em>] )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>func(state, nframes, position, new_position)</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">P</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.release_timebase"><strong>jack.release_timebase</strong></a> ( <em>client</em> )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">P</p></td>
-</tr>
-</tbody>
-</table>
-<div style="page-break-after: always;"></div>
-<table class="tableblock frame-all grid-all spread">
-<caption class="title">Table 6. Non real-time callbacks</caption>
-<colgroup>
-<col style="width: 45%;">
-<col style="width: 50%;">
-<col style="width: 5%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Function</th>
-<th class="tableblock halign-left valign-top">Callback prototype</th>
-<th class="tableblock halign-left valign-top">Avail.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.shutdown_callback"><strong>jack.shutdown_callback</strong></a> ( <em>client</em>, <em>func</em> )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>func(client, code, reason)</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">M</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.freewheel_callback"><strong>jack.freewheel_callback</strong></a> ( <em>client</em>, <em>func</em> )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>func(client, operation)</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">M</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.sample_rate_callback"><strong>jack.sample_rate_callback</strong></a> ( <em>client</em>, <em>func</em> )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>func(client, nframes)</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">M</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.client_registration_callback"><strong>jack.client_registration_callback</strong></a> ( <em>client</em>, <em>func</em> )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>func(client, name, 'registered'|'unregistered')</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">M</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.port_registration_callback"><strong>jack.port_registration_callback</strong></a> ( <em>client</em>, <em>func</em> )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>func(client, portname, 'registered'|'unregistered')</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">M</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.port_rename_callback"><strong>jack.port_rename_callback</strong></a> ( <em>client</em>, <em>func</em> )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>func(client, portname, newname)</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">M</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.port_connect_callback"><strong>jack.port_connect_callback</strong></a> ( <em>client</em>, <em>func</em> )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>func(client, srcname, dstname, 'connected'|'disconnected')</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">M</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.graph_order_callback"><strong>jack.graph_order_callback</strong></a> ( <em>client</em>, <em>func</em> )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>func(client)</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">M</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.xrun_callback"><strong>jack.xrun_callback</strong></a> ( <em>client</em>, <em>func</em> )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>func(client)</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">M</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.latency_callback"><strong>jack.latency_callback</strong></a> ( <em>client</em>, <em>func</em> )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>func(client, 'capture'|'playback')</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">M</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.session_callback"><strong>jack.session_callback</strong></a> ( <em>client</em>, <em>func</em> )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>command, flag1, flag2 = func(client, type, path, uuid)</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">M</p></td>
-</tr>
-</tbody>
-</table>
-<div style="page-break-after: always;"></div>
-<table class="tableblock frame-all grid-all spread">
-<caption class="title">Table 7. Client threads</caption>
-<colgroup>
-<col style="width: 45%;">
-<col style="width: 10%;">
-<col style="width: 40%;">
-<col style="width: 5%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Function</th>
-<th class="tableblock halign-left valign-top">Return values</th>
-<th class="tableblock halign-left valign-top">Description</th>
-<th class="tableblock halign-left valign-top">Avail.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.thread_load"><strong>jack.thread_load</strong></a> ( <em>client</em>, <em>chunk</em>, <em>&#8230;&#8203;</em> )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>thread</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Create a client thread loading the chunk from a string.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">M</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.thread_loadfile"><strong>jack.thread_loadfile</strong></a> ( <em>client</em>, <em>filename</em>, <em>&#8230;&#8203;</em> )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>thread</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Create a client thread loading the chunk from a file.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">M</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.self"><strong>jack.self</strong></a> ( )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>client</em>, <em>thread</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Get the client and thread references.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">T</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.signal"><strong>jack.signal</strong></a> ( <em>client</em>, <em>thread</em> )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Signal a thread&#8217;s condition variable.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">MPT</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.wait"><strong>jack.wait</strong></a> ( )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Waits on the calling thread&#8217;s condition variable.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">T</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.testcancel"><strong>jack.testcancel</strong></a> ( )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Creates a cancellation point.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">T</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.real_time_priority"><strong>jack.real_time_priority</strong></a> ( <em>client</em> )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>priority</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Get the priority that threads created by JACK will run at.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">MPT</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.max_real_time_priority"><strong>jack.max_real_time_priority</strong></a> ( <em>client</em> )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>priority</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Get the maximum priority that a realtime client thread should use.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">MPT</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.acquire_real_time_scheduling"><strong>jack.acquire_real_time_scheduling</strong></a> ( <em>priority</em> )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Acquire realtime scheduling.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">MPT</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.drop_real_time_scheduling"><strong>jack.drop_real_time_scheduling</strong></a> ( )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Drop realtime scheduling.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">MPT</p></td>
-</tr>
-</tbody>
-</table>
-<table class="tableblock frame-all grid-all spread">
-<caption class="title">Table 8. Ports</caption>
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 10%;">
-<col style="width: 35%;">
-<col style="width: 5%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Function</th>
-<th class="tableblock halign-left valign-top">Return values</th>
-<th class="tableblock halign-left valign-top">Description</th>
-<th class="tableblock halign-left valign-top">Avail.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.input_audio_port"><strong>jack.input_audio_port</strong></a> ( <em>client</em> , <em>name</em> [, <em>options</em> ] )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>port</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Create an input audio port.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">M</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.output_audio_port"><strong>jack.output_audio_port</strong></a> ( <em>client</em> , <em>name</em> [, <em>options</em> ] )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>port</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Create an output audio port.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">M</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.input_midi_port"><strong>jack.input_midi_port</strong></a> ( <em>client</em> , <em>name</em> [, <em>options</em> ] )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>port</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Create an input midi port.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">M</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.output_midi_port"><strong>jack.output_midi_port</strong></a> ( <em>client</em> , <em>name</em> [, <em>options</em> ] )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>port</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Create an output midi port.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">M</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.input_custom_port"><strong>jack.input_custom_port</strong></a> ( <em>client</em> , <em>name</em> [, <em>options</em> ] )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>port</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Create an input custom port.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">M</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.output_custom_port"><strong>jack.output_custom_port</strong></a> ( <em>client</em> , <em>name</em> [, <em>options</em> ] )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>port</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Create an output custom port.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">M</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.port_name_size"><strong>jack.port_name_size</strong></a> ( )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>maxsize</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Get the maximum allowed size for port names.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">M</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.port_type_size"><strong>jack.port_type_size</strong></a> ( )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>maxsize</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Get the maximum allowed size for port types.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">M</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.port_unregister"><strong>jack.port_unregister</strong></a> ( <em>port</em> )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Delete a port.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">M</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.connect"><strong>jack.connect</strong></a> ( <em>port</em>, <em>portname2</em> )<br>
-<a href="#jack.connect"><strong>jack.port_connect</strong></a> ( <em>port</em>, <em>portname2</em> )<br>
-<a href="#jack.connect"><strong>jack.nport_connect</strong></a> ( <em>client</em>, <em>portname1</em>, <em>portname2</em> )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Connect two ports.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">M</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.disconnect"><strong>jack.disconnect</strong></a> ( <em>port</em> [, <em>portname2</em>] )<br>
-<a href="#jack.disconnect"><strong>jack.port_disconnect</strong></a> ( <em>port</em> [, <em>portname2</em>] )<br>
-<a href="#jack.disconnect"><strong>jack.nport_disconnect</strong></a> ( <em>client</em>, <em>portname1</em> [, <em>portname2</em>] )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Disconnects two ports.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">M</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.port_name"><strong>jack.port_name</strong></a> ( <em>port</em> )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>fullname</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Get the full name of a port.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">M</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.port_short_name"><strong>jack.port_short_name</strong></a> ( <em>port</em> )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>shortname</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Get the short name of a port.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">M</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.port_flags"><strong>jack.port_flags</strong></a> ( <em>port</em> )<br>
-<a href="#jack.port_flags"><strong>jack.nport_flags</strong></a> ( <em>client</em>, <em>portname</em> )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>flags</em>, <em>table</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Get the flags of a port.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">M</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.port_uuid"><strong>jack.port_uuid</strong></a> ( <em>port</em> )<br>
-<a href="#jack.port_uuid"><strong>jack.nport_uuid</strong></a> ( <em>client</em>, <em>portname</em> )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>uuid</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Get the UUID of a port.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">M</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.port_type"><strong>jack.port_type</strong></a> ( <em>port</em> )<br>
-<a href="#jack.port_type"><strong>jack.nport_type</strong></a> ( <em>client</em>, <em>portname</em> )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>type</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Get the type of a port.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">M</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.nport_exists"><strong>jack.nport_exists</strong></a> ( <em>client</em>, <em>portname</em> )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>boolean</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Check if a port exists.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">M</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.port_is_mine"><strong>jack.port_is_mine</strong></a> ( <em>client</em>, <em>port</em> )<br>
-<a href="#jack.port_is_mine"><strong>jack.nport_is_mine</strong></a> ( <em>client</em>, <em>portname</em> )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>boolean</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Check if a port belongs to a given client.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">M</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.port_set_alias"><strong>jack.port_set_alias</strong></a> ( <em>port</em>, <em>alias</em> )<br>
-<a href="#jack.port_set_alias"><strong>jack.nport_set_alias</strong></a> ( <em>client</em>, <em>portname</em>, <em>alias</em> )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Set an alias for a port.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">M</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.port_unset_alias"><strong>jack.port_unset_alias</strong></a> ( <em>port</em>, <em>alias</em> )<br>
-<a href="#jack.port_unset_alias"><strong>jack.nport_unset_alias</strong></a> ( <em>client</em>, <em>portname</em>, <em>alias</em> )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Unset an alias for a port.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">M</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.port_aliases"><strong>jack.port_aliases</strong></a> ( <em>port</em> )<br>
-<a href="#jack.port_aliases"><strong>jack.nport_aliases</strong></a> ( <em>client</em>, <em>portname</em> )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>alias1</em>, <em>alias2</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Get the aliases for a port.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">M</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.port_connections"><strong>jack.port_connections</strong></a> ( <em>port</em> [, <em>list</em> ] )<br>
-<a href="#jack.port_connections"><strong>jack.nport_connections</strong></a> ( <em>client</em>, <em>portname</em> [, <em>list</em> ] )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>N</em>, <em>{ portname1, &#8230;&#8203;, portnameN }</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Get the connections for a port.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">M</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.port_connected_to"><strong>jack.port_connected_to</strong></a> ( <em>port</em>, <em>portname2</em> )<br>
-<a href="#jack.port_connected_to"><strong>jack.nport_connected_to</strong></a> ( <em>client</em>, <em>portname1</em>, <em>portname2</em> )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>boolean</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Check if two ports are connected.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">M</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.port_monitor"><strong>jack.port_monitor</strong></a> ( <em>port</em>, <em>onoff</em> )<br>
-<a href="#jack.port_monitor"><strong>jack.nport_monitor</strong></a> ( <em>client</em>, <em>portname</em>, <em>onoff</em> )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Enable/disable input monitoring for a port.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">M</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.port_monitoring"><strong>jack.port_monitoring</strong></a> ( <em>port</em> )<br>
-<a href="#jack.port_monitoring"><strong>jack.nport_monitoring</strong></a> ( <em>client</em>, <em>portname</em> )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>boolean</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Check if the input monitoring for a port is enabled.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">M</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.get_ports"><strong>jack.get_ports</strong></a> ( <em>client</em> [, <em>filter</em> ])</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>{ portname1, &#8230;&#8203;, portnameN }</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">List ports.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">M</p></td>
-</tr>
-</tbody>
-</table>
-<div style="page-break-after: always;"></div>
-<table class="tableblock frame-all grid-all spread">
-<caption class="title">Table 9. Latency</caption>
-<colgroup>
-<col style="width: 45%;">
-<col style="width: 10%;">
-<col style="width: 40%;">
-<col style="width: 5%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Function</th>
-<th class="tableblock halign-left valign-top">Return values</th>
-<th class="tableblock halign-left valign-top">Description</th>
-<th class="tableblock halign-left valign-top">Avail.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.latency_range"><strong>jack.latency_range</strong></a> ( <em>port</em>, <em>mode</em> )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>min</em>, <em>max</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Get the minimum and maximum latencies.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">M</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.set_latency_range"><strong>jack.set_latency_range</strong></a> ( <em>port</em>, <em>mode</em>, <em>min</em>, <em>max</em> )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Set the minimum and maximum latencies.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">M</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.recompute_total_latencies"><strong>jack.recompute_total_latencies</strong></a> ( <em>client</em> )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Request a complete recomputation of all port latencies.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">M</p></td>
-</tr>
-</tbody>
-</table>
-<table class="tableblock frame-all grid-all spread">
-<caption class="title">Table 10. Time</caption>
-<colgroup>
-<col style="width: 35%;">
-<col style="width: 15%;">
-<col style="width: 45%;">
-<col style="width: 5%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Function</th>
-<th class="tableblock halign-left valign-top">Return values</th>
-<th class="tableblock halign-left valign-top">Description</th>
-<th class="tableblock halign-left valign-top">Avail.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.time"><strong>jack.time</strong></a> ( )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>useconds</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Get the current system time.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">MPT</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.frame"><strong>jack.frame</strong></a> ( <em>client</em> )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>frameno</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Get the estimated current time in frames.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">MPT</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.since"><strong>jack.since</strong></a> ( <em>useconds</em> )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>elapsed</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Get the time elapsed since a point of time in the past.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">MPT</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.since_frame"><strong>jack.since_frame</strong></a> ( <em>client</em>, <em>frameno</em> )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>nframes</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Get the time in frames elapsed since a frame number in the past.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">MPT</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.frames_to_time"><strong>jack.frames_to_time</strong></a> ( <em>client</em>, <em>nframes</em> )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>useconds</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Translate time from microseconds to frames.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">MPT</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.time_to_frames"><strong>jack.time_to_frames</strong></a> ( <em>client</em>, <em>useconds</em> )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>nframes</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Translate time from frames to microseconds.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">MPT</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.frames_since_cycle_start"><strong>jack.frames_since_cycle_start</strong></a> ( <em>client</em> )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>nframes</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Get the no. of frames passed since the beginning of the current process cycle.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">MPT</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.last_frame_time"><strong>jack.last_frame_time</strong></a> ( <em>client</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>nframes</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Get the time in frames at the start of the current process cycle.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">P</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.cycle_times"><strong>jack.cycle_times</strong></a> ( <em>client</em> )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>current_frames</em>, <em>current_usecs</em>, <em>next_usecs</em>, <em>period_usecs</em><br></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Get internal cycle timing information.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">P</p></td>
-</tr>
-</tbody>
-</table>
-<table class="tableblock frame-all grid-all spread">
-<caption class="title">Table 11. Transport and timebase</caption>
-<colgroup>
-<col style="width: 40%;">
-<col style="width: 15%;">
-<col style="width: 40%;">
-<col style="width: 5%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Function</th>
-<th class="tableblock halign-left valign-top">Return values</th>
-<th class="tableblock halign-left valign-top">Description</th>
-<th class="tableblock halign-left valign-top">Avail.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.current_transport_frame"><strong>jack.current_transport_frame</strong></a> ( <em>client</em> )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>frameno</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Get an estimate of the current transport frame.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">MPT</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.transport_state"><strong>jack.transport_state</strong></a> ( <em>client</em> )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>state</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Get the current transport state.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">MPT</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.transport_query"><strong>jack.transport_query</strong></a> ( <em>client</em> )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>state</em>, <em>position</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Get the current transport state and position.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">MPT</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.transport_start"><strong>jack.transport_start</strong></a> ( <em>client</em> )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Start the transport rolling.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">MPT</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.transport_stop"><strong>jack.transport_stop</strong></a> ( <em>client</em> )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Stop the transport rolling.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">MPT</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.transport_locate"><strong>jack.transport_locate</strong></a> ( <em>client</em>, <em>frameno</em> )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Reposition the transport frame.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">MPT</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.transport_reposition"><strong>jack.transport_reposition</strong></a> ( <em>client</em>, <em>position</em> )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Request a new transport position.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">MPT</p></td>
-</tr>
-</tbody>
-</table>
-<table class="tableblock frame-all grid-all spread">
-<caption class="title">Table 12. Reading and writing audio data</caption>
-<colgroup>
-<col style="width: 35%;">
-<col style="width: 20%;">
-<col style="width: 40%;">
-<col style="width: 5%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Function</th>
-<th class="tableblock halign-left valign-top">Return values</th>
-<th class="tableblock halign-left valign-top">Description</th>
-<th class="tableblock halign-left valign-top">Avail.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#audiojack.get_buffer"><strong>jack.get_buffer</strong></a> ( <em>port</em> )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>nframes</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Get the port buffer.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">P</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#audiojack.seek"><strong>jack.seek</strong></a> ( <em>port</em> [, <em>position</em> ] )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>position</em>, <em>available</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Get/set the port buffer&#8217;s current position.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">P</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#audiojack.read"><strong>jack.read</strong></a> ( <em>port</em> [, <em>count</em> ] )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>sample1</em>, <em>&#8230;&#8203;</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Read samples from the port buffer.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">P</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#audiojack.write"><strong>jack.write</strong></a> ( <em>port</em> [, <em>sample1</em> , <em>&#8230;&#8203;</em> ] )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>count</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Write samples to the port buffer.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">P</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#audiojack.clear"><strong>jack.clear</strong></a> ( <em>port</em> [, <em>count</em> ] )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>count</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Clear buffer.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">P</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#audiojack.copy"><strong>jack.copy</strong></a> ( <em>dstport</em>, <em>srcport</em> [, <em>count</em> ] )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>count</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Copy samples between ports buffers.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">P</p></td>
-</tr>
-</tbody>
-</table>
-<table class="tableblock frame-all grid-all spread">
-<caption class="title">Table 13. Reading and writing MIDI data</caption>
-<colgroup>
-<col style="width: 35%;">
-<col style="width: 20%;">
-<col style="width: 40%;">
-<col style="width: 5%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Function</th>
-<th class="tableblock halign-left valign-top">Return values</th>
-<th class="tableblock halign-left valign-top">Description</th>
-<th class="tableblock halign-left valign-top">Avail.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#midijack.get_buffer"><strong>jack.get_buffer</strong></a> ( <em>port</em> )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>eventcount</em>, <em>lostcount</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Get the port buffer (input port).</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">P</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#midijack.get_buffer"><strong>jack.get_buffer</strong></a> ( <em>port</em> )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>space</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Get the port buffer (output port).</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">P</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#midijack.seek"><strong>jack.seek</strong></a> ( <em>port</em> [, <em>index</em> ] )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>index</em>, <em>available</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Get/set the port buffer&#8217;s current index.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">P</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#midijack.read"><strong>jack.read</strong></a> ( <em>port</em> [, <em>index</em> ] )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>time</em>, <em>data</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Read a MIDI event from the port buffer.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">P</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#midijack.write"><strong>jack.write</strong></a> ( <em>port</em>, <em>time</em>, <em>data</em> )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>space</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Write a MIDI event to the port buffer.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">P</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#midijack.copy"><strong>jack.copy</strong></a> ( <em>dstport</em>, <em>srcport</em> [, <em>count</em> ] )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>count</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Copy MIDI events between port buffers.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">P</p></td>
-</tr>
-</tbody>
-</table>
-<table class="tableblock frame-all grid-all spread">
-<caption class="title">Table 14. Statistics</caption>
-<colgroup>
-<col style="width: 40%;">
-<col style="width: 15%;">
-<col style="width: 40%;">
-<col style="width: 5%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Function</th>
-<th class="tableblock halign-left valign-top">Return values</th>
-<th class="tableblock halign-left valign-top">Description</th>
-<th class="tableblock halign-left valign-top">Avail.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.max_delayed_usecs"><strong>jack.max_delayed_usecs</strong></a> ( <em>client</em> )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>delay</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Get the the maximum reported delay.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">M</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.xrun_delayed_usecs"><strong>jack.xrun_delayed_usecs</strong></a> ( <em>client</em> )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>delay</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Get the delay due to the most recent xrun.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">M</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.reset_max_delayed_usecs"><strong>jack.reset_max_delayed_usecs</strong></a> ( <em>client</em> )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Reset the maximum delay counter.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">M</p></td>
-</tr>
-</tbody>
-</table>
-<table class="tableblock frame-all grid-all spread">
-<caption class="title">Table 15. Session API</caption>
-<colgroup>
-<col style="width: 45%;">
-<col style="width: 20%;">
-<col style="width: 30%;">
-<col style="width: 5%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Function</th>
-<th class="tableblock halign-left valign-top">Return values</th>
-<th class="tableblock halign-left valign-top">Description</th>
-<th class="tableblock halign-left valign-top">Avail.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.session_notify"><strong>jack.session_notify</strong></a> ( <em>client</em>, <em>target</em>, <em>type</em>, <em>path</em> )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>{ reply1, &#8230;&#8203;, replyN }</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Send an event to session clients.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">M</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.has_session_callback"><strong>jack.has_session_callback</strong></a> ( <em>client</em>, <em>clientname</em> )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>boolean</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Check if client is listening to session notifications.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">M</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.reserve_client_name"><strong>jack.reserve_client_name</strong></a> ( <em>client</em>, <em>clientname</em> )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Reserve a client name.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">M</p></td>
-</tr>
-</tbody>
-</table>
-<table class="tableblock frame-all grid-all spread">
-<caption class="title">Table 16. Ringbuffers</caption>
-<colgroup>
-<col style="width: 45%;">
-<col style="width: 10%;">
-<col style="width: 40%;">
-<col style="width: 5%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Function</th>
-<th class="tableblock halign-left valign-top">Return values</th>
-<th class="tableblock halign-left valign-top">Description</th>
-<th class="tableblock halign-left valign-top">Avail.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.ringbuffer"><strong>jack.ringbuffer</strong></a> ( <em>client</em>, <em>size</em> [, <em>mlock</em> [, <em>usepipe</em> ]] )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>rbuf</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Create a ringbuffer.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">M</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.ringbuffer_write"><strong>jack.ringbuffer_write</strong></a> ( <em>rbuf</em>, <em>tag</em> [, <em>data</em> ] )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>ok</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Write a message to a ringbuffer.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">MPT</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.ringbuffer_read"><strong>jack.ringbuffer_read</strong></a> ( <em>rbuf</em> )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>tag</em>, <em>data</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Read a message from a ringbuffer.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">MPT</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.ringbuffer_reset"><strong>jack.ringbuffer_reset</strong></a> ( <em>rbuf</em> )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Reset a ringbuffer.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">MPT</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.ringbuffer_peek"><strong>jack.ringbuffer_peek</strong></a> ( <em>rbuf</em> )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>ok</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Check if there is a message to read from a ringbuffer.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">MPT</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#jack.ringbuffer_getfd"><strong>jack.ringbuffer_getfd</strong></a> ( <em>rbuf</em> )</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>fd</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Get the read file descriptor of a ringbuffer&#8217;s pipe.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">MPT</p></td>
-</tr>
-</tbody>
-</table>
-<div style="page-break-after: always;"></div>
 </div>
 </div>
 </div>
@@ -4537,7 +3167,7 @@ with a string message handler.</p>
 <div id="footer">
 <div id="footer-text">
 Version 0.3<br>
-Last updated 2016-06-15 09:25:51 CEST
+Last updated 2016-06-15 19:36:44 CEST
 </div>
 </div>
 </body>
