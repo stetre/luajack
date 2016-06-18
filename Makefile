@@ -8,6 +8,7 @@ build install uninstall where:
 clean :
 	@cd src;		$(MAKE) $@
 	@cd doc;		$(MAKE) $@
+	@cd examples/c_api;		$(MAKE) $@
 
 docs:
 	@cd doc;		$(MAKE)

@@ -24,7 +24,7 @@
  */
 
 /****************************************************************************
- * LuaJack library - C API 													*
+ * LuaJack library - C API                                                  *
  ****************************************************************************/
 
 #ifndef luajackDEFINED
@@ -39,23 +39,42 @@
 #include <jack/transport.h>
 #include <jack/thread.h>
 
-#define LUAJACK_VERSION		"0.3"
+#define LUAJACK_VERSION     "0.3"
 
 /* opaque luajack object */
 typedef struct luajack_s { 
-	int	type;  /* LUAJACK_TXXX codes */
-	void *xud; /* cud, pud, tud or rud */
+    int type;  /* LUAJACK_TXXX codes */
+    void *xud; /* cud, pud, tud or rud */
 } luajack_t;
 
-#define LUAJACK_TCLIENT			0x1
-#define LUAJACK_TPORT			0x2
-#define LUAJACK_TTHREAD			0x3
-#define LUAJACK_TRINGBUFFER		0x4
+#define LUAJACK_TCLIENT         0x1
+#define LUAJACK_TPORT           0x2
+#define LUAJACK_TTHREAD         0x3
+#define LUAJACK_TRINGBUFFER     0x4
 
+/* The luajack_checkxxx() functions are modelled on the luaL_checkxxx() functions of
+ * the Lua C API and allow to retrieve references to LuaJack objects (i.e. clients,
+ * ports, threads and ringbuffers) created in Lua by the main script.
+ *
+ * The return object reference (a pointer to an opaque luajack_t struct) is then to be 
+ * used to refer to the object when calling LuaJack C-API functions.
+ *
+ * Most of the LuaJack C-API functions are simply wrappers of the JACK API functions
+ * and have the same semantics of the functions they wrap.
+ */
 luajack_t* luajack_checkclient(lua_State *L, int arg);
 luajack_t* luajack_checkport(lua_State *L, int arg);
 luajack_t* luajack_checkthread(lua_State *L, int arg);
 luajack_t* luajack_checkringbuffer(lua_State *L, int arg);
+
+void* luajack_get_buffer(luajack_t *port);
+/* To be used instead of jack_port_get_buffer() in the process callback,
+ * has the same semantics and returns the same value. The buffer can be used 
+ * in the same way one would do with standard JACK (n particular, it can be
+ * passed to jack_midi_xxx() functions, if this is a MIDI port).
+ *
+ * For MIDI output ports, it automatically calls jack_midi_clear_buffer().
+ */
 
 /* malloc/free (uses the allocator function set for the Lua state) */
 void* luajack_main_malloc(size_t size);
@@ -65,7 +84,7 @@ lua_Alloc luajack_allocf(void **ud);
 void* luajack_malloc(size_t size);
 void luajack_free(void *ptr);
 
-/* to be used inside the callbacks: */
+/* To be used inside the callbacks when an error occurs: */
 int luajack_error(const char *fmt, ...);
 int luajack_errorv(const char *fmt, va_list ap);
 
@@ -87,9 +106,6 @@ int luajack_set_sync_callback(luajack_t *client, JackSyncCallback cb, void *arg)
 int luajack_set_timebase_callback(luajack_t *client, int cond, JackTimebaseCallback cb, void *arg);
 int luajack_release_timebase(luajack_t *client);
 
-/* buffers */
-void* luajack_get_buffer(luajack_t *port);
-
 /* ringbuffers */
 int luajack_ringbuffer_write(luajack_t *ringbuffer, uint32_t tag, const void *data, size_t len);
 int luajack_ringbuffer_read(luajack_t *ringbuffer, uint32_t *tag, void *buf, size_t bufsz, size_t *len);
@@ -97,8 +113,8 @@ int luajack_ringbuffer_peek(luajack_t *ringbuffer);
 int luajack_ringbuffer_reset(luajack_t *ringbuffer);
 
 /* server operations control */
-int	luajack_set_freewheel(luajack_t *client, int onoff); 
-int	luajack_set_buffer_size(luajack_t *client, jack_nframes_t nframes);
+int luajack_set_freewheel(luajack_t *client, int onoff); 
+int luajack_set_buffer_size(luajack_t *client, jack_nframes_t nframes);
 jack_nframes_t luajack_get_sample_rate(luajack_t *client);
 jack_nframes_t luajack_get_buffer_size(luajack_t *client);
 float luajack_cpu_load(luajack_t *client);
@@ -107,17 +123,17 @@ float luajack_cpu_load(luajack_t *client);
 jack_nframes_t luajack_frames_since_cycle_start(luajack_t *client);
 jack_nframes_t luajack_frame_time(luajack_t *client);
 jack_nframes_t luajack_last_frame_time(luajack_t *client); 
-int	luajack_get_cycle_times (luajack_t *client, jack_nframes_t *current_frames, jack_time_t *current_usecs, jack_time_t *next_usecs, float *period_usecs); 
+int luajack_get_cycle_times (luajack_t *client, jack_nframes_t *current_frames, jack_time_t *current_usecs, jack_time_t *next_usecs, float *period_usecs); 
 jack_time_t luajack_frames_to_time(luajack_t *client, jack_nframes_t nframes); 
 jack_nframes_t luajack_time_to_frames(luajack_t *client, jack_time_t usec); 
 #define luajack_get_time jack_get_time
 
 /* transport */
-int	luajack_set_sync_timeout(luajack_t *client, jack_time_t timeout);
-int	luajack_transport_locate(luajack_t *client, jack_nframes_t frame);
+int luajack_set_sync_timeout(luajack_t *client, jack_time_t timeout);
+int luajack_transport_locate(luajack_t *client, jack_nframes_t frame);
 jack_transport_state_t luajack_transport_query(luajack_t *client, jack_position_t *pos);
 jack_nframes_t luajack_get_current_transport_frame(luajack_t *client);
-int	luajack_transport_reposition(luajack_t *client, jack_position_t *pos);
+int luajack_transport_reposition(luajack_t *client, jack_position_t *pos);
 void luajack_transport_start(luajack_t *client); 
 void luajack_transport_stop(luajack_t *client); 
 
@@ -130,34 +146,34 @@ void luajack_sectots(struct timespec *ts, double seconds);
 
 
 #define LUAJACK_TSTART double ts = luajack_now();
-#define LUAJACK_TSTOP do {										\
-	ts = luajack_since(ts); ts = ts*1e6;					\
-	printf("%s %d %.3f us\n", __FILE__, __LINE__, ts);			\
-	ts = luajack_now();									\
+#define LUAJACK_TSTOP do {                                      \
+    ts = luajack_since(ts); ts = ts*1e6;                    \
+    printf("%s %d %.3f us\n", __FILE__, __LINE__, ts);          \
+    ts = luajack_now();                                 \
 } while(0);
 
 void luajack_printstack(lua_State *L, const char* fmat, ...);
 int luajack_noprintf(const char *fmt, ...);
 
-#define LUAJACK_BREAK() do { 								\
-	printf("break %s %d\n",__FILE__,__LINE__); 				\
-	getchar(); 												\
+#define LUAJACK_BREAK() do {                                \
+    printf("break %s %d\n",__FILE__,__LINE__);              \
+    getchar();                                              \
 } while(0)
 
-#define LUAJACK_TRACE() 	\
-	printf("trace %s %d %u/%u\n",__FILE__,__LINE__, gettid(), getpid())
+#define LUAJACK_TRACE()     \
+    printf("trace %s %d %u/%u\n",__FILE__,__LINE__, gettid(), getpid())
 
-#define LUAJACK_TRACE_STACK(L) 	\
-	luajack_printstack((L),"%s %d %u/%u\n",__FILE__,__LINE__, gettid(), getpid())
+#define LUAJACK_TRACE_STACK(L)  \
+    luajack_printstack((L),"%s %d %u/%u\n",__FILE__,__LINE__, gettid(), getpid())
 
-#define LUAJACK_BREAK_STACK(L) do { 								\
-	luajack_printstack((L),"%s %d\n",__FILE__,__LINE__); 			\
-	getchar(); 														\
+#define LUAJACK_BREAK_STACK(L) do {                                 \
+    luajack_printstack((L),"%s %d\n",__FILE__,__LINE__);            \
+    getchar();                                                      \
 } while(0)
 
-#define LUAJACK_TRACE_MEM(L) do { 	\
-	printf("memory trace %s %d bytes=%d\n",__FILE__,__LINE__, 				\
-		lua_gc((L), LUA_GCCOUNT, 0)*1024 + lua_gc((L), LUA_GCCOUNTB, 0)); 	\
+#define LUAJACK_TRACE_MEM(L) do {   \
+    printf("memory trace %s %d bytes=%d\n",__FILE__,__LINE__,               \
+        lua_gc((L), LUA_GCCOUNT, 0)*1024 + lua_gc((L), LUA_GCCOUNTB, 0));   \
 } while(0)
 
 /* luaL_check -style functions */
