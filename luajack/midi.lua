@@ -76,14 +76,15 @@ function midi.note_frequency(n)
 end
 
 
--- Timed messages (tmsg = uint time + msg)
-function midi.tmsg(time, msg) --@@ TODO
-	error("not implemented yet")
-	return tmsg -- (time,msg) -> tmsg  (binary)
+-- Timed messages: tmsg = time + msg, 
+-- where time is an integer (uint32_t) and msg is a binary string
+function midi.tmsg(time, msg)
+	return string.pack("I4", time) .. msg -- (time,msg) -> tmsg (binary)
 end
 
-function midi.time_msg(tmsg) --@@ TODO
-	error("not implemented yet")
+function midi.time_msg(tmsg)
+	local time, pos = string.unpack("I4", tmsg)
+	local msg = tmsg:sub(pos)
 	return time, msg -- tmsg -> (time,msg)
 end
 
