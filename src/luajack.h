@@ -39,7 +39,7 @@
 #include <jack/transport.h>
 #include <jack/thread.h>
 
-#define LUAJACK_VERSION     "0.3"
+#define LUAJACK_VERSION     "0.4"
 
 /* opaque luajack object */
 typedef struct luajack_s { 
