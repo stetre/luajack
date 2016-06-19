@@ -55,10 +55,13 @@ empty string (so that _data:len=0_).#
 
 [[jack.ringbuffer_peek]]
 * *jack.ringbuffer_peek* ( _rbuf_ ) _MPT_ +
--> _ok_ +
-[small]#Returns _true_ if there is a  <<ringbuffersmessage, message>> available to be read from
-the ringbuffer _rbuf_, otherwise it returns _false_.#
+-> _tag_, _data_ +
+[small]#Same as <<jack.ringbuffer_read, ringbuffer_read>>, but does not advance the message pointer.#
 
+[[jack.ringbuffer_read_advance]]
+* *jack.ringbuffer_read_advance* ( _rbuf_ ) _MPT_ +
+-> _ok_ +
+[small]#Advances the message read pointer without reading the message.#
 
 [[jack.ringbuffer_getfd]]
 * *jack.ringbuffer_getfd* ( _rbuf_ ) _MPT_ +

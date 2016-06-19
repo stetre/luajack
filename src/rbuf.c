@@ -123,15 +123,26 @@ static int RingbufferRead(lua_State *L)
 	{
 	int rc;
 	rud_t *rud = rud_check(L, 1);
-	rc = ringbuffer_luaread(rud->rbuf, L);
+	rc = ringbuffer_luaread(rud->rbuf, L, 1);
 	rbuf_pipe_read(L, rud);
 	return rc;
 	}
 
 static int RingbufferPeek(lua_State *L)
 	{
+	int rc;
 	rud_t *rud = rud_check(L, 1);
-	return ringbuffer_luapeek(rud->rbuf, L);
+	rc = ringbuffer_luaread(rud->rbuf, L, 0);
+	return rc;
+	}
+
+static int RingbufferReadAdvance(lua_State *L)
+	{
+	int rc;
+	rud_t *rud = rud_check(L, 1);
+	rc = ringbuffer_luaread_advance(rud->rbuf, L);
+	rbuf_pipe_read(L, rud);
+	return rc;
 	}
 
 static int RingbufferReset(lua_State *L)
@@ -146,6 +157,7 @@ static int RingbufferReset(lua_State *L)
 		{ "ringbuffer_write", RingbufferWrite },	\
 		{ "ringbuffer_read", RingbufferRead },		\
 		{ "ringbuffer_peek", RingbufferPeek },		\
+		{ "ringbuffer_read_advance", RingbufferReadAdvance },	\
 		{ "ringbuffer_reset", RingbufferReset }		\
 
 static const struct luaL_Reg MFunctions[] = 

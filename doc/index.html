@@ -2476,9 +2476,17 @@ empty string (so that <em>data:len=0</em>).</span></p>
 <ul>
 <li>
 <p><strong>jack.ringbuffer_peek</strong> ( <em>rbuf</em> ) <em>MPT</em><br>
+&#8594; <em>tag</em>, <em>data</em><br>
+<span class="small">Same as <a href="#jack.ringbuffer_read">ringbuffer_read</a>, but does not advance the message pointer.</span></p>
+</li>
+</ul>
+</div>
+<div id="jack.ringbuffer_read_advance" class="ulist">
+<ul>
+<li>
+<p><strong>jack.ringbuffer_read_advance</strong> ( <em>rbuf</em> ) <em>MPT</em><br>
 &#8594; <em>ok</em><br>
-<span class="small">Returns <em>true</em> if there is a  <a href="#ringbuffersmessage">message</a> available to be read from
-the ringbuffer <em>rbuf</em>, otherwise it returns <em>false</em>.</span></p>
+<span class="small">Advances the message read pointer without reading the message.</span></p>
 </li>
 </ul>
 </div>

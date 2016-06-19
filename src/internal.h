@@ -254,9 +254,9 @@ int ringbuffer_cpeek(jack_ringbuffer_t *rbuf);
 #define ringbuffer_luawrite luajack_ringbuffer_luawrite
 int ringbuffer_luawrite(jack_ringbuffer_t *rbuf, lua_State *L, int arg);
 #define ringbuffer_luaread luajack_ringbuffer_luaread
-int ringbuffer_luaread(jack_ringbuffer_t *rbuf, lua_State *L);
-#define ringbuffer_luapeek luajack_ringbuffer_luapeek
-int ringbuffer_luapeek(jack_ringbuffer_t *rbuf, lua_State *L);
+int ringbuffer_luaread(jack_ringbuffer_t *rbuf, lua_State *L, int advance);
+#define ringbuffer_luaread_advance luajack_ringbuffer_luaread_advance
+int ringbuffer_luaread_advance(jack_ringbuffer_t *rbuf, lua_State *L);
 
 /* latency.c */
 #define latency_pushmode luajack_latency_pushmode
