@@ -248,9 +248,9 @@ size_t ringbuffer_read_space(jack_ringbuffer_t *rbuf);
 #define ringbuffer_cwrite luajack_ringbuffer_cwrite
 int ringbuffer_cwrite(jack_ringbuffer_t *rbuf, uint32_t tag, const void *data, size_t len);
 #define ringbuffer_cread luajack_ringbuffer_cread
-int ringbuffer_cread(jack_ringbuffer_t *rbuf, void *buf, size_t bufsz, uint32_t *tag, size_t *len);
-#define ringbuffer_cpeek luajack_ringbuffer_cpeek
-int ringbuffer_cpeek(jack_ringbuffer_t *rbuf);
+int ringbuffer_cread(jack_ringbuffer_t *rbuf, void *buf, size_t bufsz, int advance, uint32_t *tag, size_t *len);
+#define ringbuffer_cread_advance luajack_ringbuffer_cread_advance
+int ringbuffer_cread_advance(jack_ringbuffer_t *rbuf);
 #define ringbuffer_luawrite luajack_ringbuffer_luawrite
 int ringbuffer_luawrite(jack_ringbuffer_t *rbuf, lua_State *L, int arg);
 #define ringbuffer_luaread luajack_ringbuffer_luaread

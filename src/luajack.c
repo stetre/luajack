@@ -174,14 +174,21 @@ int luajack_ringbuffer_read(luajack_t *ringbuffer, uint32_t *tag, void *buf, siz
 	{
 	rud_t *rud = get_rud(ringbuffer);
 	if(!rud) return 0;
-	return ringbuffer_cread(rud->rbuf, buf, bufsz, tag, len);
+	return ringbuffer_cread(rud->rbuf, buf, bufsz, 1, tag, len);
 	}
 
-int luajack_ringbuffer_peek(luajack_t *ringbuffer)
+int luajack_ringbuffer_peek(luajack_t *ringbuffer, uint32_t *tag, void *buf, size_t bufsz, size_t *len)
 	{
 	rud_t *rud = get_rud(ringbuffer);
 	if(!rud) return 0;
-	return ringbuffer_cpeek(rud->rbuf);
+	return ringbuffer_cread(rud->rbuf, buf, bufsz, 0, tag, len);
+	}
+
+int luajack_ringbuffer_read_advance(luajack_t *ringbuffer)
+	{
+	rud_t *rud = get_rud(ringbuffer);
+	if(!rud) return 0;
+	return ringbuffer_cread_advance(rud->rbuf);
 	}
 
 int luajack_ringbuffer_reset(luajack_t *ringbuffer)

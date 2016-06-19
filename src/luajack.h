@@ -109,7 +109,8 @@ int luajack_release_timebase(luajack_t *client);
 /* ringbuffers */
 int luajack_ringbuffer_write(luajack_t *ringbuffer, uint32_t tag, const void *data, size_t len);
 int luajack_ringbuffer_read(luajack_t *ringbuffer, uint32_t *tag, void *buf, size_t bufsz, size_t *len);
-int luajack_ringbuffer_peek(luajack_t *ringbuffer);
+int luajack_ringbuffer_peek(luajack_t *ringbuffer, uint32_t *tag, void *buf, size_t bufsz, size_t *len);
+int luajack_ringbuffer_read_advance(luajack_t *ringbuffer);
 int luajack_ringbuffer_reset(luajack_t *ringbuffer);
 
 /* server operations control */

@@ -221,12 +221,12 @@ int ringbuffer_luaread(jack_ringbuffer_t *rbuf, lua_State *L, int advance)
 	}
 
 
-int ringbuffer_cread(jack_ringbuffer_t *rbuf, void *buf, size_t bufsz, 
-		/* return values: */ uint32_t *tag, size_t *len)
+int ringbuffer_cread(jack_ringbuffer_t *rbuf, void *buf, size_t bufsz, int advance, uint32_t *tag, size_t *len)
 /* C version: returns 1 on success and 0 on error */
 	{
 	jack_ringbuffer_data_t vec[2];
 	hdr_t hdr;
+	uint32_t len0;
 	size_t cnt;
 
 	/* peek for header */
@@ -242,28 +242,38 @@ int ringbuffer_cread(jack_ringbuffer_t *rbuf, void *buf, size_t bufsz,
 		return luajack_error("not enough space for ringbuffer_read() "
 						"(at least %u bytes needed)", hdr.len);
 	
-	/* strip header */
-	jack_ringbuffer_read_advance(rbuf, sizeof(hdr));
 
 	*tag = hdr.tag;
 	*len = hdr.len;
 
 	if(hdr.len == 0) /* tag only */
-		{ ((char*)buf)[0]='\0'; return 1; }
+		{ 
+		if(advance)
+			jack_ringbuffer_read_advance(rbuf, sizeof(hdr));
+		((char*)buf)[0]='\0'; return 1; 
+		}
 				
 	/* get the read vector */
 	jack_ringbuffer_get_read_vector(rbuf, vec);
 
 	/* copy the data part in the user provided buffer */
-	if(vec[0].len >= hdr.len)
-		memcpy(buf, vec[0].buf, vec[0].len);
-	else
+	
+	if(vec[0].len >= (sizeof(hdr) + hdr.len)) /* all the data are in vec[0] */
+		memcpy(buf, vec[0].buf + sizeof(hdr), hdr.len);
+	else if(vec[0].len > sizeof(hdr)) /* part of the data are in vec[0] */
 		{
-		memcpy(buf, vec[0].buf, vec[0].len);
-		memcpy((char*)buf + vec[0].len, vec[1].buf, hdr.len - vec[0].len);
+		len0 = vec[0].len - sizeof(hdr);
+		memcpy(buf, vec[0].buf + sizeof(hdr), len0);
+		memcpy((char*)buf + len0, vec[1].buf, hdr.len - len0);
+		}
+	else /* part of the header and all of the data are in vec[1] */
+		{
+		len0 = sizeof(hdr) - vec[0].len; /* bytes oh header in vec[1] */
+		memcpy((char*)buf, vec[1].buf + len0, hdr.len);
 		}
 	((char*)buf)[hdr.len] = '\0';
-	jack_ringbuffer_read_advance(rbuf, hdr.len);
+	if(advance)	
+		jack_ringbuffer_read_advance(rbuf, sizeof(hdr) + hdr.len);
 	return 1;
 	}
 
@@ -292,20 +302,23 @@ int ringbuffer_luaread_advance(jack_ringbuffer_t *rbuf, lua_State *L)
 	}
 
 
-//@@ TODO Così serve a poco.. fare come read ma senza avanzare
-int ringbuffer_cpeek(jack_ringbuffer_t *rbuf)
+int ringbuffer_cread_advance(jack_ringbuffer_t *rbuf)
 /* C version: returns 1 or 0 */
 	{
 	hdr_t hdr;
 	/* peek for header */
 	size_t cnt = jack_ringbuffer_peek(rbuf, (char*)&hdr, sizeof(hdr));
-	if(cnt != sizeof(hdr)) return 0;
-	
-	if(hdr.len == 0) return 1; /* header only */
-
-	/* see if there are 'len' bytes of data available */
-	cnt = jack_ringbuffer_read_space(rbuf);
-	return ( cnt >= (sizeof(hdr) + hdr.len));
+	if(cnt == sizeof(hdr))
+		{
+		/* see if there are 'len' bytes of data available */
+		cnt = jack_ringbuffer_read_space(rbuf);
+		if( cnt >= (sizeof(hdr) + hdr.len) )
+			{
+			jack_ringbuffer_read_advance(rbuf, sizeof(hdr) + hdr.len);
+			return 1;
+			}
+		}
+	return 0;
 	}
 
 
