@@ -20,11 +20,17 @@
 [small]#Resets the maximum delay counter.#
 
 
-////
-
-[[jack.profile]] @@TODO
-* *jack.profile* ( _client_[, _what_ ]) +
-[small]#_what_ = _start_, _restart_, _stop_ or nil for results.#
-
-////
+[[jack.profile]]
+* *jack.profile* ( _client_ [, _what_ ]) +
+*jack.profile* ( _client_ ) +
+-> _n_, _min_, _max_, _mean_, _var_ +
+[small]#Profile the real-time callbacks for _client_. +
+The _what_ parameter may be one amongst 
+_start_ (reset the counters and start profiling), 
+_stop_ (stop profiling), and 
+_restart_ (start profiling, but do not reset the counters).
+If the _what_ parameter is _nil_ (or none), the function returns
+the number of profiled callbacks, followed by the minimum, maximum,
+mean and variance of the time (in seconds) they consumed.
+Please note that these are only rough estimates.#
 

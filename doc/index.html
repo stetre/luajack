@@ -2356,6 +2356,24 @@ in the input port&#8217;s buffer that fit in the output port&#8217;s buffer.</sp
 </li>
 </ul>
 </div>
+<div id="jack.profile" class="ulist">
+<ul>
+<li>
+<p><strong>jack.profile</strong> ( <em>client</em> [, <em>what</em> ])<br>
+<strong>jack.profile</strong> ( <em>client</em> )<br>
+&#8594; <em>n</em>, <em>min</em>, <em>max</em>, <em>mean</em>, <em>var</em><br>
+<span class="small">Profile the real-time callbacks for <em>client</em>.<br>
+The <em>what</em> parameter may be one amongst
+<em>start</em> (reset the counters and start profiling),
+<em>stop</em> (stop profiling), and
+<em>restart</em> (start profiling, but do not reset the counters).
+If the <em>what</em> parameter is <em>nil</em> (or none), the function returns
+the number of profiled callbacks, followed by the minimum, maximum,
+mean and variance of the time (in seconds) they consumed.
+Please note that these are only rough estimates.</span></p>
+</li>
+</ul>
+</div>
 </div>
 <div class="sect2">
 <h3 id="_session_api">Session API</h3>
