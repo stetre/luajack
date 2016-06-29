@@ -306,8 +306,8 @@ with a string message handler.
 |_N_, _{ portname1, ..., portnameN }_
 |Get the connections for a port.
 |M
-|<<jack.port_connected_to, *jack.port_connected_to*>> ( _port_, _portname2_ ) +
-<<jack.port_connected_to, *jack.nport_connected_to*>> ( _client_, _portname1_, _portname2_ )
+|<<jack.port_connected, *jack.port_connected*>> ( _port_, _portname2_ ) +
+<<jack.port_connected, *jack.nport_connected*>> ( _client_, _portname1_, _portname2_ )
 |_boolean_
 |Check if two ports are connected.
 |M

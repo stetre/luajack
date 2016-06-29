@@ -843,7 +843,7 @@ static const struct luaL_Reg MFunctions[] =
 		{ "nport_monitoring", PortnameMonitoring },
 		{ "port_connections", PortConnections },
 		{ "nport_connections", PortnameConnections },
-		{ "port_connected_to", PortConnectedTo },
+		{ "port_connected", PortConnectedTo },
 		{ "nport_connected", PortnameConnectedTo },
 		{ NULL, NULL } /* sentinel */
 	};

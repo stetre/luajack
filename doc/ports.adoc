@@ -206,9 +206,9 @@ _'is_physical'_ | _'can_monitor'_ | _'is_terminal'_ )#
 a table containing the full names of the ports the port is connected to.#
 
 
-[[jack.port_connected_to]]
-* *jack.port_connected_to* ( _port_, _portname2_ ) _M_ +
-*jack.nport_connected_to* ( _client_, _portname1_, _portname2_ ) _M_ +
+[[jack.port_connected]]
+* *jack.port_connected* ( _port_, _portname2_ ) _M_ +
+*jack.nport_connected* ( _client_, _portname1_, _portname2_ ) _M_ +
 -> _boolean_ +
 [small]#Returns _true_ if the two ports are connected, _false_ otherwise.#
 
