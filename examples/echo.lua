@@ -8,7 +8,7 @@
 --        '----|__z^-M__|---|>----'
 -- 
 -- 
--- To try it out, launch jackd (e.g, using via QjackCtl), then in different shells:
+-- To try it out, launch jackd (e.g, using QjackCtl), then in different shells:
 -- 
 -- $ jack-keyboard              # the MIDI controller
 -- $ lua sinesynth.lua          # the synthesizer
@@ -18,18 +18,28 @@
 -- sinesynth, sinesynth with the echo, and the echo with the system playback.
 -- By playing notes on the keyboard you should then hear tones with echo.
 --
+-- An alternative way of running the exaample is with the 'capture' option, e.g.
+-- $ lua echo.lua capture 0.4 0.8
+-- This connects system:capture_1 to the echo input, and the echo output to the
+-- system playback, thus applying the echo to whatever sound source is plugged
+-- into system:capture_1.
+--
+-- With the "manual" option, no automatic connection is performed.
+--
 
 jack = require("luajack")
 
 MIDI_CONTROLLER_OUT = "jack-keyboard:midi_out"
 SYNTH_MIDI_IN = "sinesynth.lua:midi_in"
 SYNTH_OUT = "sinesynth.lua:audio_out"
+CAPTURE_1 = "system:capture_1"
 PLAYBACK_1 = "system:playback_1"
 PLAYBACK_2 = "system:playback_2"
 
 NAME = arg[0]
 
-auto_connect = arg[1] == "auto" and true or false
+auto_connect = arg[1] or "manual"
+
 gain = tonumber(arg[2]) or 0.3    -- 
 delay = tonumber(arg[3]) or 0.5   -- seconds
 if gain > 1 and gain < 0 then error("invalid gain="..gain) end
@@ -101,11 +111,22 @@ function connect(c, port1, port2)
    end
 end
 
-if auto_connect then
+if auto_connect=="auto" then
    connect(c, MIDI_CONTROLLER_OUT, SYNTH_MIDI_IN)
    connect(c, SYNTH_OUT, NAME..":audio_in")
    connect(c, NAME..":audio_out", PLAYBACK_1)
    connect(c, NAME..":audio_out", PLAYBACK_2)
+elseif auto_connect=="capture" then
+   connect(c, CAPTURE_1, NAME..":audio_in")
+   connect(c, NAME..":audio_out", PLAYBACK_1)
+   connect(c, NAME..":audio_out", PLAYBACK_2)
+--elseif auto_connect=="myoption" then
+--  ...
+--  add your preferred connections here
+--  ...
+elseif auto_connect=="manual" then
+   -- do not connect
+else error("invalid option '"..auto_connect.."'")
 end
 
 jack.sleep()
