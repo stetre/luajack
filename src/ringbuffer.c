@@ -238,7 +238,7 @@ int ringbuffer_cread(jack_ringbuffer_t *rbuf, void *buf, size_t bufsz, int advan
 	if( cnt < (sizeof(hdr) + hdr.len) ) return 0;
 
 	/* check if data fits in the user provided buffer */
-	if(hdr.len >= bufsz ) /* need 1 extra for trailing '\0' */
+	if(hdr.len > bufsz )
 		return luajack_error("not enough space for ringbuffer_read() "
 						"(at least %u bytes needed)", hdr.len);
 	
@@ -250,7 +250,8 @@ int ringbuffer_cread(jack_ringbuffer_t *rbuf, void *buf, size_t bufsz, int advan
 		{ 
 		if(advance)
 			jack_ringbuffer_read_advance(rbuf, sizeof(hdr));
-		((char*)buf)[0]='\0'; return 1; 
+		if(bufsz>0) ((char*)buf)[0]='\0';
+		return 1;
 		}
 				
 	/* get the read vector */
@@ -271,7 +272,6 @@ int ringbuffer_cread(jack_ringbuffer_t *rbuf, void *buf, size_t bufsz, int advan
 		len0 = sizeof(hdr) - vec[0].len; /* bytes oh header in vec[1] */
 		memcpy((char*)buf, vec[1].buf + len0, hdr.len);
 		}
-	((char*)buf)[hdr.len] = '\0';
 	if(advance)	
 		jack_ringbuffer_read_advance(rbuf, sizeof(hdr) + hdr.len);
 	return 1;
