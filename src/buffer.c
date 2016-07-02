@@ -94,6 +94,20 @@ static int GetBuffer(lua_State *L)
     return 1;
     }
 
+static int RawBuffer(lua_State *L) //@@DOC
+    {
+    pud_t *pud = pud_check(L, 1);
+    
+    CheckProcess(L, pud);
+    if(pud->buf == NULL) 
+        luaL_error(L, "buffer not retrieved");
+
+	lua_pushlightuserdata(L, pud->buf);
+    lua_pushinteger(L, pud->nframes);
+    return 2;
+    }
+
+
 /*--------------------------------------------------------------------------*
  | Default audio type                                                       |
  *--------------------------------------------------------------------------*/
@@ -423,6 +437,7 @@ void buffer_drop_all(cud_t *cud)
 static const struct luaL_Reg PFunctions [] = 
     {
         { "get_buffer", GetBuffer },
+        { "raw_buffer", RawBuffer },
         { "write", SwitchWrite },
         { "clear", SwitchClear },
         { "read", SwitchRead },
