@@ -556,7 +556,7 @@ static int PortnameConnectedTo(lua_State *L)
 	portname2 = luaL_checkstring(L, 3);
 	port = jack_port_by_name(cud->client, portname1);
 	if(!port)
-		luaL_error(L, "unknown port");
+		return luaL_error(L, "unknown port");
 	lua_pushboolean(L, jack_port_connected_to(port, portname2));
 	return 1;
 	}

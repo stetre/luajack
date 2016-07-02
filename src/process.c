@@ -68,7 +68,6 @@ static int ProcessLoad_(lua_State *L, int isscript)
 	luajack_xmove(P, L, chunk_index, last_index);
 
 	nargs = lua_gettop(P) - 1;
-
 	/* execute the script (note that we still are in the main thread) */
 	if(lua_pcall(P, nargs, 0 , 0) != LUA_OK)
 		return luaL_error(L, lua_tostring(P, -1));

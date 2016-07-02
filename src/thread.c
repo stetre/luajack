@@ -82,7 +82,7 @@ static void* ThreadFunc(void *arg)
 	int nargs;
 	lua_State *TT;
 
-	pthread_setcanceltype(PTHREAD_CANCEL_DEFERRED, NULL);
+	pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, NULL);
 
 	luajack_sigblock();
 
