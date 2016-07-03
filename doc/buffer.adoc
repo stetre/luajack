@@ -25,6 +25,11 @@ parameter passed to the process callback). +
 This function must be invoked in the <<jack.process_callback, process callback>>, at each
 process cycle, before any other operation on the buffer.#
 
+[[audiojack.raw_buffer]]
+* *jack.raw_buffer* ( _port_ ) _P_ +
+-> _pointer_, _nframes_ +
+[small]#Returns the port buffer pointer (as a _light userdata_) and the number of frames.
+It can be used only after having retrieved the buffer with <<audiojack.get_buffer, jack.get_buffer>>().#
 
 [[audiojack.seek]]
 * *jack.seek* ( _port_ [, _position_ ] ) _P_ +

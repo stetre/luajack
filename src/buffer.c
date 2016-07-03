@@ -94,7 +94,7 @@ static int GetBuffer(lua_State *L)
     return 1;
     }
 
-static int RawBuffer(lua_State *L) //@@DOC
+static int RawBuffer(lua_State *L)
     {
     pud_t *pud = pud_check(L, 1);
     
