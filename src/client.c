@@ -266,14 +266,18 @@ static int client_close(lua_State *L, cud_t *cud)
         { callback_unregister(L, cud); process_unregister(cud); }
 #if 0 
     DBG("cud->process_state %p\n", (void*) cud->process_state); 
-    if(cud->process_state)  
+    if(cud->process_state)
         lua_close(cud->process_state);
-    /* @@ This is commented out because in some exit combinations it causes a double
-	 * free (when the Lua state was already closed elsewhere before arriving at this
-	 * point, I suspect: to investigate better). 
+    /* @@ This was commented out because in some exit combinations it used to cause a 
+	 * double free (presumably the Lua state was already closed elsewhere before arriving
+	 * at this point). 
      * Without closing the state there is a memory leak, but it should cause no harm
-     * as long as the application does not open and close plenty of clients.
-     * The OS will take care of releasing the memory.
+     * as long as the application does not open and close plenty of clients without
+     * (the OS will take care of releasing the memory). 
+     * UPDATE (07/06/2016): Sure? Not really. However, it seems that the problem is gone (???). 
+     * We'd better close the process_state because a signal processing module may allocate 
+     * lots of memory (e.g. for delay lines) and rely on the closure of the Lua state for
+     * garbage collecting it.
      */
 #endif
     CancelCudValid(cud);
