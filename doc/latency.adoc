@@ -4,21 +4,20 @@
 [small]#Rfr: link:++http://jackaudio.org/api/group__LatencyFunctions.html++[Managing and determining Latency]#
 
 [[jack.latency_range]]
-* *jack.latency_range* ( _port_, _mode_ ) _M_ +
--> _min_, _max_ +
+* _min_, _max_ = *latency_range*( _port_, _mode_ ) _M_ +
 [small]#Gets the minimum and maximum latencies (in frames) defined by _mode_ for the port.
 The _mode_ parameter (a string) may be _'capture'_ or _'playback'_.#
 
 
 [[jack.set_latency_range]]
-* *jack.set_latency_range* ( _port_, _mode_, _min_, _max_ ) _M_ +
+* *set_latency_range*( _port_, _mode_, _min_, _max_ ) _M_ +
 [small]#Sets the minimum and maximum latencies (in frames) defined by _mode_ for _port_.
 The _mode_ parameter (a string) may be _'capture'_ or _playback_.
 This function should only be used inside a <<jack.latency_callback, latency callback>>.#
 
 
 [[jack.recompute_total_latencies]]
-* *jack.recompute_total_latencies* ( _client_ ) _M_ +
+* *recompute_total_latencies*( _client_ ) _M_ +
 [small]#Requests a complete recomputation of all port latencies.#
 
 

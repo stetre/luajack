@@ -16,8 +16,7 @@ message or any other information (LuaJack by itself does not interpret it by any
 
 
 [[jack.ringbuffer]]
-* *jack.ringbuffer* ( _client_, _size_ [, _mlock_ [, _usepipe_ ]] ) _M_ +
--> _rbuf_ +
+* _rbuf_ = *ringbuffer*( _client_, _size_ [, _mlock_ [, _usepipe_ ]] ) _M_ +
 [small]#Creates a ringbuffer of the specified _size_ (in bytes) and returns a
 ringbuffer reference for subsequent operations. The returned reference
 is an integer which may be passed as argument to <<jack.thread, thread scripts>>. +
@@ -33,15 +32,13 @@ used before the client is <<jack.activate, activated>>.#
 
 
 [[jack.ringbuffer_write]]
-* *jack.ringbuffer_write* ( _rbuf_, _tag_ [, _data_ ] ) _MPT_ +
--> _ok_ +
+* _ok_ = *ringbuffer_write*( _rbuf_, _tag_ [, _data_ ] ) _MPT_ +
 [small]#Write a <<ringbuffersmessage, message>> to the ringbuffer _rbuf_. +
 Returns _true_ on success, or _false_ if there was not enough space for the message.#
 
 
 [[jack.ringbuffer_read]]
-* *jack.ringbuffer_read* ( _rbuf_ ) _MPT_ +
--> _tag_, _data_ +
+* _tag_, _data_ = *ringbuffer_read*( _rbuf_ ) _MPT_ +
 [small]#Read a <<ringbuffersmessage, message>> from the ringbuffer _rbuf_.
 Returns _tag_=_nil_ if there are no messages available. +
 If the message is composed of the _tag_ only, then _data_ is returned as an
@@ -49,34 +46,25 @@ empty string (so that _data:len=0_).#
 
 
 [[jack.ringbuffer_reset]]
-* *jack.ringbuffer_reset* ( _rbuf_ ) _MPT_ +
+* *ringbuffer_reset*( _rbuf_ ) _MPT_ +
 [small]#Resets the ringbuffer _rbuf_.#
 
 
 [[jack.ringbuffer_peek]]
-* *jack.ringbuffer_peek* ( _rbuf_ ) _MPT_ +
--> _tag_, _data_ +
+* _tag_, _data_ = *ringbuffer_peek*( _rbuf_ ) _MPT_ +
 [small]#Same as <<jack.ringbuffer_read, ringbuffer_read>>, but does not advance the message pointer.#
 
 [[jack.ringbuffer_read_advance]]
-* *jack.ringbuffer_read_advance* ( _rbuf_ ) _MPT_ +
--> _ok_ +
+* _ok_ = *ringbuffer_read_advance*( _rbuf_ ) _MPT_ +
 [small]#Advances the message read pointer without reading the message.#
 
 [[jack.ringbuffer_getfd]]
-* *jack.ringbuffer_getfd* ( _rbuf_ ) _MPT_ +
--> _fd_ +
+* _fd_ = *ringbuffer_getfd*( _rbuf_ ) _MPT_ +
 [small]#Returns the file descriptor of the pipe associated with the ringbuffer _rbuf_,
 or _nil_ if it was <<jack.ringbuffer, created>> without pipe.#
 
 ////
 - RINGBUFFER_HDRLEN header length in bytes @@
-
-
-[[jack.]]
-* *jack.* ( ) +
--> __ +
- +
 
 ////
 

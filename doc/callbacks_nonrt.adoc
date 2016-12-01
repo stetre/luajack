@@ -26,7 +26,7 @@ the same considerations and constraints described in the JACK documentation.
 
 
 [[jack.shutdown_callback]]
-* *jack.shutdown_callback* ( _client_, _func_ ) _M_ +
+* *shutdown_callback*( _client_, _func_ ) _M_ +
 [small]#Registers _func_ as callback for the 'shutdown' event. +
 The callback is executed as *_func(client, code, reason)_*, where _code_ is a string
 version of the JackStatus flags and _reason_ is a string describing the shutdown reason.
@@ -35,21 +35,21 @@ etc.).#
 
 
 [[jack.freewheel_callback]]
-* *jack.freewheel_callback* ( _client_, _func_ ) _M_ +
+* *freewheel_callback*( _client_, _func_ ) _M_ +
 [small]#Registers _func_ as callback for the 'starting or stopping freewheel mode' event. +
 The callback is executed as *_func(client, operation)_*, where _operation_ is a string
 that may be either _'starting'_ or _'stopping'_.#
 
 
 [[jack.sample_rate_callback]]
-* *jack.sample_rate_callback* ( _client_, _func_ ) _M_ +
+* *sample_rate_callback*( _client_, _func_ ) _M_ +
 [small]#Registers _func_ as callback for the 'sample rate change' event. +
 The callback is executed as *_func(client, nframes)_*, where _nframes_ is the new
 sample rate.#
 
 
 [[jack.client_registration_callback]]
-* *jack.client_registration_callback* ( _client_, _func_ ) _M_ +
+* *client_registration_callback*( _client_, _func_ ) _M_ +
 [small]#Registers _func_ as callback for the 'client (de)registration' event. +
 The callback is executed as *_func(client, name, operation)_*, where _name_ is the name
 of the affected client and _operation_ is a string that may be either _'registered'_ 
@@ -57,7 +57,7 @@ or _'unregistered'_.#
 
 
 [[jack.port_registration_callback]]
-* *jack.port_registration_callback* ( _client_, _func_ ) _M_ +
+* *port_registration_callback*( _client_, _func_ ) _M_ +
 [small]#Registers _func_ as callback for the 'port (de)registration' event. +
 The callback is executed as *_func(client, portname, operation)_*, where _portname_ is
 the (full) name of the affected port and _operation_ is a string that may be 
@@ -65,14 +65,14 @@ either _'registered'_ or _'unregistered'_.#
 
 
 [[jack.port_rename_callback]]
-* *jack.port_rename_callback* ( _client_, _func_ ) _M_ +
+* *port_rename_callback*( _client_, _func_ ) _M_ +
 [small]#Registers _func_ as callback for the 'port rename' event. +
 The callback is executed as *_func(client, portname, newname)_*, where _portname_ is
 the old (full) name of the affected port and _newname_ is its newly assigned name.#
 
 
 [[jack.port_connect_callback]]
-* *jack.port_connect_callback* ( _client_, _func_ ) _M_ +
+* *port_connect_callback*( _client_, _func_ ) _M_ +
 [small]#Registers _func_ as callback for the 'ports connect or disconnect' event. +
 The callback is executed as *_func(client, srcname, dstname, operation)_*, where 
 _srcname_ and _dstname_ are the (full) names of the affected ports, and _operation_
@@ -80,26 +80,26 @@ is a string that may be either _'connected'_ or _'disconnected'_.#
 
 
 [[jack.graph_order_callback]]
-* *jack.graph_order_callback* ( _client_, _func_ ) _M_ +
+* *graph_order_callback*( _client_, _func_ ) _M_ +
 [small]#Registers _func_ as callback for the 'graph reorder' event. +
 The callback is executed as *_func(client)_*.#
 
 
 [[jack.xrun_callback]]
-* *jack.xrun_callback* ( _client_, _func_ ) _M_ +
+* *xrun_callback*( _client_, _func_ ) _M_ +
 [small]#Registers _func_ as callback for the 'xrun' event. +
 The callback is executed as *_func(client)_*.#
 
 
 [[jack.latency_callback]]
-* *jack.latency_callback* ( _client_, _func_ ) _M_ +
+* *latency_callback*( _client_, _func_ ) _M_ +
 [small]#Registers _func_ as callback for the 'latency recomputations needed' event. +
 The callback is executed as *_func(client, mode)_*, where _mode_ is a string that
 may be either _'capture'_ or _'playback'_.#
 
 
 [[jack.session_callback]]
-* *jack.session_callback* ( _client_, _func_ ) _M_ +
+* *session_callback*( _client_, _func_ ) _M_ +
 [small]#Registers _func_ as callback for the 'session notification' event. +
 The callback is executed as
 *_command, flag1, flag2 = func(client, type, path, uuid)_*, 

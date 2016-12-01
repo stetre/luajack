@@ -4,26 +4,23 @@
 [small]#Rfr: link:++http://jackaudio.org/api/statistics_8h.html++[statistics.h File Reference]#
 
 [[jack.max_delayed_usecs]]
-* *jack.max_delayed_usecs* ( _client_ ) _M_ +
--> _delay_ +
+* _delay_ = *max_delayed_usecs*( _client_ ) _M_ +
 [small]#Returns the maximum delay reported by the backend since startup or reset.#
 
 
 [[jack.xrun_delayed_usecs]]
-* *jack.xrun_delayed_usecs* ( _client_ ) _M_ +
--> _delay_ +
+* _delay_ = *xrun_delayed_usecs*( _client_ ) _M_ +
 [small]#Returns the delay in microseconds due to the most recent xrun occurrence.#
 
 
 [[jack.reset_max_delayed_usecs]]
-* *jack.reset_max_delayed_usecs* ( _client_ ) _M_ +
+* *reset_max_delayed_usecs*( _client_ ) _M_ +
 [small]#Resets the maximum delay counter.#
 
 
 [[jack.profile]]
-* *jack.profile* ( _client_ [, _what_ ]) +
-*jack.profile* ( _client_ ) +
--> _n_, _min_, _max_, _mean_, _var_ +
+* *profile*( _client_, _what_ ) +
+_n_, _min_, _max_, _mean_, _var_ = *profile*( _client_ ) +
 [small]#Profile the real-time callbacks for _client_. +
 The _what_ parameter may be one amongst 
 _start_ (reset the counters and start profiling), 

@@ -17,8 +17,7 @@ also on ports not created by the invoking application.
 
 
 [[jack.input_audio_port]]
-* *jack.input_audio_port* ( _client_ , _name_ [, _options_ ] ) _M_ +
--> _port_ +
+* _port_ = *input_audio_port*( _client_ , _name_ [, _options_ ] ) _M_ +
 [small]#Creates an input port of the default audio type for _client_ and returns a reference
 for subsequent operations. +
 The mandatory _name_ argument (a string) is the short name to be assigned to the port, while 
@@ -36,24 +35,21 @@ elements: +
 
 
 [[jack.output_audio_port]]
-* *jack.output_audio_port* ( _client_ , _name_ [, _options_ ] ) _M_ +
--> _port_ +
+* _port_ = *output_audio_port*( _client_ , _name_ [, _options_ ] ) _M_ +
 [small]#Creates an output port of the default audio type 
 for _client_ and returns a reference for subsequent operations. +
 The meaning of the arguments is the same as for <<jack.input_audio_port, jack.input_audio_port>>().#
 
 
 [[jack.input_midi_port]]
-* *jack.input_midi_port* ( _client_ , _name_ [, _options_ ] ) _M_ +
--> _port_ +
+* _port_ = *input_midi_port*( _client_ , _name_ [, _options_ ] ) _M_ +
 [small]#Creates an input port of the default MIDI type 
 for _client_ and returns a reference for subsequent operations. +
 The meaning of the arguments is the same as for <<jack.input_audio_port, jack.input_audio_port>>().#
 
 
 [[jack.output_midi_port]]
-* *jack.output_midi_port* ( _client_ , _name_ [, _options_ ] ) _M_ +
--> _port_ +
+* _port_ = *output_midi_port*( _client_ , _name_ [, _options_ ] ) _M_ +
 [small]#Creates an output port of the default MIDI type 
 for _client_ and returns a reference for subsequent operations. +
 The meaning of the arguments is the same as for <<jack.input_audio_port, jack.input_audio_port>>().#
@@ -61,33 +57,29 @@ The meaning of the arguments is the same as for <<jack.input_audio_port, jack.in
 //^@@TODO custom ports ---------------------------------------------------------
 
 [[jack.input_custom_port]]
-* *jack.input_custom_port* ( _client_ , _name_ [, _options_ ] ) _M_ +
--> _port_ +
+* _port_ = *input_custom_port*( _client_ , _name_ [, _options_ ] ) _M_ +
 [small]#Not available yet.#
 
 
 [[jack.output_custom_port]]
-* *jack.output_custom_port* ( _client_ , _name_ [, _options_ ] ) _M_ +
--> _port_ +
+* _port_ = *output_custom_port*( _client_ , _name_ [, _options_ ] ) _M_ +
 [small]#Not available yet.#
 
 //^-----------------------------------------------------------------------------
 
 
 [[jack.port_name_size]]
-* *jack.port_name_size* ( ) _M_ +
--> _maxsize_ +
+* _maxsize_ = *port_name_size*( ) _M_ +
 [small]#Returns the maximum allowed size for JACK port names.#
 
 
 [[jack.port_type_size]]
-* *jack.port_type_size* ( ) _M_ +
--> _maxsize_ +
+* _maxsize_ = *port_type_size*( ) _M_ +
 [small]#Returns the maximum allowed size for JACK port types.#
 
 
 [[jack.port_unregister]]
-* *jack.port_unregister* ( _port_ ) _M_ +
+* *port_unregister*( _port_ ) _M_ +
 [small]#Unregisters and deletes _port_.#
 
 NOTE: A port is automatically unregistered by LuaJack when the client that created it is 
@@ -96,8 +88,7 @@ NOTE: A port is automatically unregistered by LuaJack when the client that creat
 ////
 
 [[jack.port_by_name]]
-* *jack.port_by_name* ( _client_, _portname_ ) _M_ +
--> _port_ +
+* _port_ = *port_by_name*( _client_, _portname_ ) _M_ +
 [small]#Returns the _port_ object for the port whose full name is _portname_, or _nil_
 if not found.
 This function can be used only by the _client_ that created the port.#
@@ -105,44 +96,41 @@ This function can be used only by the _client_ that created the port.#
 
 
 [[jack.connect]]
-* *jack.port_connect* ( _port_, _portname2_ ) _M_ +
-*jack.nport_connect* ( _client_, _portname1_, _portname2_ ) alias *jack.connect* _M_ +
+* *port_connect*( _port_, _portname2_ ) _M_ +
+*nport_connect*( _client_, _portname1_, _portname2_ ) alias *connect* _M_ +
 [small]#Connects two ports. One of the two ports must be an output port (source of the connection)
 and the other must be an input port (destination). The two ports can be passed in any order.#
 
 
 
 [[jack.disconnect]]
-* *jack.port_disconnect* ( _port_ [, _portname2_] ) _M_ +
-*jack.nport_disconnect* ( _client_, _portname1_ [, _portname2_] )  alias *jack.disconnect* _M_ +
+* *port_disconnect*( _port_ [, _portname2_] ) _M_ +
+*nport_disconnect*( _client_, _portname1_ [, _portname2_] )  alias *disconnect* _M_ +
 [small]#Disconnects two ports. 
 If _portname2_ is _nil_, the first port is disconnected from all the ports it is connected to.#
 
 
 [[jack.port_name]]
-* *jack.port_name* ( _port_ ) _M_ +
--> _fullname_ +
+* _fullname_ = *port_name*( _port_ ) _M_ +
 [small]#Returns the port's full name.#
 
 
 [[jack.port_short_name]]
-* *jack.port_short_name* ( _port_ ) _M_ +
--> _shortname_ +
+* _shortname_ = *port_short_name*( _port_ ) _M_ +
 [small]#Returns the port's short name.#
 
 ////
 DEPRECATED
 
 [[jack.port_set_name]]
-* *jack.port_set_name* ( _port_, _newname_ ) _M_ +
+* *port_set_name*( _port_, _newname_ ) _M_ +
 [small]#Changes the port's short name to _newname_.#
 ////
 
 
 [[jack.port_flags]]
-* *jack.port_flags* ( _port_ ) _M_ +
-*jack.nport_flags* ( _client_, _portname_ ) _M_ +
--> _flags_, _table_ +
+* _flags_, _table_ = *port_flags*( _port_ ) _M_ +
+_flags_, _table_ = *nport_flags*( _client_, _portname_ ) _M_ +
 [small]#Returns the port's flags, in two equivalent formats: +
 *flags* : a string concatenating the flags that apply to the port, and +
 *table*: a table where _table.<flag>_ is _true_ if _<flag>_ applies to the port,
@@ -153,77 +141,69 @@ _'is_physical'_ | _'can_monitor'_ | _'is_terminal'_ )#
 
 
 [[jack.port_uuid]]
-* *jack.port_uuid* ( _port_ ) _M_ +
-*jack.nport_uuid* ( _client_, _portname_ ) _M_ +
--> _uuid_ +
+* _uuid_ = *port_uuid*( _port_ ) _M_ +
+_uuid_ = *nport_uuid*( _client_, _portname_ ) _M_ +
 [small]#Returns the port's UUID (a string), or _nil_ if not found.#
 
 
 [[jack.port_type]]
-* *jack.port_type* ( _port_ ) _M_ +
-*jack.nport_type* ( _client_, _portname_ ) _M_ +
--> _type_ +
+* _type_ = *port_type*( _port_ ) _M_ +
+_type_ = *nport_type*( _client_, _portname_ ) _M_ +
 [small]#Returns the port's type (a string), or _nil_ if not found.#
 
 
 [[jack.nport_exists]]
-* *jack.nport_exists* ( _client_, _portname_ ) _M_ +
--> _boolean_ +
+* _boolean_ = *nport_exists*( _client_, _portname_ ) _M_ +
 [small]#Returns _true_ if the port with the full named _portname_ exists, otherwise it returns _false_.#
 
 
 [[jack.port_is_mine]]
-* *jack.port_is_mine* ( _client_, _port_ ) _M_ +
-*jack.nport_is_mine* ( _client_, _portname_ ) _M_ +
--> _boolean_ +
+* _boolean_ = *port_is_mine*( _client_, _port_ ) _M_ +
+_boolean_ = *nport_is_mine*( _client_, _portname_ ) _M_ +
 [small]#Returns _true_ if the port is owned by the invoking _client_, otherwise it returns _false_.#
 
 
 [[jack.port_set_alias]]
-* *jack.port_set_alias* ( _port_, _alias_ ) _M_ +
-*jack.nport_set_alias* ( _client_, _portname_, _alias_ ) _M_ +
+* *port_set_alias*( _port_, _alias_ ) _M_ +
+*nport_set_alias*( _client_, _portname_, _alias_ ) _M_ +
 [small]#Sets _alias_ as an alias for the port.#
 
 
 [[jack.port_unset_alias]]
-* *jack.port_unset_alias* ( _port_, _alias_ ) _M_ +
-*jack.nport_unset_alias* ( _client_, _portname_, _alias_ ) _M_ +
+* *port_unset_alias*( _port_, _alias_ ) _M_ +
+*nport_unset_alias*( _client_, _portname_, _alias_ ) _M_ +
 [small]#Unsets _alias_ as an alias for the port.#
 
 
 [[jack.port_aliases]]
-* *jack.port_aliases* ( _port_ ) _M_ +
-*jack.nport_aliases* ( _client_, _portname_ ) _M_ +
--> _alias1_, _alias2_ +
+* _alias1_, _alias2_ = *port_aliases*( _port_ ) _M_ +
+_alias1_, _alias2_ = *nport_aliases*( _client_, _portname_ ) _M_ +
 [small]#Returns the aliases for the port (if it has any).#
 
 
 [[jack.port_connections]]
-* *jack.port_connections* ( _port_ [, _list_ ] ) _M_ +
-*jack.nport_connections* ( _client_, _portname_ [, _list_ ] ) _M_ +
--> _N_, _{ portname1, ..., portnameN }_ +
+* _N_, _{ portname1, ..., portnameN }_ = *port_connections*( _port_ [, _list_ ] ) _M_ +
+_N_, _{ portname1, ..., portnameN }_ = *nport_connections*( _client_, _portname_ [, _list_ ] ) _M_ +
 [small]#Returns the number of connections the port is involved in. If _list = true_, it returns also
 a table containing the full names of the ports the port is connected to.#
 
 
 [[jack.port_connected]]
-* *jack.port_connected* ( _port_, _portname2_ ) _M_ +
-*jack.nport_connected* ( _client_, _portname1_, _portname2_ ) _M_ +
--> _boolean_ +
+* _boolean_ = *port_connected*( _port_, _portname2_ ) _M_ +
+_boolean_ = *nport_connected*( _client_, _portname1_, _portname2_ ) _M_ +
 [small]#Returns _true_ if the two ports are connected, _false_ otherwise.#
 
 
 [[jack.port_monitor]]
-* *jack.port_monitor* ( _port_, _onoff_ ) _M_ +
-*jack.nport_monitor* ( _client_, _portname_, _onoff_ ) _M_ +
+* *port_monitor*( _port_, _onoff_ ) _M_ +
+*nport_monitor*( _client_, _portname_, _onoff_ ) _M_ +
 [small]#Turns input monitoring on or off for the port (implemented with jack_port_ensure_monitor()).
 The _onoff_ argument is a string and may be _'on'_ or _'off_.#
 
 
 [[jack.port_monitoring]]
-* *jack.port_monitoring* ( _port_ ) _M_ +
-*jack.nport_monitoring* ( _client_, _portname_ ) _M_ +
--> _boolean_ +
+* _boolean_ = *port_monitoring*( _port_ ) _M_ +
+_boolean_ = *nport_monitoring*( _client_, _portname_ ) _M_ +
 [small]#Returns _true_ if input monitoring has been requested for the port, _false_ otherwise
 or if no port with this name was found.#
 
@@ -234,8 +214,7 @@ or if no port with this name was found.#
 
 
 [[jack.get_ports]]
-* *jack.get_ports* ( _client_ [, _filter_ ]) _M_ +
--> _{ portname1, ..., portnameN }_ +
+* _{ portname1, ..., portnameN }_ = *get_ports*( _client_ [, _filter_ ]) _M_ +
 [small]#Returns a list (table) of full port names. If _filter_ is _nil_, all the ports are listed,
 otherwise the ports are selected according to the _filter_ parameter, which must be a table
 containing zero or more of the following optional elements: +

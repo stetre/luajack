@@ -1029,7 +1029,7 @@ directly used in the process or thread context.</p>
 <h2 id="_luajack_functions">LuaJack functions</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>LuaJack functions are described in the following sections.</p>
+<p>LuaJack functions are described in the following subsections. All of them are members of the <strong>jack</strong> table.</p>
 </div>
 <div class="paragraph">
 <p>The letters <em>M</em>, <em>P</em> and/or <em>T</em> beside a function description indicate whether it is available
@@ -1049,8 +1049,7 @@ not in thread contexts.</p>
 <div id="jack.client_open" class="ulist">
 <ul>
 <li>
-<p><strong>jack.client_open</strong> ( <em>name</em> [, <em>options</em>]) <em>M</em><br>
-&#8594; <em>client</em><br>
+<p><em>client</em> = <strong>client_open</strong>( <em>name</em> [, <em>options</em>]) <em>M</em><br>
 <span class="small">Creates a JACK client with the passed <em>name</em> and returns an opaque reference for subsequent
 operations.
 If the <em>options</em> parameter is passed, it must be a table containing zero or more of
@@ -1065,8 +1064,7 @@ the following elements:<br>
 <div id="jack.client_name_size" class="ulist">
 <ul>
 <li>
-<p><strong>jack.client_name_size</strong> ( ) <em>M</em><br>
-&#8594; <em>maxsize</em><br>
+<p><em>maxsize</em> = <strong>client_name_size</strong>( ) <em>M</em><br>
 <span class="small">Returns the maximum allowed size for JACK clients names.</span></p>
 </li>
 </ul>
@@ -1074,7 +1072,7 @@ the following elements:<br>
 <div id="jack.client_close" class="ulist">
 <ul>
 <li>
-<p><strong>jack.client_close</strong> ( <em>client</em> ) <em>M</em><br>
+<p><strong>client_close</strong>( <em>client</em> ) <em>M</em><br>
 <span class="small">Closes a client previously opened with <a href="#_jack.client">jack.client</a>().</span></p>
 </li>
 </ul>
@@ -1094,8 +1092,7 @@ Clients are automatically closed by LuaJack when the application exits.
 <div id="jack.client_name" class="ulist">
 <ul>
 <li>
-<p><strong>jack.client_name</strong> ( <em>client</em> ) <em>M</em><br>
-&#8594; <em>name</em><br>
+<p><em>name</em> = <strong>client_name</strong>( <em>client</em> ) <em>M</em><br>
 <span class="small">Returns the client&#8217;s name.</span></p>
 </li>
 </ul>
@@ -1103,8 +1100,7 @@ Clients are automatically closed by LuaJack when the application exits.
 <div id="jack.client_uuid" class="ulist">
 <ul>
 <li>
-<p><strong>jack.client_uuid</strong> ( <em>client</em> ) <em>M</em><br>
-&#8594; <em>uuid</em><br>
+<p><em>uuid</em> = <strong>client_uuid</strong>( <em>client</em> ) <em>M</em><br>
 <span class="small">Returns the client&#8217;s UUID.</span></p>
 </li>
 </ul>
@@ -1112,8 +1108,7 @@ Clients are automatically closed by LuaJack when the application exits.
 <div id="jack.client_uuid_to_name" class="ulist">
 <ul>
 <li>
-<p><strong>jack.client_uuid_to_name</strong> ( <em>client</em>, <em>uuid</em> ) <em>M</em><br>
-&#8594; <em>name</em><br>
+<p><em>name</em> = <strong>client_uuid_to_name</strong>( <em>client</em>, <em>uuid</em> ) <em>M</em><br>
 <span class="small">Returns the name of the client whose UUID is <em>uuid</em>,  or <em>nil</em> if no such client exists.</span></p>
 </li>
 </ul>
@@ -1121,8 +1116,7 @@ Clients are automatically closed by LuaJack when the application exits.
 <div id="jack.client_name_to_uuid" class="ulist">
 <ul>
 <li>
-<p><strong>jack.client_name_to_uuid</strong> ( <em>client</em>, <em>name</em> ) <em>M</em><br>
-&#8594; <em>uuid</em><br>
+<p><em>uuid</em> = <strong>client_name_to_uuid</strong>( <em>client</em>, <em>name</em> ) <em>M</em><br>
 <span class="small">Returns the UUID of the client whose name is <em>name</em>,  or <em>nil</em> if no such client exists.</span></p>
 </li>
 </ul>
@@ -1130,7 +1124,7 @@ Clients are automatically closed by LuaJack when the application exits.
 <div id="jack.activate" class="ulist">
 <ul>
 <li>
-<p><strong>jack.activate</strong> ( <em>client</em> ) <em>M</em><br>
+<p><strong>activate</strong>( <em>client</em> ) <em>M</em><br>
 <span class="small">Activates <em>client</em>.</span></p>
 </li>
 </ul>
@@ -1138,7 +1132,7 @@ Clients are automatically closed by LuaJack when the application exits.
 <div id="jack.deactivate" class="ulist">
 <ul>
 <li>
-<p><strong>jack.deactivate</strong> ( <em>client</em> ) <em>M</em><br>
+<p><strong>deactivate</strong>( <em>client</em> ) <em>M</em><br>
 <span class="small">Deactivates <em>client</em>.</span></p>
 </li>
 </ul>
@@ -1146,8 +1140,7 @@ Clients are automatically closed by LuaJack when the application exits.
 <div id="jack.is_realtime" class="ulist">
 <ul>
 <li>
-<p><strong>jack.is_realtime</strong> ( <em>client</em> ) <em>M</em><br>
-&#8594; <em>boolean</em><br>
+<p><em>boolean</em> = <strong>is_realtime</strong>( <em>client</em> ) <em>M</em><br>
 <span class="small">Returns <em>true</em> if JACK is running realtime, <em>false</em> otherwise.</span></p>
 </li>
 </ul>
@@ -1155,8 +1148,7 @@ Clients are automatically closed by LuaJack when the application exits.
 <div id="jack.cpu_load" class="ulist">
 <ul>
 <li>
-<p><strong>jack.cpu_load</strong> ( <em>client</em> ) <em>MPT</em><br>
-&#8594; <em>cpuload</em><br>
+<p><em>cpuload</em> = <strong>cpu_load</strong>( <em>client</em> ) <em>MPT</em><br>
 <span class="small">Returns the current CPU load estimated by JACK.</span></p>
 </li>
 </ul>
@@ -1164,8 +1156,7 @@ Clients are automatically closed by LuaJack when the application exits.
 <div id="jack.sample_rate" class="ulist">
 <ul>
 <li>
-<p><strong>jack.sample_rate</strong> ( <em>client</em> ) <em>MPT</em><br>
-&#8594; <em>sample_rate</em><br>
+<p><em>sample_rate</em> = <strong>sample_rate</strong>( <em>client</em> ) <em>MPT</em><br>
 <span class="small">Returns the sample rate of the JACK system, as set by the user when the server was started.</span></p>
 </li>
 </ul>
@@ -1173,7 +1164,7 @@ Clients are automatically closed by LuaJack when the application exits.
 <div id="jack.set_buffer_size" class="ulist">
 <ul>
 <li>
-<p><strong>jack.set_buffer_size</strong> ( <em>client</em>, <em>nframes</em> ) <em>MP</em><br>
+<p><strong>set_buffer_size</strong>( <em>client</em>, <em>nframes</em> ) <em>MP</em><br>
 <span class="small">Changes the buffer size passed to the <a href="#jack.process_callback">process callback</a> to <em>nframes</em>.</span></p>
 </li>
 </ul>
@@ -1181,8 +1172,7 @@ Clients are automatically closed by LuaJack when the application exits.
 <div id="jack.buffer_size" class="ulist">
 <ul>
 <li>
-<p><strong>jack.buffer_size</strong> ( <em>client</em> ) <em>MPT</em><br>
-&#8594; <em>nframes</em><br>
+<p><em>nframes</em> = <strong>buffer_size</strong>( <em>client</em> ) <em>MPT</em><br>
 <span class="small">Returns the current maximum buffer size that will ever be passed to the <a href="#jack.process_callback">process callback</a> (to be used only before the client is activated).</span></p>
 </li>
 </ul>
@@ -1190,7 +1180,7 @@ Clients are automatically closed by LuaJack when the application exits.
 <div id="jack.freewheel" class="ulist">
 <ul>
 <li>
-<p><strong>jack.freewheel</strong> ( <em>client</em>, <em>onoff</em> ) <em>MP</em><br>
+<p><strong>freewheel</strong>( <em>client</em>, <em>onoff</em> ) <em>MP</em><br>
 <span class="small">Starts/stops JACK&#8217;s '<em>freewheel</em>' mode. The <em>onoff</em> argument is a string and may be <em>'on'</em> (to start) or <em>'off'</em> (to stop).</span></p>
 </li>
 </ul>
@@ -1213,7 +1203,7 @@ functions described in this section, which are available only in the process con
 <div id="jack.process_load" class="ulist">
 <ul>
 <li>
-<p><strong>jack.process_load</strong> ( <em>client</em>, <em>chunk</em>, <em>&#8230;&#8203;</em> ) <em>M</em><br>
+<p><strong>process_load</strong>( <em>client</em>, <em>chunk</em>, <em>&#8230;&#8203;</em> ) <em>M</em><br>
 <span class="small">This function is to be used in the main context to create the
 <a href="#luajack.contexts">process context</a> for <em>client</em>.<br>
 The <em>chunk</em> argument is a string containing the Lua code to be executed in the
@@ -1230,7 +1220,7 @@ can be accessed directly by the process chunk.</span></p>
 <div id="jack.process_loadfile" class="ulist">
 <ul>
 <li>
-<p><strong>jack.process_loadfile</strong> ( <em>client</em>, <em>filename</em>, <em>&#8230;&#8203;</em> ) <em>M</em><br>
+<p><strong>process_loadfile</strong>( <em>client</em>, <em>filename</em>, <em>&#8230;&#8203;</em> ) <em>M</em><br>
 <span class="small">Same as <a href="#jack.process_load">jack.process_load</a>(), with the only difference that it
 loads the chunk from the file specified by <em>filename</em>. The file is searched for using
 the same mechanism used by Lua&#8217;s
@@ -1242,7 +1232,7 @@ to search for modules.</span></p>
 <div id="jack.process_callback" class="ulist">
 <ul>
 <li>
-<p><strong>jack.process_callback</strong> ( <em>client</em>, <em>func</em> ) <em>P</em><br>
+<p><strong>process_callback</strong>( <em>client</em>, <em>func</em> ) <em>P</em><br>
 <span class="small">Registers <em>func</em> as 'process' callback (<em>func</em> must be realtime safe).<br>
 The callback is executed as <strong><em>func(nframes)</em></strong>, where <em>nframes</em> is the number of frames to process.</span></p>
 </li>
@@ -1251,7 +1241,7 @@ The callback is executed as <strong><em>func(nframes)</em></strong>, where <em>n
 <div id="jack.buffer_size_callback" class="ulist">
 <ul>
 <li>
-<p><strong>jack.buffer_size_callback</strong> ( <em>client</em>, <em>func</em> ) <em>P</em><br>
+<p><strong>buffer_size_callback</strong>( <em>client</em>, <em>func</em> ) <em>P</em><br>
 <span class="small">Registers <em>func</em> as callback for the 'buffer size change' event.<br>
 The callback is executed as <strong><em>func(nframes)</em></strong>, where <em>nframes</em> is the new
 size of the JACK engine buffer.</span></p>
@@ -1261,7 +1251,7 @@ size of the JACK engine buffer.</span></p>
 <div id="jack.sync_callback" class="ulist">
 <ul>
 <li>
-<p><strong>jack.sync_callback</strong> ( <em>client</em>, <em>func</em> ) <em>P</em><br>
+<p><strong>sync_callback</strong>( <em>client</em>, <em>func</em> ) <em>P</em><br>
 <span class="small">Registers <em>client</em> as a
 <a href="http://jackaudio.org/api/transport-design.html#slowsyncclients">slow-sync client</a>
 and <em>func</em> as its <em>sync_callback</em>
@@ -1275,7 +1265,7 @@ client is ready to roll, or <em>false</em> (or <em>nil</em>) otherwise.</span></
 <div id="jack.timebase_callback" class="ulist">
 <ul>
 <li>
-<p><strong>jack.timebase_callback</strong> ( <em>client</em>, <em>func</em> [, <em>conditional</em>] ) <em>P</em><br>
+<p><strong>timebase_callback</strong>( <em>client</em>, <em>func</em> [, <em>conditional</em>] ) <em>P</em><br>
 <span class="small">Registers <em>client</em> as the
 <a href="http://jackaudio.org/api/transport-design.html#timebase">timebase master</a>
 and <em>func</em> as its <em>timebase callback</em>
@@ -1293,7 +1283,7 @@ and a boolean <em>new_position</em> having the value <em>true</em> for a newly r
 <div id="jack.release_timebase" class="ulist">
 <ul>
 <li>
-<p><strong>jack.release_timebase</strong> ( <em>client</em> ) <em>P</em><br>
+<p><strong>release_timebase</strong>( <em>client</em> ) <em>P</em><br>
 <span class="small">Used by the client previously registered as the timebase master to withdraw that role
 and unregister the timebase callback.</span></p>
 </li>
@@ -1380,7 +1370,7 @@ main pthread.
 <div id="jack.shutdown_callback" class="ulist">
 <ul>
 <li>
-<p><strong>jack.shutdown_callback</strong> ( <em>client</em>, <em>func</em> ) <em>M</em><br>
+<p><strong>shutdown_callback</strong>( <em>client</em>, <em>func</em> ) <em>M</em><br>
 <span class="small">Registers <em>func</em> as callback for the 'shutdown' event.<br>
 The callback is executed as <strong><em>func(client, code, reason)</em></strong>, where <em>code</em> is a string
 version of the JackStatus flags and <em>reason</em> is a string describing the shutdown reason.
@@ -1392,7 +1382,7 @@ etc.).</span></p>
 <div id="jack.freewheel_callback" class="ulist">
 <ul>
 <li>
-<p><strong>jack.freewheel_callback</strong> ( <em>client</em>, <em>func</em> ) <em>M</em><br>
+<p><strong>freewheel_callback</strong>( <em>client</em>, <em>func</em> ) <em>M</em><br>
 <span class="small">Registers <em>func</em> as callback for the 'starting or stopping freewheel mode' event.<br>
 The callback is executed as <strong><em>func(client, operation)</em></strong>, where <em>operation</em> is a string
 that may be either <em>'starting'</em> or <em>'stopping'</em>.</span></p>
@@ -1402,7 +1392,7 @@ that may be either <em>'starting'</em> or <em>'stopping'</em>.</span></p>
 <div id="jack.sample_rate_callback" class="ulist">
 <ul>
 <li>
-<p><strong>jack.sample_rate_callback</strong> ( <em>client</em>, <em>func</em> ) <em>M</em><br>
+<p><strong>sample_rate_callback</strong>( <em>client</em>, <em>func</em> ) <em>M</em><br>
 <span class="small">Registers <em>func</em> as callback for the 'sample rate change' event.<br>
 The callback is executed as <strong><em>func(client, nframes)</em></strong>, where <em>nframes</em> is the new
 sample rate.</span></p>
@@ -1412,7 +1402,7 @@ sample rate.</span></p>
 <div id="jack.client_registration_callback" class="ulist">
 <ul>
 <li>
-<p><strong>jack.client_registration_callback</strong> ( <em>client</em>, <em>func</em> ) <em>M</em><br>
+<p><strong>client_registration_callback</strong>( <em>client</em>, <em>func</em> ) <em>M</em><br>
 <span class="small">Registers <em>func</em> as callback for the 'client (de)registration' event.<br>
 The callback is executed as <strong><em>func(client, name, operation)</em></strong>, where <em>name</em> is the name
 of the affected client and <em>operation</em> is a string that may be either <em>'registered'</em>
@@ -1423,7 +1413,7 @@ or <em>'unregistered'</em>.</span></p>
 <div id="jack.port_registration_callback" class="ulist">
 <ul>
 <li>
-<p><strong>jack.port_registration_callback</strong> ( <em>client</em>, <em>func</em> ) <em>M</em><br>
+<p><strong>port_registration_callback</strong>( <em>client</em>, <em>func</em> ) <em>M</em><br>
 <span class="small">Registers <em>func</em> as callback for the 'port (de)registration' event.<br>
 The callback is executed as <strong><em>func(client, portname, operation)</em></strong>, where <em>portname</em> is
 the (full) name of the affected port and <em>operation</em> is a string that may be
@@ -1434,7 +1424,7 @@ either <em>'registered'</em> or <em>'unregistered'</em>.</span></p>
 <div id="jack.port_rename_callback" class="ulist">
 <ul>
 <li>
-<p><strong>jack.port_rename_callback</strong> ( <em>client</em>, <em>func</em> ) <em>M</em><br>
+<p><strong>port_rename_callback</strong>( <em>client</em>, <em>func</em> ) <em>M</em><br>
 <span class="small">Registers <em>func</em> as callback for the 'port rename' event.<br>
 The callback is executed as <strong><em>func(client, portname, newname)</em></strong>, where <em>portname</em> is
 the old (full) name of the affected port and <em>newname</em> is its newly assigned name.</span></p>
@@ -1444,7 +1434,7 @@ the old (full) name of the affected port and <em>newname</em> is its newly assig
 <div id="jack.port_connect_callback" class="ulist">
 <ul>
 <li>
-<p><strong>jack.port_connect_callback</strong> ( <em>client</em>, <em>func</em> ) <em>M</em><br>
+<p><strong>port_connect_callback</strong>( <em>client</em>, <em>func</em> ) <em>M</em><br>
 <span class="small">Registers <em>func</em> as callback for the 'ports connect or disconnect' event.<br>
 The callback is executed as <strong><em>func(client, srcname, dstname, operation)</em></strong>, where
 <em>srcname</em> and <em>dstname</em> are the (full) names of the affected ports, and <em>operation</em>
@@ -1455,7 +1445,7 @@ is a string that may be either <em>'connected'</em> or <em>'disconnected'</em>.<
 <div id="jack.graph_order_callback" class="ulist">
 <ul>
 <li>
-<p><strong>jack.graph_order_callback</strong> ( <em>client</em>, <em>func</em> ) <em>M</em><br>
+<p><strong>graph_order_callback</strong>( <em>client</em>, <em>func</em> ) <em>M</em><br>
 <span class="small">Registers <em>func</em> as callback for the 'graph reorder' event.<br>
 The callback is executed as <strong><em>func(client)</em></strong>.</span></p>
 </li>
@@ -1464,7 +1454,7 @@ The callback is executed as <strong><em>func(client)</em></strong>.</span></p>
 <div id="jack.xrun_callback" class="ulist">
 <ul>
 <li>
-<p><strong>jack.xrun_callback</strong> ( <em>client</em>, <em>func</em> ) <em>M</em><br>
+<p><strong>xrun_callback</strong>( <em>client</em>, <em>func</em> ) <em>M</em><br>
 <span class="small">Registers <em>func</em> as callback for the 'xrun' event.<br>
 The callback is executed as <strong><em>func(client)</em></strong>.</span></p>
 </li>
@@ -1473,7 +1463,7 @@ The callback is executed as <strong><em>func(client)</em></strong>.</span></p>
 <div id="jack.latency_callback" class="ulist">
 <ul>
 <li>
-<p><strong>jack.latency_callback</strong> ( <em>client</em>, <em>func</em> ) <em>M</em><br>
+<p><strong>latency_callback</strong>( <em>client</em>, <em>func</em> ) <em>M</em><br>
 <span class="small">Registers <em>func</em> as callback for the 'latency recomputations needed' event.<br>
 The callback is executed as <strong><em>func(client, mode)</em></strong>, where <em>mode</em> is a string that
 may be either <em>'capture'</em> or <em>'playback'</em>.</span></p>
@@ -1483,7 +1473,7 @@ may be either <em>'capture'</em> or <em>'playback'</em>.</span></p>
 <div id="jack.session_callback" class="ulist">
 <ul>
 <li>
-<p><strong>jack.session_callback</strong> ( <em>client</em>, <em>func</em> ) <em>M</em><br>
+<p><strong>session_callback</strong>( <em>client</em>, <em>func</em> ) <em>M</em><br>
 <span class="small">Registers <em>func</em> as callback for the 'session notification' event.<br>
 The callback is executed as
 <strong><em>command, flag1, flag2 = func(client, type, path, uuid)</em></strong>,
@@ -1508,8 +1498,7 @@ reply to the event:<br>
 <div id="jack.thread_load" class="ulist">
 <ul>
 <li>
-<p><strong>jack.thread_load</strong> ( <em>client</em>, <em>chunk</em>, <em>&#8230;&#8203;</em> ) <em>M</em><br>
-&#8594; <em>thread</em><br>
+<p><em>thread</em> = <strong>thread_load</strong>( <em>client</em>, <em>chunk</em>, <em>&#8230;&#8203;</em> ) <em>M</em><br>
 <span class="small">Creates a client thread with its dedicated <a href="#luajack.contexts">thread context</a> and
 returns a reference for subsequent operations.
 The <em>chunk</em> argument is a string containing the Lua code to be executed in the
@@ -1526,8 +1515,7 @@ can be accessed directly by the thread chunk.</span></p>
 <div id="jack.thread_loadfile" class="ulist">
 <ul>
 <li>
-<p><strong>jack.thread_loadfile</strong> ( <em>client</em>, <em>filename</em>, <em>&#8230;&#8203;</em> ) <em>M</em><br>
-&#8594; <em>thread</em><br>
+<p><em>thread</em> = <strong>thread_loadfile</strong>( <em>client</em>, <em>filename</em>, <em>&#8230;&#8203;</em> ) <em>M</em><br>
 <span class="small">Same as <a href="#jack.thread_load">jack.thread_load</a>(), with the only difference that it
 loads the chunk from the file specified by <em>filename</em>. The file is searched for using
 the same mechanism used by Lua&#8217;s
@@ -1539,8 +1527,7 @@ to search for modules.</span></p>
 <div id="jack.self" class="ulist">
 <ul>
 <li>
-<p><strong>jack.self</strong> ( ) <em>T</em><br>
-&#8594; <em>client</em>, <em>thread</em><br>
+<p><em>client</em>, <em>thread</em> = <strong>self</strong>( ) <em>T</em><br>
 <span class="small">Returns the client and thread references of the calling thread.
 This function is available only to thread chunks (i.e. in thread contexts).</span></p>
 </li>
@@ -1549,7 +1536,7 @@ This function is available only to thread chunks (i.e. in thread contexts).</spa
 <div id="jack.signal" class="ulist">
 <ul>
 <li>
-<p><strong>jack.signal</strong> ( <em>client</em>, <em>thread</em> ) <em>MPT</em><br>
+<p><strong>signal</strong>( <em>client</em>, <em>thread</em> ) <em>MPT</em><br>
 <span class="small">Signals the pthread condition variable associated with <em>thread</em>.</span></p>
 </li>
 </ul>
@@ -1557,7 +1544,7 @@ This function is available only to thread chunks (i.e. in thread contexts).</spa
 <div id="jack.wait" class="ulist">
 <ul>
 <li>
-<p><strong>jack.wait</strong> ( ) <em>T</em><br>
+<p><strong>wait</strong>( ) <em>T</em><br>
 <span class="small">Waits on the pthread condition variable associated with the calling thread.
 This function is available only to thread chunks (i.e. in thread contexts).</span></p>
 </li>
@@ -1566,7 +1553,7 @@ This function is available only to thread chunks (i.e. in thread contexts).</spa
 <div id="jack.testcancel" class="ulist">
 <ul>
 <li>
-<p><strong>jack.testcancel</strong> ( ) <em>T</em><br>
+<p><strong>testcancel</strong>( ) <em>T</em><br>
 <span class="small">Creates a cancellation point in the calling thread.
 This function is available only to thread chunks (i.e. in thread contexts).</span></p>
 </li>
@@ -1575,8 +1562,7 @@ This function is available only to thread chunks (i.e. in thread contexts).</spa
 <div id="jack.real_time_priority" class="ulist">
 <ul>
 <li>
-<p><strong>jack.real_time_priority</strong> ( <em>client</em> ) <em>MPT</em><br>
-&#8594; <em>priority</em><br>
+<p><em>priority</em> = <strong>real_time_priority</strong>( <em>client</em> ) <em>MPT</em><br>
 <span class="small">If JACK is running with realtime priority, returns the priority that any thread
 created by JACK will run at. Otherwise it returns <em>nil</em>.</span></p>
 </li>
@@ -1585,8 +1571,7 @@ created by JACK will run at. Otherwise it returns <em>nil</em>.</span></p>
 <div id="jack.max_real_time_priority" class="ulist">
 <ul>
 <li>
-<p><strong>jack.max_real_time_priority</strong> ( <em>client</em> ) <em>MPT</em><br>
-&#8594; <em>priority</em><br>
+<p><em>priority</em> = <strong>max_real_time_priority</strong>( <em>client</em> ) <em>MPT</em><br>
 <span class="small">If JACK is running with realtime priority, returns the maximum priority that a
 realtime client thread should use. Otherwise it returns <em>nil</em>.</span></p>
 </li>
@@ -1595,7 +1580,7 @@ realtime client thread should use. Otherwise it returns <em>nil</em>.</span></p>
 <div id="jack.acquire_real_time_scheduling" class="ulist">
 <ul>
 <li>
-<p><strong>jack.acquire_real_time_scheduling</strong> ( <em>priority</em> ) <em>MPT</em><br>
+<p><strong>acquire_real_time_scheduling</strong>( <em>priority</em> ) <em>MPT</em><br>
 <span class="small">Enables realtime scheduling, with the specified <em>priority</em>, for the calling thread.</span></p>
 </li>
 </ul>
@@ -1603,7 +1588,7 @@ realtime client thread should use. Otherwise it returns <em>nil</em>.</span></p>
 <div id="jack.drop_real_time_scheduling" class="ulist">
 <ul>
 <li>
-<p><strong>jack.drop_real_time_scheduling</strong> ( ) <em>MPT</em><br>
+<p><strong>drop_real_time_scheduling</strong>( ) <em>MPT</em><br>
 <span class="small">Drops realtime scheduling for the calling thread.</span></p>
 </li>
 </ul>
@@ -1631,8 +1616,7 @@ also on ports not created by the invoking application.</p>
 <div id="jack.input_audio_port" class="ulist">
 <ul>
 <li>
-<p><strong>jack.input_audio_port</strong> ( <em>client</em> , <em>name</em> [, <em>options</em> ] ) <em>M</em><br>
-&#8594; <em>port</em><br>
+<p><em>port</em> = <strong>input_audio_port</strong>( <em>client</em> , <em>name</em> [, <em>options</em> ] ) <em>M</em><br>
 <span class="small">Creates an input port of the default audio type for <em>client</em> and returns a reference
 for subsequent operations.<br>
 The mandatory <em>name</em> argument (a string) is the short name to be assigned to the port, while
@@ -1647,8 +1631,7 @@ elements:<br>
 <div id="jack.output_audio_port" class="ulist">
 <ul>
 <li>
-<p><strong>jack.output_audio_port</strong> ( <em>client</em> , <em>name</em> [, <em>options</em> ] ) <em>M</em><br>
-&#8594; <em>port</em><br>
+<p><em>port</em> = <strong>output_audio_port</strong>( <em>client</em> , <em>name</em> [, <em>options</em> ] ) <em>M</em><br>
 <span class="small">Creates an output port of the default audio type
 for <em>client</em> and returns a reference for subsequent operations.<br>
 The meaning of the arguments is the same as for <a href="#jack.input_audio_port">jack.input_audio_port</a>().</span></p>
@@ -1658,8 +1641,7 @@ The meaning of the arguments is the same as for <a href="#jack.input_audio_port"
 <div id="jack.input_midi_port" class="ulist">
 <ul>
 <li>
-<p><strong>jack.input_midi_port</strong> ( <em>client</em> , <em>name</em> [, <em>options</em> ] ) <em>M</em><br>
-&#8594; <em>port</em><br>
+<p><em>port</em> = <strong>input_midi_port</strong>( <em>client</em> , <em>name</em> [, <em>options</em> ] ) <em>M</em><br>
 <span class="small">Creates an input port of the default MIDI type
 for <em>client</em> and returns a reference for subsequent operations.<br>
 The meaning of the arguments is the same as for <a href="#jack.input_audio_port">jack.input_audio_port</a>().</span></p>
@@ -1669,8 +1651,7 @@ The meaning of the arguments is the same as for <a href="#jack.input_audio_port"
 <div id="jack.output_midi_port" class="ulist">
 <ul>
 <li>
-<p><strong>jack.output_midi_port</strong> ( <em>client</em> , <em>name</em> [, <em>options</em> ] ) <em>M</em><br>
-&#8594; <em>port</em><br>
+<p><em>port</em> = <strong>output_midi_port</strong>( <em>client</em> , <em>name</em> [, <em>options</em> ] ) <em>M</em><br>
 <span class="small">Creates an output port of the default MIDI type
 for <em>client</em> and returns a reference for subsequent operations.<br>
 The meaning of the arguments is the same as for <a href="#jack.input_audio_port">jack.input_audio_port</a>().</span></p>
@@ -1680,8 +1661,7 @@ The meaning of the arguments is the same as for <a href="#jack.input_audio_port"
 <div id="jack.input_custom_port" class="ulist">
 <ul>
 <li>
-<p><strong>jack.input_custom_port</strong> ( <em>client</em> , <em>name</em> [, <em>options</em> ] ) <em>M</em><br>
-&#8594; <em>port</em><br>
+<p><em>port</em> = <strong>input_custom_port</strong>( <em>client</em> , <em>name</em> [, <em>options</em> ] ) <em>M</em><br>
 <span class="small">Not available yet.</span></p>
 </li>
 </ul>
@@ -1689,8 +1669,7 @@ The meaning of the arguments is the same as for <a href="#jack.input_audio_port"
 <div id="jack.output_custom_port" class="ulist">
 <ul>
 <li>
-<p><strong>jack.output_custom_port</strong> ( <em>client</em> , <em>name</em> [, <em>options</em> ] ) <em>M</em><br>
-&#8594; <em>port</em><br>
+<p><em>port</em> = <strong>output_custom_port</strong>( <em>client</em> , <em>name</em> [, <em>options</em> ] ) <em>M</em><br>
 <span class="small">Not available yet.</span></p>
 </li>
 </ul>
@@ -1698,8 +1677,7 @@ The meaning of the arguments is the same as for <a href="#jack.input_audio_port"
 <div id="jack.port_name_size" class="ulist">
 <ul>
 <li>
-<p><strong>jack.port_name_size</strong> ( ) <em>M</em><br>
-&#8594; <em>maxsize</em><br>
+<p><em>maxsize</em> = <strong>port_name_size</strong>( ) <em>M</em><br>
 <span class="small">Returns the maximum allowed size for JACK port names.</span></p>
 </li>
 </ul>
@@ -1707,8 +1685,7 @@ The meaning of the arguments is the same as for <a href="#jack.input_audio_port"
 <div id="jack.port_type_size" class="ulist">
 <ul>
 <li>
-<p><strong>jack.port_type_size</strong> ( ) <em>M</em><br>
-&#8594; <em>maxsize</em><br>
+<p><em>maxsize</em> = <strong>port_type_size</strong>( ) <em>M</em><br>
 <span class="small">Returns the maximum allowed size for JACK port types.</span></p>
 </li>
 </ul>
@@ -1716,7 +1693,7 @@ The meaning of the arguments is the same as for <a href="#jack.input_audio_port"
 <div id="jack.port_unregister" class="ulist">
 <ul>
 <li>
-<p><strong>jack.port_unregister</strong> ( <em>port</em> ) <em>M</em><br>
+<p><strong>port_unregister</strong>( <em>port</em> ) <em>M</em><br>
 <span class="small">Unregisters and deletes <em>port</em>.</span></p>
 </li>
 </ul>
@@ -1737,8 +1714,8 @@ A port is automatically unregistered by LuaJack when the client that created it 
 <div id="jack.connect" class="ulist">
 <ul>
 <li>
-<p><strong>jack.port_connect</strong> ( <em>port</em>, <em>portname2</em> ) <em>M</em><br>
-<strong>jack.nport_connect</strong> ( <em>client</em>, <em>portname1</em>, <em>portname2</em> ) alias <strong>jack.connect</strong> <em>M</em><br>
+<p><strong>port_connect</strong>( <em>port</em>, <em>portname2</em> ) <em>M</em><br>
+<strong>nport_connect</strong>( <em>client</em>, <em>portname1</em>, <em>portname2</em> ) alias <strong>connect</strong> <em>M</em><br>
 <span class="small">Connects two ports. One of the two ports must be an output port (source of the connection)
 and the other must be an input port (destination). The two ports can be passed in any order.</span></p>
 </li>
@@ -1747,8 +1724,8 @@ and the other must be an input port (destination). The two ports can be passed i
 <div id="jack.disconnect" class="ulist">
 <ul>
 <li>
-<p><strong>jack.port_disconnect</strong> ( <em>port</em> [, <em>portname2</em>] ) <em>M</em><br>
-<strong>jack.nport_disconnect</strong> ( <em>client</em>, <em>portname1</em> [, <em>portname2</em>] )  alias <strong>jack.disconnect</strong> <em>M</em><br>
+<p><strong>port_disconnect</strong>( <em>port</em> [, <em>portname2</em>] ) <em>M</em><br>
+<strong>nport_disconnect</strong>( <em>client</em>, <em>portname1</em> [, <em>portname2</em>] )  alias <strong>disconnect</strong> <em>M</em><br>
 <span class="small">Disconnects two ports.
 If <em>portname2</em> is <em>nil</em>, the first port is disconnected from all the ports it is connected to.</span></p>
 </li>
@@ -1757,8 +1734,7 @@ If <em>portname2</em> is <em>nil</em>, the first port is disconnected from all t
 <div id="jack.port_name" class="ulist">
 <ul>
 <li>
-<p><strong>jack.port_name</strong> ( <em>port</em> ) <em>M</em><br>
-&#8594; <em>fullname</em><br>
+<p><em>fullname</em> = <strong>port_name</strong>( <em>port</em> ) <em>M</em><br>
 <span class="small">Returns the port&#8217;s full name.</span></p>
 </li>
 </ul>
@@ -1766,8 +1742,7 @@ If <em>portname2</em> is <em>nil</em>, the first port is disconnected from all t
 <div id="jack.port_short_name" class="ulist">
 <ul>
 <li>
-<p><strong>jack.port_short_name</strong> ( <em>port</em> ) <em>M</em><br>
-&#8594; <em>shortname</em><br>
+<p><em>shortname</em> = <strong>port_short_name</strong>( <em>port</em> ) <em>M</em><br>
 <span class="small">Returns the port&#8217;s short name.</span></p>
 </li>
 </ul>
@@ -1775,9 +1750,8 @@ If <em>portname2</em> is <em>nil</em>, the first port is disconnected from all t
 <div id="jack.port_flags" class="ulist">
 <ul>
 <li>
-<p><strong>jack.port_flags</strong> ( <em>port</em> ) <em>M</em><br>
-<strong>jack.nport_flags</strong> ( <em>client</em>, <em>portname</em> ) <em>M</em><br>
-&#8594; <em>flags</em>, <em>table</em><br>
+<p><em>flags</em>, <em>table</em> = <strong>port_flags</strong>( <em>port</em> ) <em>M</em><br>
+<em>flags</em>, <em>table</em> = <strong>nport_flags</strong>( <em>client</em>, <em>portname</em> ) <em>M</em><br>
 <span class="small">Returns the port&#8217;s flags, in two equivalent formats:<br>
 <strong>flags</strong> : a string concatenating the flags that apply to the port, and<br>
 <strong>table</strong>: a table where <em>table.&lt;flag&gt;</em> is <em>true</em> if <em>&lt;flag&gt;</em> applies to the port,
@@ -1790,9 +1764,8 @@ or <em>nil</em> otherwise.<br>
 <div id="jack.port_uuid" class="ulist">
 <ul>
 <li>
-<p><strong>jack.port_uuid</strong> ( <em>port</em> ) <em>M</em><br>
-<strong>jack.nport_uuid</strong> ( <em>client</em>, <em>portname</em> ) <em>M</em><br>
-&#8594; <em>uuid</em><br>
+<p><em>uuid</em> = <strong>port_uuid</strong>( <em>port</em> ) <em>M</em><br>
+<em>uuid</em> = <strong>nport_uuid</strong>( <em>client</em>, <em>portname</em> ) <em>M</em><br>
 <span class="small">Returns the port&#8217;s UUID (a string), or <em>nil</em> if not found.</span></p>
 </li>
 </ul>
@@ -1800,9 +1773,8 @@ or <em>nil</em> otherwise.<br>
 <div id="jack.port_type" class="ulist">
 <ul>
 <li>
-<p><strong>jack.port_type</strong> ( <em>port</em> ) <em>M</em><br>
-<strong>jack.nport_type</strong> ( <em>client</em>, <em>portname</em> ) <em>M</em><br>
-&#8594; <em>type</em><br>
+<p><em>type</em> = <strong>port_type</strong>( <em>port</em> ) <em>M</em><br>
+<em>type</em> = <strong>nport_type</strong>( <em>client</em>, <em>portname</em> ) <em>M</em><br>
 <span class="small">Returns the port&#8217;s type (a string), or <em>nil</em> if not found.</span></p>
 </li>
 </ul>
@@ -1810,8 +1782,7 @@ or <em>nil</em> otherwise.<br>
 <div id="jack.nport_exists" class="ulist">
 <ul>
 <li>
-<p><strong>jack.nport_exists</strong> ( <em>client</em>, <em>portname</em> ) <em>M</em><br>
-&#8594; <em>boolean</em><br>
+<p><em>boolean</em> = <strong>nport_exists</strong>( <em>client</em>, <em>portname</em> ) <em>M</em><br>
 <span class="small">Returns <em>true</em> if the port with the full named <em>portname</em> exists, otherwise it returns <em>false</em>.</span></p>
 </li>
 </ul>
@@ -1819,9 +1790,8 @@ or <em>nil</em> otherwise.<br>
 <div id="jack.port_is_mine" class="ulist">
 <ul>
 <li>
-<p><strong>jack.port_is_mine</strong> ( <em>client</em>, <em>port</em> ) <em>M</em><br>
-<strong>jack.nport_is_mine</strong> ( <em>client</em>, <em>portname</em> ) <em>M</em><br>
-&#8594; <em>boolean</em><br>
+<p><em>boolean</em> = <strong>port_is_mine</strong>( <em>client</em>, <em>port</em> ) <em>M</em><br>
+<em>boolean</em> = <strong>nport_is_mine</strong>( <em>client</em>, <em>portname</em> ) <em>M</em><br>
 <span class="small">Returns <em>true</em> if the port is owned by the invoking <em>client</em>, otherwise it returns <em>false</em>.</span></p>
 </li>
 </ul>
@@ -1829,8 +1799,8 @@ or <em>nil</em> otherwise.<br>
 <div id="jack.port_set_alias" class="ulist">
 <ul>
 <li>
-<p><strong>jack.port_set_alias</strong> ( <em>port</em>, <em>alias</em> ) <em>M</em><br>
-<strong>jack.nport_set_alias</strong> ( <em>client</em>, <em>portname</em>, <em>alias</em> ) <em>M</em><br>
+<p><strong>port_set_alias</strong>( <em>port</em>, <em>alias</em> ) <em>M</em><br>
+<strong>nport_set_alias</strong>( <em>client</em>, <em>portname</em>, <em>alias</em> ) <em>M</em><br>
 <span class="small">Sets <em>alias</em> as an alias for the port.</span></p>
 </li>
 </ul>
@@ -1838,8 +1808,8 @@ or <em>nil</em> otherwise.<br>
 <div id="jack.port_unset_alias" class="ulist">
 <ul>
 <li>
-<p><strong>jack.port_unset_alias</strong> ( <em>port</em>, <em>alias</em> ) <em>M</em><br>
-<strong>jack.nport_unset_alias</strong> ( <em>client</em>, <em>portname</em>, <em>alias</em> ) <em>M</em><br>
+<p><strong>port_unset_alias</strong>( <em>port</em>, <em>alias</em> ) <em>M</em><br>
+<strong>nport_unset_alias</strong>( <em>client</em>, <em>portname</em>, <em>alias</em> ) <em>M</em><br>
 <span class="small">Unsets <em>alias</em> as an alias for the port.</span></p>
 </li>
 </ul>
@@ -1847,9 +1817,8 @@ or <em>nil</em> otherwise.<br>
 <div id="jack.port_aliases" class="ulist">
 <ul>
 <li>
-<p><strong>jack.port_aliases</strong> ( <em>port</em> ) <em>M</em><br>
-<strong>jack.nport_aliases</strong> ( <em>client</em>, <em>portname</em> ) <em>M</em><br>
-&#8594; <em>alias1</em>, <em>alias2</em><br>
+<p><em>alias1</em>, <em>alias2</em> = <strong>port_aliases</strong>( <em>port</em> ) <em>M</em><br>
+<em>alias1</em>, <em>alias2</em> = <strong>nport_aliases</strong>( <em>client</em>, <em>portname</em> ) <em>M</em><br>
 <span class="small">Returns the aliases for the port (if it has any).</span></p>
 </li>
 </ul>
@@ -1857,9 +1826,8 @@ or <em>nil</em> otherwise.<br>
 <div id="jack.port_connections" class="ulist">
 <ul>
 <li>
-<p><strong>jack.port_connections</strong> ( <em>port</em> [, <em>list</em> ] ) <em>M</em><br>
-<strong>jack.nport_connections</strong> ( <em>client</em>, <em>portname</em> [, <em>list</em> ] ) <em>M</em><br>
-&#8594; <em>N</em>, <em>{ portname1, &#8230;&#8203;, portnameN }</em><br>
+<p><em>N</em>, <em>{ portname1, &#8230;&#8203;, portnameN }</em> = <strong>port_connections</strong>( <em>port</em> [, <em>list</em> ] ) <em>M</em><br>
+<em>N</em>, <em>{ portname1, &#8230;&#8203;, portnameN }</em> = <strong>nport_connections</strong>( <em>client</em>, <em>portname</em> [, <em>list</em> ] ) <em>M</em><br>
 <span class="small">Returns the number of connections the port is involved in. If <em>list = true</em>, it returns also
 a table containing the full names of the ports the port is connected to.</span></p>
 </li>
@@ -1868,9 +1836,8 @@ a table containing the full names of the ports the port is connected to.</span><
 <div id="jack.port_connected" class="ulist">
 <ul>
 <li>
-<p><strong>jack.port_connected</strong> ( <em>port</em>, <em>portname2</em> ) <em>M</em><br>
-<strong>jack.nport_connected</strong> ( <em>client</em>, <em>portname1</em>, <em>portname2</em> ) <em>M</em><br>
-&#8594; <em>boolean</em><br>
+<p><em>boolean</em> = <strong>port_connected</strong>( <em>port</em>, <em>portname2</em> ) <em>M</em><br>
+<em>boolean</em> = <strong>nport_connected</strong>( <em>client</em>, <em>portname1</em>, <em>portname2</em> ) <em>M</em><br>
 <span class="small">Returns <em>true</em> if the two ports are connected, <em>false</em> otherwise.</span></p>
 </li>
 </ul>
@@ -1878,8 +1845,8 @@ a table containing the full names of the ports the port is connected to.</span><
 <div id="jack.port_monitor" class="ulist">
 <ul>
 <li>
-<p><strong>jack.port_monitor</strong> ( <em>port</em>, <em>onoff</em> ) <em>M</em><br>
-<strong>jack.nport_monitor</strong> ( <em>client</em>, <em>portname</em>, <em>onoff</em> ) <em>M</em><br>
+<p><strong>port_monitor</strong>( <em>port</em>, <em>onoff</em> ) <em>M</em><br>
+<strong>nport_monitor</strong>( <em>client</em>, <em>portname</em>, <em>onoff</em> ) <em>M</em><br>
 <span class="small">Turns input monitoring on or off for the port (implemented with jack_port_ensure_monitor()).
 The <em>onoff</em> argument is a string and may be <em>'on'</em> or <em>'off</em>.</span></p>
 </li>
@@ -1888,9 +1855,8 @@ The <em>onoff</em> argument is a string and may be <em>'on'</em> or <em>'off</em
 <div id="jack.port_monitoring" class="ulist">
 <ul>
 <li>
-<p><strong>jack.port_monitoring</strong> ( <em>port</em> ) <em>M</em><br>
-<strong>jack.nport_monitoring</strong> ( <em>client</em>, <em>portname</em> ) <em>M</em><br>
-&#8594; <em>boolean</em><br>
+<p><em>boolean</em> = <strong>port_monitoring</strong>( <em>port</em> ) <em>M</em><br>
+<em>boolean</em> = <strong>nport_monitoring</strong>( <em>client</em>, <em>portname</em> ) <em>M</em><br>
 <span class="small">Returns <em>true</em> if input monitoring has been requested for the port, <em>false</em> otherwise
 or if no port with this name was found.</span></p>
 </li>
@@ -1899,8 +1865,7 @@ or if no port with this name was found.</span></p>
 <div id="jack.get_ports" class="ulist">
 <ul>
 <li>
-<p><strong>jack.get_ports</strong> ( <em>client</em> [, <em>filter</em> ]) <em>M</em><br>
-&#8594; <em>{ portname1, &#8230;&#8203;, portnameN }</em><br>
+<p><em>{ portname1, &#8230;&#8203;, portnameN }</em> = <strong>get_ports</strong>( <em>client</em> [, <em>filter</em> ]) <em>M</em><br>
 <span class="small">Returns a list (table) of full port names. If <em>filter</em> is <em>nil</em>, all the ports are listed,
 otherwise the ports are selected according to the <em>filter</em> parameter, which must be a table
 containing zero or more of the following optional elements:<br>
@@ -1923,8 +1888,7 @@ or output ports only, respectively;<br>
 <div id="jack.latency_range" class="ulist">
 <ul>
 <li>
-<p><strong>jack.latency_range</strong> ( <em>port</em>, <em>mode</em> ) <em>M</em><br>
-&#8594; <em>min</em>, <em>max</em><br>
+<p><em>min</em>, <em>max</em> = <strong>latency_range</strong>( <em>port</em>, <em>mode</em> ) <em>M</em><br>
 <span class="small">Gets the minimum and maximum latencies (in frames) defined by <em>mode</em> for the port.
 The <em>mode</em> parameter (a string) may be <em>'capture'</em> or <em>'playback'</em>.</span></p>
 </li>
@@ -1933,7 +1897,7 @@ The <em>mode</em> parameter (a string) may be <em>'capture'</em> or <em>'playbac
 <div id="jack.set_latency_range" class="ulist">
 <ul>
 <li>
-<p><strong>jack.set_latency_range</strong> ( <em>port</em>, <em>mode</em>, <em>min</em>, <em>max</em> ) <em>M</em><br>
+<p><strong>set_latency_range</strong>( <em>port</em>, <em>mode</em>, <em>min</em>, <em>max</em> ) <em>M</em><br>
 <span class="small">Sets the minimum and maximum latencies (in frames) defined by <em>mode</em> for <em>port</em>.
 The <em>mode</em> parameter (a string) may be <em>'capture'</em> or <em>playback</em>.
 This function should only be used inside a <a href="#jack.latency_callback">latency callback</a>.</span></p>
@@ -1943,7 +1907,7 @@ This function should only be used inside a <a href="#jack.latency_callback">late
 <div id="jack.recompute_total_latencies" class="ulist">
 <ul>
 <li>
-<p><strong>jack.recompute_total_latencies</strong> ( <em>client</em> ) <em>M</em><br>
+<p><strong>recompute_total_latencies</strong>( <em>client</em> ) <em>M</em><br>
 <span class="small">Requests a complete recomputation of all port latencies.</span></p>
 </li>
 </ul>
@@ -1957,8 +1921,7 @@ This function should only be used inside a <a href="#jack.latency_callback">late
 <div id="jack.time" class="ulist">
 <ul>
 <li>
-<p><strong>jack.time</strong> ( ) <em>MPT</em><br>
-&#8594; <em>useconds</em><br>
+<p><em>useconds</em> = <strong>time</strong>( ) <em>MPT</em><br>
 <span class="small">Returns JACK&#8217;s current system time in microseconds.</span></p>
 </li>
 </ul>
@@ -1966,8 +1929,7 @@ This function should only be used inside a <a href="#jack.latency_callback">late
 <div id="jack.frame" class="ulist">
 <ul>
 <li>
-<p><strong>jack.frame</strong> ( <em>client</em> ) alias <strong>jack.frame_time</strong><br>
-&#8594; <em>frameno</em><br>
+<p><em>frameno</em> = <strong>frame</strong>( <em>client</em> ) alias <strong>frame_time</strong><br>
 <span class="small">Returns the estimated current time in frames (to be used outside the process callback).</span></p>
 </li>
 </ul>
@@ -1975,8 +1937,7 @@ This function should only be used inside a <a href="#jack.latency_callback">late
 <div id="jack.since" class="ulist">
 <ul>
 <li>
-<p><strong>jack.since</strong> ( <em>useconds</em> ) <em>MPT</em><br>
-&#8594; <em>elapsed</em><br>
+<p><em>elapsed</em> = <strong>since</strong>( <em>useconds</em> ) <em>MPT</em><br>
 <span class="small">Returns the time, in microseconds, elapsed since JACK&#8217;s system time <em>useconds</em>.</span></p>
 </li>
 </ul>
@@ -1984,8 +1945,7 @@ This function should only be used inside a <a href="#jack.latency_callback">late
 <div id="jack.since_frame" class="ulist">
 <ul>
 <li>
-<p><strong>jack.since_frame</strong> ( <em>client</em>, <em>frameno</em> ) <em>MPT</em><br>
-&#8594; <em>nframes</em><br>
+<p><em>nframes</em> = <strong>since_frame</strong>( <em>client</em>, <em>frameno</em> ) <em>MPT</em><br>
 <span class="small">Returns the number of frames elapsed since the estimated time <em>frameno</em>, in frames
 (to be used outside the process callback).</span></p>
 </li>
@@ -1994,8 +1954,7 @@ This function should only be used inside a <a href="#jack.latency_callback">late
 <div id="jack.frames_to_time" class="ulist">
 <ul>
 <li>
-<p><strong>jack.frames_to_time</strong> ( <em>client</em>, <em>nframes</em> ) <em>MPT</em><br>
-&#8594; <em>useconds</em><br>
+<p><em>useconds</em> = <strong>frames_to_time</strong>( <em>client</em>, <em>nframes</em> ) <em>MPT</em><br>
 <span class="small">Returns the estimated time in microseconds of the specified time in frames.</span></p>
 </li>
 </ul>
@@ -2003,8 +1962,7 @@ This function should only be used inside a <a href="#jack.latency_callback">late
 <div id="jack.time_to_frames" class="ulist">
 <ul>
 <li>
-<p><strong>jack.time_to_frames</strong> ( <em>client</em>, <em>useconds</em> ) <em>MPT</em><br>
-&#8594; <em>nframes</em><br>
+<p><em>nframes</em> = <strong>time_to_frames</strong>( <em>client</em>, <em>useconds</em> ) <em>MPT</em><br>
 <span class="small">Returns the estimated time in frames of the specified time in microseconds.</span></p>
 </li>
 </ul>
@@ -2012,8 +1970,7 @@ This function should only be used inside a <a href="#jack.latency_callback">late
 <div id="jack.frames_since_cycle_start" class="ulist">
 <ul>
 <li>
-<p><strong>jack.frames_since_cycle_start</strong> ( <em>client</em> ) <em>MPT</em><br>
-&#8594; <em>nframes</em><br>
+<p><em>nframes</em> = <strong>frames_since_cycle_start</strong>( <em>client</em> ) <em>MPT</em><br>
 <span class="small">Returns the estimated time in frames that has passed since the JACK server began the
 current process cycle.</span></p>
 </li>
@@ -2022,8 +1979,7 @@ current process cycle.</span></p>
 <div id="jack.last_frame_time" class="ulist">
 <ul>
 <li>
-<p><strong>jack.last_frame_time</strong> ( <em>client</em> ) <em>P</em><br>
-&#8594; <em>nframes</em><br>
+<p><em>nframes</em> = <strong>last_frame_time</strong>( <em>client</em> ) <em>P</em><br>
 <span class="small">Returns the time, in frames, at the start of the current process cycle.
 Available in the process callback only, to be used to interpret timestamps generated with
 <a href="#jack.frame">jack.frame</a>() in other threads.</span></p>
@@ -2033,8 +1989,7 @@ Available in the process callback only, to be used to interpret timestamps gener
 <div id="jack.cycle_times" class="ulist">
 <ul>
 <li>
-<p><strong>jack.cycle_times</strong> ( <em>client</em> ) <em>P</em><br>
-&#8594; <em>current_frames</em>, <em>current_usecs</em>, <em>next_usecs</em>, <em>period_usecs</em><br>
+<p><em>current_frames</em>, <em>current_usecs</em>, <em>next_usecs</em>, <em>period_usecs</em> = <strong>cycle_times</strong>( <em>client</em> ) <em>P</em><br>
 <span class="small">Available in the process callback only, returns internal cycle timing information
 (refer to <a href="http://jackaudio.org/api/group__TimeFunctions.html">jack_get_cycle_time</a>()
 in the JACK documentation for more details).</span></p>
@@ -2051,8 +2006,7 @@ in the JACK documentation for more details).</span></p>
 <div id="jack.current_transport_frame" class="ulist">
 <ul>
 <li>
-<p><strong>jack.current_transport_frame</strong> ( <em>client</em> ) <em>MPT</em><br>
-&#8594; <em>frameno</em><br>
+<p><em>frameno</em> = <strong>current_transport_frame</strong>( <em>client</em> ) <em>MPT</em><br>
 <span class="small">Returns an estimate of the current transport frame.</span></p>
 </li>
 </ul>
@@ -2060,8 +2014,7 @@ in the JACK documentation for more details).</span></p>
 <div id="jack.transport_state" class="ulist">
 <ul>
 <li>
-<p><strong>jack.transport_state</strong> ( <em>client</em> ) <em>MPT</em><br>
-&#8594; <em>state</em><br>
+<p><em>state</em> = <strong>transport_state</strong>( <em>client</em> ) <em>MPT</em><br>
 <span class="small">Returns the current transport <em>state</em> (a string that may have one of the following values:
 <em>'starting'</em>, <em>'rolling'</em>, or <em>'stopping'</em>).</span></p>
 </li>
@@ -2070,8 +2023,7 @@ in the JACK documentation for more details).</span></p>
 <div id="jack.transport_query" class="ulist">
 <ul>
 <li>
-<p><strong>jack.transport_query</strong> ( <em>client</em> ) <em>MPT</em><br>
-&#8594; <em>state</em>, <em>position</em><br>
+<p><em>state</em>, <em>position</em> = <strong>transport_query</strong>( <em>client</em> ) <em>MPT</em><br>
 <span class="small">Returns the current transport <em>state</em> (see <a href="#jack.transport_state">jack.transport_state</a>())
 and the current transport <em>position</em>.<br>
 The transport position is a Lua-table representation of the
@@ -2085,7 +2037,7 @@ are not present are set to <em>nil</em>, i.e. not set at all).</span></p>
 <div id="jack.transport_start" class="ulist">
 <ul>
 <li>
-<p><strong>jack.transport_start</strong> ( <em>client</em> ) <em>MPT</em><br>
+<p><strong>transport_start</strong>( <em>client</em> ) <em>MPT</em><br>
 <span class="small">Starts the JACK transport rolling.</span></p>
 </li>
 </ul>
@@ -2093,7 +2045,7 @@ are not present are set to <em>nil</em>, i.e. not set at all).</span></p>
 <div id="jack.transport_stop" class="ulist">
 <ul>
 <li>
-<p><strong>jack.transport_stop</strong> ( <em>client</em> ) <em>MPT</em><br>
+<p><strong>transport_stop</strong>( <em>client</em> ) <em>MPT</em><br>
 <span class="small">Stops the JACK transport rolling.</span></p>
 </li>
 </ul>
@@ -2101,7 +2053,7 @@ are not present are set to <em>nil</em>, i.e. not set at all).</span></p>
 <div id="jack.transport_locate" class="ulist">
 <ul>
 <li>
-<p><strong>jack.transport_locate</strong> ( <em>client</em>, <em>frameno</em> ) <em>MPT</em><br>
+<p><strong>transport_locate</strong>( <em>client</em>, <em>frameno</em> ) <em>MPT</em><br>
 <span class="small">Repositions the JACK transport to the frame number <em>frameno</em>
 (realtime safe, may be used in the <a href="#jack.timebase_callback">timebase callback</a>).</span></p>
 </li>
@@ -2110,7 +2062,7 @@ are not present are set to <em>nil</em>, i.e. not set at all).</span></p>
 <div id="jack.transport_reposition" class="ulist">
 <ul>
 <li>
-<p><strong>jack.transport_reposition</strong> ( <em>client</em>, <em>position</em> ) <em>MPT</em><br>
+<p><strong>transport_reposition</strong>( <em>client</em>, <em>position</em> ) <em>MPT</em><br>
 <span class="small">Request a new transport <em>position</em>
 (realtime safe, may be used in the <a href="#jack.timebase_callback">timebase callback</a>).</span></p>
 </li>
@@ -2119,7 +2071,7 @@ are not present are set to <em>nil</em>, i.e. not set at all).</span></p>
 <div id="jack.set_sync_timeout" class="ulist">
 <ul>
 <li>
-<p><strong>jack.set_sync_timeout</strong> ( <em>client</em>, <em>timeout</em> ) <em>MPT</em><br>
+<p><strong>set_sync_timeout</strong>( <em>client</em>, <em>timeout</em> ) <em>MPT</em><br>
 <span class="small">Sets the <em>timeout</em> value (in microseconds) for
 <a href="http://jackaudio.org/api/transport-design.html#slowsyncclients">slow-sync clients</a>.</span></p>
 </li>
@@ -2139,8 +2091,7 @@ samples from/to ports of the default audio type.</p>
 <div id="audiojack.get_buffer" class="ulist">
 <ul>
 <li>
-<p><strong>jack.get_buffer</strong> ( <em>port</em> ) <em>P</em><br>
-&#8594; <em>nframes</em><br>
+<p><em>nframes</em> = <strong>get_buffer</strong>( <em>port</em> ) <em>P</em><br>
 <span class="small">Retrieves the port buffer and initializes the buffer&#8217;s <em>current position</em> to the first
 sample.<br>
 Returns the buffer size in samples (which is the same value as the <em>nframes</em>
@@ -2153,8 +2104,7 @@ process cycle, before any other operation on the buffer.</span></p>
 <div id="audiojack.raw_buffer" class="ulist">
 <ul>
 <li>
-<p><strong>jack.raw_buffer</strong> ( <em>port</em> ) <em>P</em><br>
-&#8594; <em>pointer</em>, <em>nframes</em><br>
+<p><em>pointer</em>, <em>nframes</em> = <strong>raw_buffer</strong>( <em>port</em> ) <em>P</em><br>
 <span class="small">Returns the port buffer pointer (as a <em>light userdata</em>) and the number of frames.
 It can be used only after having retrieved the buffer with <a href="#audiojack.get_buffer">jack.get_buffer</a>().</span></p>
 </li>
@@ -2163,8 +2113,7 @@ It can be used only after having retrieved the buffer with <a href="#audiojack.g
 <div id="audiojack.seek" class="ulist">
 <ul>
 <li>
-<p><strong>jack.seek</strong> ( <em>port</em> [, <em>position</em> ] ) <em>P</em><br>
-&#8594; <em>position</em>, <em>available</em><br>
+<p><em>position</em>, <em>available</em> = <strong>seek</strong>( <em>port</em> [, <em>position</em> ] ) <em>P</em><br>
 <span class="small">Returns the current <em>position</em> in the port&#8217;s buffer and the number of available
 samples from the current position to the end of the buffer.<br>
 If <em>position</em> is passed as argument, the function sets the current position to that value.</span></p>
@@ -2174,8 +2123,7 @@ If <em>position</em> is passed as argument, the function sets the current positi
 <div id="audiojack.read" class="ulist">
 <ul>
 <li>
-<p><strong>jack.read</strong> ( <em>port</em> [, <em>count</em> ] ) <em>P</em><br>
-&#8594; <em>sample1</em>, <em>&#8230;&#8203;</em><br>
+<p><em>sample1</em>, <em>&#8230;&#8203;</em> = <strong>read</strong>( <em>port</em> [, <em>count</em> ] ) <em>P</em><br>
 <span class="small">Returns up to <em>count</em> samples from the (input) port buffer.<br>
 Samples are read starting from the current position, which is then advanced by the
 number of returned samples.<br>
@@ -2188,8 +2136,7 @@ If <em>count</em> is not passed, it defaults to <em>'all the remaining samples'<
 <div id="audiojack.write" class="ulist">
 <ul>
 <li>
-<p><strong>jack.write</strong> ( <em>port</em> [, <em>sample1</em> , <em>&#8230;&#8203;</em> ] ) <em>P</em><br>
-&#8594; <em>count</em><br>
+<p><em>count</em> = <strong>write</strong>( <em>port</em> [, <em>sample1</em> , <em>&#8230;&#8203;</em> ] ) <em>P</em><br>
 <span class="small">Writes the passed samples to the (output) port&#8217;s buffer and returns the <em>count</em> of
 written samples.<br>
 Samples are written starting from the current position, which is then advanced by <em>count</em>.
@@ -2201,8 +2148,7 @@ samples are discarded.</span></p>
 <div id="audiojack.clear" class="ulist">
 <ul>
 <li>
-<p><strong>jack.clear</strong> ( <em>port</em> [, <em>count</em> ] ) <em>P</em><br>
-&#8594; <em>count</em><br>
+<p><em>count</em> = <strong>clear</strong>( <em>port</em> [, <em>count</em> ] ) <em>P</em><br>
 <span class="small">Same as <a href="#audiojack.write">jack.write</a>(), with the difference that it writes up to <em>count</em>
 samples to zero.<br>
 If <em>count</em> is not passed, it defaults to <em>'all the remaining samples'</em>.</span></p>
@@ -2212,8 +2158,7 @@ If <em>count</em> is not passed, it defaults to <em>'all the remaining samples'<
 <div id="audiojack.copy" class="ulist">
 <ul>
 <li>
-<p><strong>jack.copy</strong> ( <em>dstport</em>, <em>srcport</em> [, <em>count</em> ] ) <em>P</em><br>
-&#8594; <em>count</em><br>
+<p><em>count</em> = <strong>copy</strong>( <em>dstport</em>, <em>srcport</em> [, <em>count</em> ] ) <em>P</em><br>
 <span class="small">Copies up to <em>count</em> samples from the buffer of the input port <em>srcport</em> to the
 buffer of the output port <em>dstport</em> and returns the number of copied samples.<br>
 This function uses the current positions of both ports, and advances them by the
@@ -2259,9 +2204,8 @@ or with the utilities provided in the <a href="#midi_utilities">luajack/midi.lua
 <div id="midijack.get_buffer" class="ulist">
 <ul>
 <li>
-<p><strong>jack.get_buffer</strong> ( <em>port</em> ) <em>P</em><br>
-&#8594; <em>eventcount</em>, <em>lostcount</em> (if port is input)<br>
-&#8594; <em>space</em> (if port is output)<br>
+<p><em>eventcount</em>, <em>lostcount</em> = <strong>get_buffer</strong>( <em>inputport</em> ) <em>P</em><br>
+<em>space</em> = <strong>get_buffer</strong>( <em>outputport</em> ) <em>P</em><br>
 <span class="small">Retrieves the port buffer.<br>
 If <em>port</em> is an input port, this function returns the number of events in the buffer
 (<em>eventcount</em>) and the number of lost events (<em>lostcount</em>).
@@ -2276,8 +2220,7 @@ process cycle, before any other operation on the buffer.</span></p>
 <div id="midijack.seek" class="ulist">
 <ul>
 <li>
-<p><strong>jack.seek</strong> ( <em>port</em> [, <em>index</em> ] ) <em>P</em><br>
-&#8594; <em>index</em>, <em>available</em><br>
+<p><em>index</em>, <em>available</em> = <strong>seek</strong>( <em>port</em> [, <em>index</em> ] ) <em>P</em><br>
 <span class="small">Returns the current <em>index</em> in the (input) port buffer and the number of <em>available</em>
 events from the current index to the end of the buffer.<br>
 If <em>index</em> is passed as argument, sets the current index to that value.</span></p>
@@ -2299,8 +2242,7 @@ Only input MIDI ports are seekable (output MIDI ports are not).
 <div id="midijack.read" class="ulist">
 <ul>
 <li>
-<p><strong>jack.read</strong> ( <em>port</em> [, <em>index</em> ] ) <em>P</em><br>
-&#8594; <em>time</em>, <em>data</em><br>
+<p><em>time</em>, <em>data</em> = <strong>read</strong>( <em>port</em> [, <em>index</em> ] ) <em>P</em><br>
 <span class="small">Returns the <a href="#midi_event">MIDI event</a> from the (input) port&#8217;s buffer at its current index,
 which it then advances by <em>1</em>.<br>
 If an <em>index</em> is passed as argument, this function sets the current index to that value
@@ -2312,8 +2254,7 @@ returns <em>nil</em>.</span></p>
 <div id="midijack.write" class="ulist">
 <ul>
 <li>
-<p><strong>jack.write</strong> ( <em>port</em>, <em>time</em>, <em>data</em> ) <em>P</em><br>
-&#8594; <em>space</em><br>
+<p><em>space</em> = <strong>write</strong>( <em>port</em>, <em>time</em>, <em>data</em> ) <em>P</em><br>
 <span class="small">Writes a <a href="#midi_event">MIDI event</a> to the (output) port&#8217;s buffer and returns the <em>space</em>
 available in the buffer for the next event data.
 If there is not enough space to write the event, this function returns <em>nil</em>.</span></p>
@@ -2323,8 +2264,7 @@ If there is not enough space to write the event, this function returns <em>nil</
 <div id="midijack.copy" class="ulist">
 <ul>
 <li>
-<p><strong>jack.copy</strong> ( <em>dstport</em>, <em>srcport</em> [, <em>count</em> ] ) <em>P</em><br>
-&#8594; <em>count</em><br>
+<p><em>count</em> = <strong>copy</strong>( <em>dstport</em>, <em>srcport</em> [, <em>count</em> ] ) <em>P</em><br>
 <span class="small">Copies up to <em>count</em> <a href="#midi_event">MIDI events</a> from the buffer of the input port
 <em>srcport</em>  to the buffer of the output port <em>dstport</em>, and returns the number of copied events.
 Events are copied starting from the current index of <em>srcport</em>, which is then
@@ -2343,8 +2283,7 @@ in the input port&#8217;s buffer that fit in the output port&#8217;s buffer.</sp
 <div id="jack.max_delayed_usecs" class="ulist">
 <ul>
 <li>
-<p><strong>jack.max_delayed_usecs</strong> ( <em>client</em> ) <em>M</em><br>
-&#8594; <em>delay</em><br>
+<p><em>delay</em> = <strong>max_delayed_usecs</strong>( <em>client</em> ) <em>M</em><br>
 <span class="small">Returns the maximum delay reported by the backend since startup or reset.</span></p>
 </li>
 </ul>
@@ -2352,8 +2291,7 @@ in the input port&#8217;s buffer that fit in the output port&#8217;s buffer.</sp
 <div id="jack.xrun_delayed_usecs" class="ulist">
 <ul>
 <li>
-<p><strong>jack.xrun_delayed_usecs</strong> ( <em>client</em> ) <em>M</em><br>
-&#8594; <em>delay</em><br>
+<p><em>delay</em> = <strong>xrun_delayed_usecs</strong>( <em>client</em> ) <em>M</em><br>
 <span class="small">Returns the delay in microseconds due to the most recent xrun occurrence.</span></p>
 </li>
 </ul>
@@ -2361,7 +2299,7 @@ in the input port&#8217;s buffer that fit in the output port&#8217;s buffer.</sp
 <div id="jack.reset_max_delayed_usecs" class="ulist">
 <ul>
 <li>
-<p><strong>jack.reset_max_delayed_usecs</strong> ( <em>client</em> ) <em>M</em><br>
+<p><strong>reset_max_delayed_usecs</strong>( <em>client</em> ) <em>M</em><br>
 <span class="small">Resets the maximum delay counter.</span></p>
 </li>
 </ul>
@@ -2369,9 +2307,8 @@ in the input port&#8217;s buffer that fit in the output port&#8217;s buffer.</sp
 <div id="jack.profile" class="ulist">
 <ul>
 <li>
-<p><strong>jack.profile</strong> ( <em>client</em> [, <em>what</em> ])<br>
-<strong>jack.profile</strong> ( <em>client</em> )<br>
-&#8594; <em>n</em>, <em>min</em>, <em>max</em>, <em>mean</em>, <em>var</em><br>
+<p><strong>profile</strong>( <em>client</em>, <em>what</em> )<br>
+<em>n</em>, <em>min</em>, <em>max</em>, <em>mean</em>, <em>var</em> = <strong>profile</strong>( <em>client</em> )<br>
 <span class="small">Profile the real-time callbacks for <em>client</em>.<br>
 The <em>what</em> parameter may be one amongst
 <em>start</em> (reset the counters and start profiling),
@@ -2398,8 +2335,7 @@ which instead uses the functions described below in this section.</p>
 <div id="jack.session_notify" class="ulist">
 <ul>
 <li>
-<p><strong>jack.session_notify</strong> ( <em>client</em>, <em>target</em>, <em>type</em>, <em>path</em> ) <em>M</em><br>
-&#8594; <em>{ reply1, &#8230;&#8203;, replyN }</em><br>
+<p><em>{ reply1, &#8230;&#8203;, replyN }</em> = <strong>session_notify</strong>( <em>client</em>, <em>target</em>, <em>type</em>, <em>path</em> ) <em>M</em><br>
 <span class="small">Sends an event to clients that registered a session callback.<br>
 The <em>target</em> argument (a string) is the name of the target client, or <em>nil</em> for 'all'.<br>
 The event <em>type</em> must be one amongst <em>'save'</em>, <em>'save_and_quit'</em> and <em>'save_template'</em>.<br>
@@ -2417,8 +2353,7 @@ Each entry of the table is a subtable containing the following elements:<br>
 <div id="jack.has_session_callback" class="ulist">
 <ul>
 <li>
-<p><strong>jack.has_session_callback</strong> ( <em>client</em>, <em>clientname</em> ) <em>M</em><br>
-&#8594; <em>boolean</em><br>
+<p><em>boolean</em> = <strong>has_session_callback</strong>( <em>client</em>, <em>clientname</em> ) <em>M</em><br>
 <span class="small">Returns <em>true</em> if the client named <em>clientname</em> has registered a session callback,
 <em>false</em> otherwise.</span></p>
 </li>
@@ -2427,7 +2362,7 @@ Each entry of the table is a subtable containing the following elements:<br>
 <div id="jack.reserve_client_name" class="ulist">
 <ul>
 <li>
-<p><strong>jack.reserve_client_name</strong> ( <em>client</em>, <em>clientname</em> ) <em>M</em><br>
+<p><strong>reserve_client_name</strong>( <em>client</em>, <em>clientname</em> ) <em>M</em><br>
 <span class="small">Reserves the client name <em>clientname</em> and associates it with the UUID <em>uuid</em>.</span></p>
 </li>
 </ul>
@@ -2453,8 +2388,7 @@ message or any other information (LuaJack by itself does not interpret it by any
 <div id="jack.ringbuffer" class="ulist">
 <ul>
 <li>
-<p><strong>jack.ringbuffer</strong> ( <em>client</em>, <em>size</em> [, <em>mlock</em> [, <em>usepipe</em> ]] ) <em>M</em><br>
-&#8594; <em>rbuf</em><br>
+<p><em>rbuf</em> = <strong>ringbuffer</strong>( <em>client</em>, <em>size</em> [, <em>mlock</em> [, <em>usepipe</em> ]] ) <em>M</em><br>
 <span class="small">Creates a ringbuffer of the specified <em>size</em> (in bytes) and returns a
 ringbuffer reference for subsequent operations. The returned reference
 is an integer which may be passed as argument to <a href="#jack.thread">thread scripts</a>.<br>
@@ -2473,8 +2407,7 @@ used before the client is <a href="#jack.activate">activated</a>.</span></p>
 <div id="jack.ringbuffer_write" class="ulist">
 <ul>
 <li>
-<p><strong>jack.ringbuffer_write</strong> ( <em>rbuf</em>, <em>tag</em> [, <em>data</em> ] ) <em>MPT</em><br>
-&#8594; <em>ok</em><br>
+<p><em>ok</em> = <strong>ringbuffer_write</strong>( <em>rbuf</em>, <em>tag</em> [, <em>data</em> ] ) <em>MPT</em><br>
 <span class="small">Write a <a href="#ringbuffersmessage">message</a> to the ringbuffer <em>rbuf</em>.<br>
 Returns <em>true</em> on success, or <em>false</em> if there was not enough space for the message.</span></p>
 </li>
@@ -2483,8 +2416,7 @@ Returns <em>true</em> on success, or <em>false</em> if there was not enough spac
 <div id="jack.ringbuffer_read" class="ulist">
 <ul>
 <li>
-<p><strong>jack.ringbuffer_read</strong> ( <em>rbuf</em> ) <em>MPT</em><br>
-&#8594; <em>tag</em>, <em>data</em><br>
+<p><em>tag</em>, <em>data</em> = <strong>ringbuffer_read</strong>( <em>rbuf</em> ) <em>MPT</em><br>
 <span class="small">Read a <a href="#ringbuffersmessage">message</a> from the ringbuffer <em>rbuf</em>.
 Returns <em>tag</em>=<em>nil</em> if there are no messages available.<br>
 If the message is composed of the <em>tag</em> only, then <em>data</em> is returned as an
@@ -2495,7 +2427,7 @@ empty string (so that <em>data:len=0</em>).</span></p>
 <div id="jack.ringbuffer_reset" class="ulist">
 <ul>
 <li>
-<p><strong>jack.ringbuffer_reset</strong> ( <em>rbuf</em> ) <em>MPT</em><br>
+<p><strong>ringbuffer_reset</strong>( <em>rbuf</em> ) <em>MPT</em><br>
 <span class="small">Resets the ringbuffer <em>rbuf</em>.</span></p>
 </li>
 </ul>
@@ -2503,8 +2435,7 @@ empty string (so that <em>data:len=0</em>).</span></p>
 <div id="jack.ringbuffer_peek" class="ulist">
 <ul>
 <li>
-<p><strong>jack.ringbuffer_peek</strong> ( <em>rbuf</em> ) <em>MPT</em><br>
-&#8594; <em>tag</em>, <em>data</em><br>
+<p><em>tag</em>, <em>data</em> = <strong>ringbuffer_peek</strong>( <em>rbuf</em> ) <em>MPT</em><br>
 <span class="small">Same as <a href="#jack.ringbuffer_read">ringbuffer_read</a>, but does not advance the message pointer.</span></p>
 </li>
 </ul>
@@ -2512,8 +2443,7 @@ empty string (so that <em>data:len=0</em>).</span></p>
 <div id="jack.ringbuffer_read_advance" class="ulist">
 <ul>
 <li>
-<p><strong>jack.ringbuffer_read_advance</strong> ( <em>rbuf</em> ) <em>MPT</em><br>
-&#8594; <em>ok</em><br>
+<p><em>ok</em> = <strong>ringbuffer_read_advance</strong>( <em>rbuf</em> ) <em>MPT</em><br>
 <span class="small">Advances the message read pointer without reading the message.</span></p>
 </li>
 </ul>
@@ -2521,8 +2451,7 @@ empty string (so that <em>data:len=0</em>).</span></p>
 <div id="jack.ringbuffer_getfd" class="ulist">
 <ul>
 <li>
-<p><strong>jack.ringbuffer_getfd</strong> ( <em>rbuf</em> ) <em>MPT</em><br>
-&#8594; <em>fd</em><br>
+<p><em>fd</em> = <strong>ringbuffer_getfd</strong>( <em>rbuf</em> ) <em>MPT</em><br>
 <span class="small">Returns the file descriptor of the pipe associated with the ringbuffer <em>rbuf</em>,
 or <em>nil</em> if it was <a href="#jack.ringbuffer">created</a> without pipe.</span></p>
 </li>
@@ -2564,7 +2493,7 @@ or <em>nil</em> if it was <a href="#jack.ringbuffer">created</a> without pipe.</
 <div id="jack.sleep" class="ulist">
 <ul>
 <li>
-<p><strong>jack.sleep</strong> ( [<em>seconds</em>] )<br>
+<p><strong>sleep</strong>( [<em>seconds</em>] )<br>
 <span class="small">Sleeps for the specified number of <em>seconds</em> (if <em>seconds</em> is negative or <em>nil</em>,
 sleeps forever).<br>
 This function must be used to implement the main loop in the <a href="#luajack.contexts">main context</a>,
@@ -2575,7 +2504,7 @@ and can optionally be used in thread contexts as well.</span></p>
 <div id="jack.verbose" class="ulist">
 <ul>
 <li>
-<p><strong>jack.verbose</strong> ( <em>onoff</em> )<br>
+<p><strong>verbose</strong>( <em>onoff</em> )<br>
 <span class="small">If <em>onoff='on'</em>, enables the LuaJack verbose mode. If <em>onoff='off'</em>, it disables it.
 By default, the verbose mode is disabled.</span></p>
 </li>
@@ -2619,9 +2548,8 @@ MIDI message (starting from the MIDI status byte) with the passed parameters.</p
 <div id="midi.note_onoff" class="ulist">
 <ul>
 <li>
-<p><strong>midi.note_off</strong> ( <em>channel</em>, <em>key</em> [, <em>velocity</em> ] )<br>
-<strong>midi.note_on</strong> ( <em>channel</em>, <em>key</em> [, <em>velocity</em> ] )<br>
-&#8594; <em>msg</em><br>
+<p><em>msg</em> = <strong>note_off</strong>( <em>channel</em>, <em>key</em> [, <em>velocity</em> ] )<br>
+<em>msg</em> = <strong>note_on</strong>( <em>channel</em>, <em>key</em> [, <em>velocity</em> ] )<br>
 <span class="small">Parameters: <em>channel</em> = 1-16, <em>key</em> = 0-127, <em>velocity</em> = 0-127 (default=64).</span></p>
 </li>
 </ul>
@@ -2629,8 +2557,7 @@ MIDI message (starting from the MIDI status byte) with the passed parameters.</p
 <div id="midi.aftertouch" class="ulist">
 <ul>
 <li>
-<p><strong>midi.aftertouch</strong> ( <em>channel</em>, <em>key</em>, <em>pressure</em> ) a.k.a. 'polyphonic key pressure'<br>
-&#8594; <em>msg</em><br>
+<p><em>msg</em> = <strong>aftertouch</strong>( <em>channel</em>, <em>key</em>, <em>pressure</em> ) a.k.a. 'polyphonic key pressure'<br>
 <span class="small">Parameters: <em>channel</em> = 1-16, <em>key</em> = 0-127, <em>pressure</em> = 0-127.</span></p>
 </li>
 </ul>
@@ -2638,8 +2565,7 @@ MIDI message (starting from the MIDI status byte) with the passed parameters.</p
 <div id="midi.control_change" class="ulist">
 <ul>
 <li>
-<p><strong>midi.control_change</strong> ( <em>channel</em>, <em>control</em> [, <em>value</em> ] )<br>
-&#8594; <em>msg</em><br>
+<p><em>msg</em> = <strong>control_change</strong>( <em>channel</em>, <em>control</em> [, <em>value</em> ] )<br>
 <span class="small">Parameters: <em>channel</em> = 1-16, <em>control</em> = 0-127 or controller name,
 <em>value</em> = 0-127 or <em>'on'</em>|<em>'off'</em> (default=0='off').<br>
 See the table in the following section for <a href="#midi.controllers">controller names</a>.</span></p>
@@ -2649,8 +2575,7 @@ See the table in the following section for <a href="#midi.controllers">controlle
 <div id="midi.program_change" class="ulist">
 <ul>
 <li>
-<p><strong>midi.program_change</strong> ( <em>channel</em>, <em>number</em> )<br>
-&#8594; <em>msg</em><br>
+<p><em>msg</em> = <strong>program_change</strong>( <em>channel</em>, <em>number</em> )<br>
 <span class="small">Parameters: <em>channel</em> = 1-16, <em>number</em> = 1-128.</span></p>
 </li>
 </ul>
@@ -2658,8 +2583,7 @@ See the table in the following section for <a href="#midi.controllers">controlle
 <div id="midi.channel_pressure" class="ulist">
 <ul>
 <li>
-<p><strong>midi.channel_pressure</strong> ( <em>channel</em>, <em>pressure</em> )<br>
-&#8594; <em>msg</em><br>
+<p><em>msg</em> = <strong>channel_pressure</strong>( <em>channel</em>, <em>pressure</em> )<br>
 <span class="small">Parameters: <em>channel</em> = 1-16, <em>pressure</em> = 0-127.</span></p>
 </li>
 </ul>
@@ -2667,8 +2591,7 @@ See the table in the following section for <a href="#midi.controllers">controlle
 <div id="midi.pitch_wheel" class="ulist">
 <ul>
 <li>
-<p><strong>midi.pitch_wheel</strong> ( <em>channel</em>, <em>value</em> ) a.k.a. 'pitch bend change'<br>
-&#8594; <em>msg</em><br>
+<p><em>msg</em> = <strong>pitch_wheel</strong>( <em>channel</em>, <em>value</em> ) a.k.a. 'pitch bend change'<br>
 <span class="small">Parameters: <em>channel</em> = 1-16, <em>value</em> = 0-16383 (0x3fff).</span></p>
 </li>
 </ul>
@@ -2676,8 +2599,7 @@ See the table in the following section for <a href="#midi.controllers">controlle
 <div id="midi.mtc_quarter_frame" class="ulist">
 <ul>
 <li>
-<p><strong>midi.mtc_quarter_frame</strong> ( <em>nnn</em>, <em>dddd</em> ) a.k.a. 'time code quarter frame'<br>
-&#8594; <em>msg</em><br>
+<p><em>msg</em> = <strong>mtc_quarter_frame</strong>( <em>nnn</em>, <em>dddd</em> ) a.k.a. 'time code quarter frame'<br>
 <span class="small">Parameters: <em>nnn</em> = 0-7 (MTC message type), <em>dddd</em> = 0-15 (MTC message value).</span></p>
 </li>
 </ul>
@@ -2685,8 +2607,7 @@ See the table in the following section for <a href="#midi.controllers">controlle
 <div id="midi.song_position" class="ulist">
 <ul>
 <li>
-<p><strong>midi.song_position</strong> ( <em>value</em> )<br>
-&#8594; <em>msg</em><br>
+<p><em>msg</em> = <strong>song_position</strong>( <em>value</em> )<br>
 <span class="small">Parameters: <em>value</em> = 0-16383 (0x3fff).</span></p>
 </li>
 </ul>
@@ -2694,8 +2615,7 @@ See the table in the following section for <a href="#midi.controllers">controlle
 <div id="midi.song_select" class="ulist">
 <ul>
 <li>
-<p><strong>midi.song_select</strong> ( <em>number</em> )<br>
-&#8594; <em>msg</em><br>
+<p><em>msg</em> = <strong>song_select</strong>( <em>number</em> )<br>
 <span class="small">Parameters: <em>number</em> = 1-128.</span></p>
 </li>
 </ul>
@@ -2703,15 +2623,14 @@ See the table in the following section for <a href="#midi.controllers">controlle
 <div id="midi.encode" class="ulist">
 <ul>
 <li>
-<p><strong>midi.tune_request</strong> ( )<br>
-<strong>midi.end_of_exclusive</strong> ( )<br>
-<strong>midi.clock</strong> ( )<br>
-<strong>midi.start</strong> ( )<br>
-<strong>midi.continue</strong> ( )<br>
-<strong>midi.stop</strong> ( )<br>
-<strong>midi.active_sensing</strong> ( )<br>
-<strong>midi.reset</strong> ( )<br>
-&#8594; <em>msg</em><br>
+<p><em>msg</em> = <strong>tune_request</strong>( )<br>
+<em>msg</em> = <strong>end_of_exclusive</strong>( )<br>
+<em>msg</em> = <strong>clock</strong>( )<br>
+<em>msg</em> = <strong>start</strong>( )<br>
+<em>msg</em> = <strong>continue</strong>( )<br>
+<em>msg</em> = <strong>stop</strong>( )<br>
+<em>msg</em> = <strong>active_sensing</strong>( )<br>
+<em>msg</em> = <strong>reset</strong>( )<br>
 <span class="small">Parameters: none.</span></p>
 </li>
 </ul>
@@ -2722,8 +2641,7 @@ See the table in the following section for <a href="#midi.controllers">controlle
 <div id="midi.decode" class="ulist">
 <ul>
 <li>
-<p><strong>midi.decode</strong> ( <em>msg</em> [, <em>stringize</em> ] )<br>
-&#8594; <em>name</em>, <em>channel</em>, <em>parameters</em><br>
+<p><em>name</em>, <em>channel</em>, <em>parameters</em> = <strong>decode</strong>( <em>msg</em> [, <em>stringize</em> ] )<br>
 <span class="small">Decodes a MIDI message. The <em>msg</em> argument is expected to be a binary string
 containing the MIDI message starting from the MIDI status byte.<br>
 Returns the MIDI message <em>name</em> (or <em>nil</em> if not recognized), the <em>channel</em>
@@ -2737,8 +2655,7 @@ If <em>stringize</em> is <em>true</em>, the parameters are returned as a string 
 <div id="midi.tostring" class="ulist">
 <ul>
 <li>
-<p><strong>midi.tostring</strong> ( <em>time</em>, <em>msg</em> )<br>
-&#8594; <em>string</em><br>
+<p><em>string</em> = <strong>tostring</strong>( <em>time</em>, <em>msg</em> )<br>
 <span class="small">Returns a printable string containing the passed <em>time</em> (an integer) and the decoded <em>msg</em>
 (for dumps).</span></p>
 </li>
@@ -2747,8 +2664,7 @@ If <em>stringize</em> is <em>true</em>, the parameters are returned as a string 
 <div id="midi.tohex" class="ulist">
 <ul>
 <li>
-<p><strong>midi.tohex</strong> ( <em>msg</em> )<br>
-&#8594; <em>msg</em><br>
+<p><em>msg</em> = <strong>tohex</strong>( <em>msg</em> )<br>
 <span class="small">Returns a string containing the <em>msg</em> bytes in hexadecimal format (e.g. '84 0c 2f').</span></p>
 </li>
 </ul>
@@ -3154,8 +3070,7 @@ If <em>stringize</em> is <em>true</em>, the parameters are returned as a string 
 <div id="midi.note_key" class="ulist">
 <ul>
 <li>
-<p><strong>midi.note_key</strong> ( <em>frequency</em> )<br>
-&#8594; <em>msg</em><br>
+<p><em>msg</em> = <strong>note_key</strong>( <em>frequency</em> )<br>
 <span class="small">Returns the nearest MIDI note key corresponding to <em>frequency</em> (Hz).</span></p>
 </li>
 </ul>
@@ -3163,8 +3078,7 @@ If <em>stringize</em> is <em>true</em>, the parameters are returned as a string 
 <div id="midi.note_frequency" class="ulist">
 <ul>
 <li>
-<p><strong>midi.note_frequency</strong> ( <em>key</em> )<br>
-&#8594; <em>msg</em><br>
+<p><em>msg</em> = <strong>note_frequency</strong>( <em>key</em> )<br>
 <span class="small">Returns the <em>frequency</em> (Hz) corresponding to the MIDI note <em>key</em>.</span></p>
 </li>
 </ul>
@@ -3172,8 +3086,7 @@ If <em>stringize</em> is <em>true</em>, the parameters are returned as a string 
 <div id="midi.tmsg" class="ulist">
 <ul>
 <li>
-<p><strong>midi.tmsg</strong> ( <em>time</em>, <em>msg</em> )<br>
-&#8594; <em>tmsg</em><br>
+<p><em>tmsg</em> = <strong>tmsg</strong>( <em>time</em>, <em>msg</em> )<br>
 <span class="small">Returns a binary string obtained by concatenating the passed <em>time</em> (an integer)
 and the binary MIDI <em>msg</em> (this format can be convenient if one wants to send MIDI events
 over <a href="#_ringbuffers">ringbuffers</a>).</span></p>
@@ -3183,8 +3096,7 @@ over <a href="#_ringbuffers">ringbuffers</a>).</span></p>
 <div id="midi.time_msg" class="ulist">
 <ul>
 <li>
-<p><strong>midi.time_msg</strong> ( <em>tmsg</em> )<br>
-&#8594; <em>time</em>, <em>msg</em><br>
+<p><em>time</em>, <em>msg</em> = <strong>time_msg</strong>( <em>tmsg</em> )<br>
 <span class="small">Extracts the <em>time</em> and <em>msg</em> from a <em>tmsg</em> binary string constructed with the
 <a href="#midi.tmsg">midi.tmsg</a>() function.</span></p>
 </li>
@@ -3203,7 +3115,7 @@ over <a href="#_ringbuffers">ringbuffers</a>).</span></p>
 <div id="footer">
 <div id="footer-text">
 Version 0.5<br>
-Last updated 2016-07-03 11:42:50 CEST
+Last updated 2016-07-05 18:06:42 CEST
 </div>
 </div>
 </body>

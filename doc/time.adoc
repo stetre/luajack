@@ -4,60 +4,51 @@
 [small]#Rfr: link:++http://jackaudio.org/api/group__TimeFunctions.html++[Handling time]#
 
 [[jack.time]]
-* *jack.time* ( ) _MPT_ +
--> _useconds_ +
+* _useconds_ = *time*( ) _MPT_ +
 [small]#Returns JACK's current system time in microseconds.#
 
 
 [[jack.frame]]
-* *jack.frame* ( _client_ ) alias *jack.frame_time* +
--> _frameno_ +
+* _frameno_ = *frame*( _client_ ) alias *frame_time* +
 [small]#Returns the estimated current time in frames (to be used outside the process callback).#
 
 
 [[jack.since]]
-* *jack.since* ( _useconds_ ) _MPT_ +
--> _elapsed_ +
+* _elapsed_ = *since*( _useconds_ ) _MPT_ +
 [small]#Returns the time, in microseconds, elapsed since JACK's system time _useconds_.#
 
 
 [[jack.since_frame]]
-* *jack.since_frame* ( _client_, _frameno_ ) _MPT_ +
--> _nframes_ +
+* _nframes_ = *since_frame*( _client_, _frameno_ ) _MPT_ +
 [small]#Returns the number of frames elapsed since the estimated time _frameno_, in frames
 (to be used outside the process callback).#
 
 
 [[jack.frames_to_time]]
-* *jack.frames_to_time* ( _client_, _nframes_ ) _MPT_ +
--> _useconds_ +
+* _useconds_ = *frames_to_time*( _client_, _nframes_ ) _MPT_ +
 [small]#Returns the estimated time in microseconds of the specified time in frames.#
 
 
 [[jack.time_to_frames]]
-* *jack.time_to_frames* ( _client_, _useconds_ ) _MPT_ +
--> _nframes_ +
+* _nframes_ = *time_to_frames*( _client_, _useconds_ ) _MPT_ +
 [small]#Returns the estimated time in frames of the specified time in microseconds.#
 
 
 [[jack.frames_since_cycle_start]]
-* *jack.frames_since_cycle_start* ( _client_ ) _MPT_ +
--> _nframes_ +
+* _nframes_ = *frames_since_cycle_start*( _client_ ) _MPT_ +
 [small]#Returns the estimated time in frames that has passed since the JACK server began the
 current process cycle.#
 
 
 [[jack.last_frame_time]]
-* *jack.last_frame_time* ( _client_ ) _P_ +
--> _nframes_ +
+* _nframes_ = *last_frame_time*( _client_ ) _P_ +
 [small]#Returns the time, in frames, at the start of the current process cycle.
 Available in the process callback only, to be used to interpret timestamps generated with
 <<jack.frame, jack.frame >>() in other threads.#
 
 
 [[jack.cycle_times]]
-* *jack.cycle_times* ( _client_ ) _P_ +
--> _current_frames_, _current_usecs_, _next_usecs_, _period_usecs_ +
+* _current_frames_, _current_usecs_, _next_usecs_, _period_usecs_ = *cycle_times*( _client_ ) _P_ +
 [small]#Available in the process callback only, returns internal cycle timing information 
 (refer to http://jackaudio.org/api/group__TimeFunctions.html[jack_get_cycle_time]() 
 in the JACK documentation for more details).#

@@ -28,41 +28,35 @@ MIDI message (starting from the MIDI status byte) with the passed parameters.
 
 
 [[midi.note_onoff]]
-* *midi.note_off* ( _channel_, _key_ [, _velocity_ ] ) +
-*midi.note_on* ( _channel_, _key_ [, _velocity_ ] ) +
--> _msg_ +
+* _msg_ = *note_off*( _channel_, _key_ [, _velocity_ ] ) +
+_msg_ = *note_on*( _channel_, _key_ [, _velocity_ ] ) +
 [small]#Parameters: _channel_ = 1-16, _key_ = 0-127, _velocity_ = 0-127 (default=64).#
 
 
 [[midi.aftertouch]]
-* *midi.aftertouch* ( _channel_, _key_, _pressure_ ) a.k.a. 'polyphonic key pressure' +
--> _msg_ +
+* _msg_ = *aftertouch*( _channel_, _key_, _pressure_ ) a.k.a. 'polyphonic key pressure' +
 [small]#Parameters: _channel_ = 1-16, _key_ = 0-127, _pressure_ = 0-127.#
 
 
 [[midi.control_change]]
-* *midi.control_change* ( _channel_, _control_ [, _value_ ] ) +
--> _msg_ +
+* _msg_ = *control_change*( _channel_, _control_ [, _value_ ] ) +
 [small]#Parameters: _channel_ = 1-16, _control_ = 0-127 or controller name,
 _value_ = 0-127 or _'on'_|_'off'_ (default=0='off'). +
 See the table in the following section for <<midi.controllers, controller names>>.#
 
 
 [[midi.program_change]]
-* *midi.program_change* ( _channel_, _number_ ) +
--> _msg_ +
+* _msg_ = *program_change*( _channel_, _number_ ) +
 [small]#Parameters: _channel_ = 1-16, _number_ = 1-128.#
 
 
 [[midi.channel_pressure]]
-* *midi.channel_pressure* ( _channel_, _pressure_ ) +
--> _msg_ +
+* _msg_ = *channel_pressure*( _channel_, _pressure_ ) +
 [small]#Parameters: _channel_ = 1-16, _pressure_ = 0-127.#
 
 
 [[midi.pitch_wheel]]
-* *midi.pitch_wheel* ( _channel_, _value_ ) a.k.a. 'pitch bend change' +
--> _msg_ +
+* _msg_ = *pitch_wheel*( _channel_, _value_ ) a.k.a. 'pitch bend change' +
 [small]#Parameters: _channel_ = 1-16, _value_ = 0-16383 (0x3fff).#
 
 ////
@@ -74,33 +68,29 @@ end
 
 
 [[midi.mtc_quarter_frame]]
-* *midi.mtc_quarter_frame* ( _nnn_, _dddd_ ) a.k.a. 'time code quarter frame' +
--> _msg_ +
+* _msg_ = *mtc_quarter_frame*( _nnn_, _dddd_ ) a.k.a. 'time code quarter frame' +
 [small]#Parameters: _nnn_ = 0-7 (MTC message type), _dddd_ = 0-15 (MTC message value).#
 
 
 [[midi.song_position]]
-* *midi.song_position* ( _value_ ) +
--> _msg_ +
+* _msg_ = *song_position*( _value_ ) +
 [small]#Parameters: _value_ = 0-16383 (0x3fff).#
 
 
 [[midi.song_select]]
-* *midi.song_select* ( _number_ ) +
--> _msg_ +
+* _msg_ = *song_select*( _number_ ) +
 [small]#Parameters: _number_ = 1-128.#
 
 
 [[midi.encode]]
-* *midi.tune_request* ( ) +
-*midi.end_of_exclusive* ( ) +
-*midi.clock* ( ) +
-*midi.start* ( ) +
-*midi.continue* ( ) +
-*midi.stop* ( ) +
-*midi.active_sensing* ( ) +
-*midi.reset* ( ) +
--> _msg_ +
+* _msg_ = *tune_request*( ) +
+_msg_ = *end_of_exclusive*( ) +
+_msg_ = *clock*( ) +
+_msg_ = *start*( ) +
+_msg_ = *continue*( ) +
+_msg_ = *stop*( ) +
+_msg_ = *active_sensing*( ) +
+_msg_ = *reset*( ) +
 [small]#Parameters: none.#
 
 
@@ -124,8 +114,7 @@ end
 
 
 [[midi.decode]]
-* *midi.decode* ( _msg_ [, _stringize_ ] ) +
--> _name_, _channel_, _parameters_ +
+* _name_, _channel_, _parameters_ = *decode*( _msg_ [, _stringize_ ] ) +
 [small]#Decodes a MIDI message. The _msg_ argument is expected to be a binary string
 containing the MIDI message starting from the MIDI status byte. +
 Returns the MIDI message _name_ (or _nil_ if not recognized), the _channel_
@@ -136,15 +125,13 @@ If _stringize_ is _true_, the parameters are returned as a string instead of a t
 
 
 [[midi.tostring]]
-* *midi.tostring* ( _time_, _msg_ ) +
--> _string_ +
+* _string_ = *tostring*( _time_, _msg_ ) +
 [small]#Returns a printable string containing the passed _time_ (an integer) and the decoded _msg_
 (for dumps).#
 
 
 [[midi.tohex]]
-* *midi.tohex* ( _msg_ ) +
--> _msg_ +
+* _msg_ = *tohex*( _msg_ ) +
 [small]#Returns a string containing the _msg_ bytes in hexadecimal format (e.g. '84 0c 2f').#
 
 .MIDI messages
@@ -288,29 +275,25 @@ If _stringize_ is _true_, the parameters are returned as a string instead of a t
 
 
 [[midi.note_key]]
-* *midi.note_key* ( _frequency_ ) +
--> _msg_ +
+* _msg_ = *note_key*( _frequency_ ) +
 [small]#Returns the nearest MIDI note key corresponding to _frequency_ (Hz).#
 
 
 [[midi.note_frequency]]
-* *midi.note_frequency* ( _key_ ) +
--> _msg_ +
+* _msg_ = *note_frequency*( _key_ ) +
 [small]#Returns the _frequency_ (Hz) corresponding to the MIDI note _key_.#
 
 
 
 [[midi.tmsg]]
-* *midi.tmsg* ( _time_, _msg_ ) +
--> _tmsg_ +
+* _tmsg_ = *tmsg*( _time_, _msg_ ) +
 [small]#Returns a binary string obtained by concatenating the passed _time_ (an integer)
 and the binary MIDI _msg_ (this format can be convenient if one wants to send MIDI events
 over <<_ringbuffers, ringbuffers>>).#
 
 
 [[midi.time_msg]]
-* *midi.time_msg* ( _tmsg_ ) +
--> _time_, _msg_ +
+* _time_, _msg_ = *time_msg*( _tmsg_ ) +
 [small]#Extracts the _time_ and _msg_ from a _tmsg_ binary string constructed with the
 <<midi.tmsg, midi.tmsg>>() function.#
 

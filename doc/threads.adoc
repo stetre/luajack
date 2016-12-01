@@ -5,8 +5,7 @@
 
 
 [[jack.thread_load]]
-* *jack.thread_load* ( _client_, _chunk_, _..._ ) _M_ +
--> _thread_ +
+* _thread_ = *thread_load*( _client_, _chunk_, _..._ ) _M_ +
 [small]#Creates a client thread with its dedicated <<luajack.contexts, thread context>> and
 returns a reference for subsequent operations. 
 The _chunk_ argument is a string containing the Lua code to be executed in the
@@ -20,8 +19,7 @@ can be accessed directly by the thread chunk.#
 
 
 [[jack.thread_loadfile]]
-* *jack.thread_loadfile* ( _client_, _filename_, _..._ ) _M_ +
--> _thread_ +
+* _thread_ = *thread_loadfile*( _client_, _filename_, _..._ ) _M_ +
 [small]#Same as <<jack.thread_load, jack.thread_load>>(), with the only difference that it
 loads the chunk from the file specified by _filename_. The file is searched for using
 the same mechanism used by Lua's
@@ -30,50 +28,47 @@ to search for modules.#
 
 
 [[jack.self]]
-* *jack.self* ( ) _T_ +
--> _client_, _thread_ +
+* _client_, _thread_ = *self*( ) _T_ +
 [small]#Returns the client and thread references of the calling thread.
 This function is available only to thread chunks (i.e. in thread contexts).#
 
 
 [[jack.signal]]
-* *jack.signal* ( _client_, _thread_ ) _MPT_ +
+* *signal*( _client_, _thread_ ) _MPT_ +
 [small]#Signals the pthread condition variable associated with _thread_.#
 
 
 [[jack.wait]]
-* *jack.wait* ( ) _T_ +
+* *wait*( ) _T_ +
 [small]#Waits on the pthread condition variable associated with the calling thread.
 This function is available only to thread chunks (i.e. in thread contexts).# 
 
 
 [[jack.testcancel]]
-* *jack.testcancel* ( ) _T_ +
+* *testcancel*( ) _T_ +
 [small]#Creates a cancellation point in the calling thread.
 This function is available only to thread chunks (i.e. in thread contexts).#
 
 
 [[jack.real_time_priority]]
-* *jack.real_time_priority* ( _client_ ) _MPT_ +
--> _priority_ +
+* _priority_ = *real_time_priority*( _client_ ) _MPT_ +
 [small]#If JACK is running with realtime priority, returns the priority that any thread
 created by JACK will run at. Otherwise it returns _nil_.#
 
 
 [[jack.max_real_time_priority]]
-* *jack.max_real_time_priority* ( _client_ ) _MPT_ +
--> _priority_ +
+* _priority_ = *max_real_time_priority*( _client_ ) _MPT_ +
 [small]#If JACK is running with realtime priority, returns the maximum priority that a
 realtime client thread should use. Otherwise it returns _nil_.#
 
 
 [[jack.acquire_real_time_scheduling]]
-* *jack.acquire_real_time_scheduling* ( _priority_ ) _MPT_ +
+* *acquire_real_time_scheduling*( _priority_ ) _MPT_ +
 [small]#Enables realtime scheduling, with the specified _priority_, for the calling thread.#
 
 
 [[jack.drop_real_time_scheduling]]
-* *jack.drop_real_time_scheduling* ( ) _MPT_ +
+* *drop_real_time_scheduling*( ) _MPT_ +
 [small]#Drops realtime scheduling for the calling thread.#
 
 

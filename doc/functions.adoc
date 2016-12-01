@@ -1,7 +1,7 @@
 
 == LuaJack functions
 
-LuaJack functions are described in the following sections. 
+LuaJack functions are described in the following subsections. All of them are members of the *jack* table.
 
 The letters _M_, _P_ and/or _T_ beside a function description indicate whether it is available
 in the main context (_M_), in process contexts (_P_) and/or in thread contexts (_T_).

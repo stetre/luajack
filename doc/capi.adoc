@@ -1,4 +1,5 @@
 
+////
 == LuaJack C API
 
 The LuaJack C API allows to implement the <<_real_time_callbacks, real-time callbacks>>
@@ -6,10 +7,9 @@ entirely in C.
 
 @@ TODO
 
-////
 http://www.lua.org/manual/5.3/manual.html#lua_CFunction[lua_CFunction]
 
-[source,C,indent=1]
+[source,C,indent=0]
 ----
 luajack_t* luajack_checkclient(lua_State *L, int arg);
 luajack_t* luajack_checkport(lua_State *L, int arg);

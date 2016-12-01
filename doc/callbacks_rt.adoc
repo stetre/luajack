@@ -12,7 +12,7 @@ The loaded Lua chunk is expected to define the callbacks and register them using
 functions described in this section, which are available only in the process context.
 
 [[jack.process_load]]
-* *jack.process_load* ( _client_, _chunk_, _..._ ) _M_ +
+* *process_load*( _client_, _chunk_, _..._ ) _M_ +
 [small]#This function is to be used in the main context to create the
 <<luajack.contexts, process context>> for _client_. +
 The _chunk_ argument is a string containing the Lua code to be executed in the
@@ -26,7 +26,7 @@ can be accessed directly by the process chunk.#
 
 
 [[jack.process_loadfile]]
-* *jack.process_loadfile* ( _client_, _filename_, _..._ ) _M_ +
+* *process_loadfile*( _client_, _filename_, _..._ ) _M_ +
 [small]#Same as <<jack.process_load, jack.process_load>>(), with the only difference that it
 loads the chunk from the file specified by _filename_. The file is searched for using
 the same mechanism used by Lua's
@@ -35,20 +35,20 @@ to search for modules.#
 
 
 [[jack.process_callback]]
-* *jack.process_callback* ( _client_, _func_ ) _P_ +
+* *process_callback*( _client_, _func_ ) _P_ +
 [small]#Registers _func_ as 'process' callback (_func_ must be realtime safe). +
 The callback is executed as *_func(nframes)_*, where _nframes_ is the number of frames to process.#
 
 
 [[jack.buffer_size_callback]]
-* *jack.buffer_size_callback* ( _client_, _func_ ) _P_ +
+* *buffer_size_callback*( _client_, _func_ ) _P_ +
 [small]#Registers _func_ as callback for the 'buffer size change' event. +
 The callback is executed as *_func(nframes)_*, where _nframes_ is the new
 size of the JACK engine buffer.#
 
 
 [[jack.sync_callback]]
-* *jack.sync_callback* ( _client_, _func_ ) _P_ +
+* *sync_callback*( _client_, _func_ ) _P_ +
 [small]#Registers _client_ as a 
 http://jackaudio.org/api/transport-design.html#slowsyncclients[slow-sync client] 
 and _func_ as its _sync_callback_ 
@@ -59,7 +59,7 @@ client is ready to roll, or _false_ (or _nil_) otherwise.#
 
 
 [[jack.timebase_callback]]
-* *jack.timebase_callback* ( _client_, _func_ [, _conditional_] ) _P_ +
+* *timebase_callback*( _client_, _func_ [, _conditional_] ) _P_ +
 [small]#Registers _client_ as the 
 http://jackaudio.org/api/transport-design.html#timebase[timebase master]
 and _func_ as its _timebase callback_ 
@@ -74,7 +74,7 @@ _client_ should provide using <<jack.transport_reposition, jack.transport_reposi
 
 
 [[jack.release_timebase]]
-* *jack.release_timebase* ( _client_ ) _P_ +
+* *release_timebase*( _client_ ) _P_ +
 [small]#Used by the client previously registered as the timebase master to withdraw that role
 and unregister the timebase callback.#
 

@@ -16,8 +16,7 @@ For this type of ports, a sample is represented by a Lua number.
 
 
 [[audiojack.get_buffer]]
-* *jack.get_buffer* ( _port_ ) _P_ +
--> _nframes_ +
+* _nframes_ = *get_buffer*( _port_ ) _P_ +
 [small]#Retrieves the port buffer and initializes the buffer's _current position_ to the first
 sample. +
 Returns the buffer size in samples (which is the same value as the _nframes_
@@ -26,22 +25,19 @@ This function must be invoked in the <<jack.process_callback, process callback>>
 process cycle, before any other operation on the buffer.#
 
 [[audiojack.raw_buffer]]
-* *jack.raw_buffer* ( _port_ ) _P_ +
--> _pointer_, _nframes_ +
+* _pointer_, _nframes_ = *raw_buffer*( _port_ ) _P_ +
 [small]#Returns the port buffer pointer (as a _light userdata_) and the number of frames.
 It can be used only after having retrieved the buffer with <<audiojack.get_buffer, jack.get_buffer>>().#
 
 [[audiojack.seek]]
-* *jack.seek* ( _port_ [, _position_ ] ) _P_ +
--> _position_, _available_ +
+* _position_, _available_ = *seek*( _port_ [, _position_ ] ) _P_ +
 [small]#Returns the current _position_ in the port's buffer and the number of available
 samples from the current position to the end of the buffer. +
 If _position_ is passed as argument, the function sets the current position to that value.#
 
 
 [[audiojack.read]]
-* *jack.read* ( _port_ [, _count_ ] ) _P_ +
--> _sample1_, _..._ +
+* _sample1_, _..._ = *read*( _port_ [, _count_ ] ) _P_ +
 [small]#Returns up to _count_ samples from the (input) port buffer. +
 Samples are read starting from the current position, which is then advanced by the
 number of returned samples. +
@@ -51,8 +47,7 @@ If _count_ is not passed, it defaults to _'all the remaining samples'_.#
 
 
 [[audiojack.write]]
-* *jack.write* ( _port_ [, _sample1_ , _..._ ] ) _P_ +
--> _count_ +
+* _count_ = *write*( _port_ [, _sample1_ , _..._ ] ) _P_ +
 [small]#Writes the passed samples to the (output) port's buffer and returns the _count_ of 
 written samples. +
 Samples are written starting from the current position, which is then advanced by _count_.
@@ -61,8 +56,7 @@ samples are discarded.#
 
 
 [[audiojack.clear]]
-* *jack.clear* ( _port_ [, _count_ ] ) _P_ +
--> _count_ +
+* _count_ = *clear*( _port_ [, _count_ ] ) _P_ +
 [small]#Same as <<audiojack.write, jack.write>>(), with the difference that it writes up to _count_ 
 samples to zero. +
 If _count_ is not passed, it defaults to _'all the remaining samples'_.#
@@ -70,8 +64,7 @@ If _count_ is not passed, it defaults to _'all the remaining samples'_.#
 
 
 [[audiojack.copy]]
-* *jack.copy* ( _dstport_, _srcport_ [, _count_ ] ) _P_ +
--> _count_ +
+* _count_ = *copy*( _dstport_, _srcport_ [, _count_ ] ) _P_ +
 [small]#Copies up to _count_ samples from the buffer of the input port _srcport_ to the
 buffer of the output port _dstport_ and returns the number of copied samples. +
 This function uses the current positions of both ports, and advances them by the
@@ -107,9 +100,8 @@ or with the utilities provided in the <<midi_utilities, luajack/midi.lua>> modul
 
 
 [[midijack.get_buffer]]
-* *jack.get_buffer* ( _port_ ) _P_ +
--> _eventcount_, _lostcount_ (if port is input) +
--> _space_ (if port is output) +
+* _eventcount_, _lostcount_ = *get_buffer*( _inputport_ ) _P_ +
+_space_ = *get_buffer*( _outputport_ ) _P_ +
 [small]#Retrieves the port buffer. +
 If _port_ is an input port, this function returns the number of events in the buffer
 (_eventcount_) and the number of lost events (_lostcount_).
@@ -121,8 +113,7 @@ process cycle, before any other operation on the buffer.#
 
 
 [[midijack.seek]]
-* *jack.seek* ( _port_ [, _index_ ] ) _P_ +
--> _index_, _available_ +
+* _index_, _available_ = *seek*( _port_ [, _index_ ] ) _P_ +
 [small]#Returns the current _index_ in the (input) port buffer and the number of _available_
 events from the current index to the end of the buffer. +
 If _index_ is passed as argument, sets the current index to that value.#
@@ -131,8 +122,7 @@ NOTE: Only input MIDI ports are seekable (output MIDI ports are not).
 
 
 [[midijack.read]]
-* *jack.read* ( _port_ [, _index_ ] ) _P_ +
--> _time_, _data_ +
+* _time_, _data_ = *read*( _port_ [, _index_ ] ) _P_ +
 [small]#Returns the <<midi_event, MIDI event>> from the (input) port's buffer at its current index, 
 which it then advances by _1_. +
 If an _index_ is passed as argument, this function sets the current index to that value
@@ -141,16 +131,14 @@ returns _nil_.#
 
 
 [[midijack.write]]
-* *jack.write* ( _port_, _time_, _data_ ) _P_ +
--> _space_ +
+* _space_ = *write*( _port_, _time_, _data_ ) _P_ +
 [small]#Writes a <<midi_event, MIDI event>> to the (output) port's buffer and returns the _space_ 
 available in the buffer for the next event data.
 If there is not enough space to write the event, this function returns _nil_.#
 
 
 [[midijack.copy]]
-* *jack.copy* ( _dstport_, _srcport_ [, _count_ ] ) _P_ +
--> _count_ +
+* _count_ = *copy*( _dstport_, _srcport_ [, _count_ ] ) _P_ +
 [small]#Copies up to _count_ <<midi_event, MIDI events>> from the buffer of the input port 
 _srcport_  to the buffer of the output port _dstport_, and returns the number of copied events.
 Events are copied starting from the current index of _srcport_, which is then

@@ -9,8 +9,7 @@ which instead uses the functions described below in this section.
 
 
 [[jack.session_notify]]
-* *jack.session_notify* ( _client_, _target_, _type_, _path_ ) _M_ +
--> _{ reply1, ..., replyN }_ +
+* _{ reply1, ..., replyN }_ = *session_notify*( _client_, _target_, _type_, _path_ ) _M_ +
 [small]#Sends an event to clients that registered a session callback. +
 The _target_ argument (a string) is the name of the target client, or _nil_ for 'all'. +
 The event _type_ must be one amongst _'save'_, _'save_and_quit'_ and _'save_template'_. +
@@ -25,13 +24,12 @@ Each entry of the table is a subtable containing the following elements: +
 
 
 [[jack.has_session_callback]]
-* *jack.has_session_callback* ( _client_, _clientname_ ) _M_ +
--> _boolean_ +
+* _boolean_ = *has_session_callback*( _client_, _clientname_ ) _M_ +
 [small]#Returns _true_ if the client named _clientname_ has registered a session callback,
 _false_ otherwise.#
 
 
 [[jack.reserve_client_name]]
-* *jack.reserve_client_name* ( _client_, _clientname_ ) _M_ +
+* *reserve_client_name*( _client_, _clientname_ ) _M_ +
 [small]#Reserves the client name _clientname_ and associates it with the UUID _uuid_.#
 

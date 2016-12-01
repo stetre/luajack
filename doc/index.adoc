@@ -53,9 +53,9 @@ include::additional.adoc[]
 
 include::midi.adoc[]
 
-////
-@@ include::capi.adoc[]
+include::capi.adoc[]
 
+////
 @@ include::examples.adoc[]
 
 include::summary.adoc[]
