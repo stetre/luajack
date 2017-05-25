@@ -1,4 +1,4 @@
-##LuaJack: Lua bindings for the JACK Audio Connection Kit
+## LuaJack: Lua bindings for the JACK Audio Connection Kit
 
 LuaJack is a Lua binding library for the [JACK Audio Connection Kit](http://jackaudio.org/).
 
