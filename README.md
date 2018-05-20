@@ -43,8 +43,8 @@ jack = require("luajack")
 c = jack.client_open("myclient")
 
 -- Create two ports:
-p_in = jack.input_audio_port("port_in")
-p_out = jack.output_audio_port("port_out")
+p_in = jack.input_audio_port(c, "port_in")
+p_out = jack.output_audio_port(c, "port_out")
 
 -- Load the 'process' chunk:
 jack.process_load(c, [[
