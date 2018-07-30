@@ -91,7 +91,7 @@ void tud_free_all(void)
 
 tud_t* tud_check(lua_State *L, int arg)
 	{
-	int key = luaL_checkinteger(L, arg);
+	uintptr_t key = luaL_checkinteger(L, arg);
 	tud_t *tud = tud_search(key);
 	if(!tud || !IsTudValid(tud))
 		luaL_error(L, "invalid thread reference");

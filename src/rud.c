@@ -91,7 +91,7 @@ void rud_free_all(void)
 
 rud_t* rud_check(lua_State *L, int arg)
 	{
-	int key = luaL_checkinteger(L, arg);
+	uintptr_t key = luaL_checkinteger(L, arg);
 	rud_t *rud = rud_search(key);
 	if(!rud || !IsRudValid(rud))
 		luaL_error(L, "invalid ringbuffer reference");

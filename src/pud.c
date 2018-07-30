@@ -92,7 +92,7 @@ void pud_free_all(void)
 
 pud_t* pud_check(lua_State *L, int arg)
 	{
-	int key = luaL_checkinteger(L, arg);
+	uintptr_t key = luaL_checkinteger(L, arg);
 	pud_t *pud = pud_search(key);
 	if(!pud || !IsPudValid(pud))
 		luaL_error(L, "invalid port reference");

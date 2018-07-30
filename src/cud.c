@@ -108,7 +108,7 @@ void cud_free_all(void)
 
 cud_t* cud_check(lua_State *L, int arg)
     {
-    int key = luaL_checkinteger(L, arg);
+    uintptr_t key = luaL_checkinteger(L, arg);
     cud_t *cud = cud_search(key);
     if(!cud || !IsCudValid(cud))
         luaL_error(L, "invalid client reference");
