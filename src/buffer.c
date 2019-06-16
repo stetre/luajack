@@ -102,7 +102,7 @@ static int RawBuffer(lua_State *L)
     if(pud->buf == NULL) 
         luaL_error(L, "buffer not retrieved");
 
-	lua_pushlightuserdata(L, pud->buf);
+    lua_pushlightuserdata(L, pud->buf);
     lua_pushinteger(L, pud->nframes);
     return 2;
     }
