@@ -31,7 +31,7 @@ DEBUG=1
 endif
 
 ifdef LINUX
-INCDIR = -I/usr/include
+INCDIR = -I/usr/include -I/usr/include/lua$(LUAVER)
 LIBDIR = -L/usr/lib
 LIBS = -ljack -lpthread
 endif
