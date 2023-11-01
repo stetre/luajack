@@ -34,6 +34,8 @@ static int cmp(pud_t *pud1, pud_t *pud2) /* the compare function */
 
 static RB_HEAD(pudtree_s, pud_s) Head = RB_INITIALIZER(&Head);
 
+static uintptr_t last_pud_key=1024;
+
 RB_PROTOTYPE_STATIC(pudtree_s, pud_s, entry, cmp) 
 RB_GENERATE_STATIC(pudtree_s, pud_s, entry, cmp) 
  
@@ -62,7 +64,7 @@ pud_t *pud_new(cud_t *cud)
 	pud_t *pud;
 	if((pud = (pud_t*)Malloc(sizeof(pud_t))) == NULL) return NULL;
 	memset(pud, 0, sizeof(pud_t));
-	pud->key = (uintptr_t)pud;
+	pud->key = last_pud_key++;
 	if(pud_search(pud->key))
 		{ Free(pud); luajack_error(UNEXPECTED_ERROR); return NULL; }
 	cud_fifo_insert(cud, pud);
