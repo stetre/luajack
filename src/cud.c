@@ -36,6 +36,8 @@ static RB_HEAD(cudtree_s, cud_s) Head = RB_INITIALIZER(&Head);
 
 RB_PROTOTYPE_STATIC(cudtree_s, cud_s, entry, cmp) 
 RB_GENERATE_STATIC(cudtree_s, cud_s, entry, cmp) 
+
+static uintptr_t last_cud_key=128;
  
 static cud_t *cud_remove(cud_t *cud) 
     { return RB_REMOVE(cudtree_s, &Head, cud); }
@@ -63,7 +65,7 @@ cud_t *cud_new(void)
     cud_t *cud;
     if((cud = (cud_t*)Malloc(sizeof(cud_t))) == NULL) return NULL;
     memset(cud, 0, sizeof(cud_t));
-    cud->key = (uintptr_t)cud;
+    cud->key = last_cud_key++;
     if(cud_search(cud->key))
         { Free(cud); luajack_error(UNEXPECTED_ERROR); return NULL; }
     cud->obj.type = LUAJACK_TCLIENT;

@@ -34,6 +34,8 @@ static int cmp(tud_t *tud1, tud_t *tud2) /* the compare function */
 
 static RB_HEAD(tudtree_s, tud_s) Head = RB_INITIALIZER(&Head);
 
+static uintptr_t last_tud_key=3096;
+
 RB_PROTOTYPE_STATIC(tudtree_s, tud_s, entry, cmp) 
 RB_GENERATE_STATIC(tudtree_s, tud_s, entry, cmp) 
  
@@ -63,7 +65,7 @@ tud_t *tud_new(void)
 	tud_t *tud;
 	if((tud = (tud_t*)Malloc(sizeof(tud_t))) == NULL) return NULL;
 	memset(tud, 0, sizeof(tud_t));
-	tud->key = (uintptr_t)tud;
+	tud->key = last_tud_key++;
 	if(tud_search(tud->key))
 		{ Free(tud); luajack_error(UNEXPECTED_ERROR); return NULL; }
 	tud->obj.type = LUAJACK_TTHREAD;
